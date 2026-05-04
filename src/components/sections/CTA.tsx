@@ -18,7 +18,7 @@ export function CTA() {
           marginInline: 'auto',
         }}
       >
-        Be on court when v3 ships.
+        Be there when new features ship.
       </h2>
       <p
         style={{
