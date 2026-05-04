@@ -7,7 +7,7 @@ import { WatchFrame } from '../devices/WatchFrame';
 import { PhoneLiveMatch } from '../screens/PhoneLiveMatch';
 import { WatchActiveMatch } from '../screens/WatchActiveMatch';
 
-const TESTFLIGHT_HREF = '#waitlist';
+const TESTFLIGHT_HREF = 'https://testflight.apple.com/join/6QfNavYx';
 const ACCENT = 'system' as const;
 
 export function Hero() {
