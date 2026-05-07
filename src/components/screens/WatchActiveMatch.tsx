@@ -64,7 +64,7 @@ export function WatchActiveMatch({
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'baseline', gap: 4, marginTop: 6 }}>
-        <PulseScore value={match.player} color={blue} pulse={match.pulse === 'p'} />
+        <PulseScore value={match.player} color={blue} pulse={match.pulse === 'p'} align="right" />
         <span
           style={{
             fontSize: 38,
@@ -75,7 +75,7 @@ export function WatchActiveMatch({
         >
           :
         </span>
-        <PulseScore value={match.opponent} color={red} pulse={match.pulse === 'o'} />
+        <PulseScore value={match.opponent} color={red} pulse={match.pulse === 'o'} align="left" />
       </div>
 
       <div style={{ display: 'flex', gap: 10, marginTop: 8, justifyContent: 'center' }}>
@@ -101,7 +101,17 @@ export function WatchActiveMatch({
 }
 
 // Zbytek tvého kódu (PulseScore a ScoreBtn) zůstává beze změny...
-function PulseScore({ value, color, pulse }: { value: number; color: string; pulse: boolean }) {
+function PulseScore({
+  value,
+  color,
+  pulse,
+  align = 'center',
+}: {
+  value: number;
+  color: string;
+  pulse: boolean;
+  align?: 'left' | 'right' | 'center';
+}) {
   const [scale, setScale] = useState(1);
   useEffect(() => {
     if (pulse) {
@@ -120,10 +130,10 @@ function PulseScore({ value, color, pulse }: { value: number; color: string; pul
         fontFeatureSettings: '"tnum"',
         transform: `scale(${scale})`,
         transition: 'transform 200ms cubic-bezier(0.34,1.56,0.64,1)',
-        transformOrigin: 'center',
+        transformOrigin: align === 'right' ? 'right center' : align === 'left' ? 'left center' : 'center',
         display: 'inline-block',
-        minWidth: 44,
-        textAlign: 'center',
+        width: 70,
+        textAlign: align,
       }}
     >
       {value}

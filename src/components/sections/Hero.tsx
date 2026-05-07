@@ -30,24 +30,6 @@ export function Hero() {
       }}
     >
       <div>
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            padding: '6px 12px',
-            borderRadius: 999,
-            background: 'var(--pill-bg)',
-            fontSize: 12,
-            fontWeight: 600,
-            color: 'var(--muted)',
-            letterSpacing: 0.4,
-            marginBottom: 24,
-          }}
-        >
-          <span style={{ width: 6, height: 6, borderRadius: 3, background: '#34C759' }} />
-          NOW IN TESTFLIGHT · v3.0
-        </div>
         <h1
           style={{
             fontSize: 'clamp(44px, 6vw, 88px)',
