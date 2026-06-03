@@ -69,7 +69,9 @@ export function WatchFrame({
             background: 'linear-gradient(160deg, #2a2a2c 0%, #1a1a1c 50%, #0a0a0a 100%)',
             boxShadow:
               '0 30px 60px -20px rgba(0,0,0,0.5), 0 8px 16px -8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06)',
-            padding: (H - screenH) / 2,
+            // Center the screen on both axes — horizontal and vertical insets differ
+            // because the body's aspect ratio isn't the same as the screen's.
+            padding: `${(H - screenH) / 2}px ${(W - screenW) / 2}px`,
             boxSizing: 'border-box',
           }}
         >

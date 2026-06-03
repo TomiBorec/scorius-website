@@ -122,11 +122,13 @@ export function useMatchLoop(): MatchState {
             };
           }
           if (step.e === 'reset') {
+            // Best-of-three: cycle 0 → 1 → 2, then start a fresh match.
+            // Without the wrap the counter climbs unbounded as the demo loops.
             return {
               ...s,
               player: 0,
               opponent: 0,
-              playerGames: s.playerGames + 1,
+              playerGames: (s.playerGames + 1) % 3,
               gameMessage: '',
               isGamePoint: false,
               isWin: false,

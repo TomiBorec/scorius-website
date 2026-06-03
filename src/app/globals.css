@@ -36,6 +36,11 @@ html {
   scroll-behavior: smooth;
   background: var(--bg);
   color: var(--fg);
+  /* Scaled-down device mockups keep their full layout width; clip the
+     overflow so they can't trigger a phantom horizontal scrollbar on mobile.
+     `clip` (not `hidden`) avoids creating a scroll container, so the sticky
+     nav and smooth scrolling keep working. */
+  overflow-x: clip;
 }
 
 body {
@@ -106,9 +111,10 @@ a { color: inherit; }
   nav > div {
     padding: 12px 18px !important;
   }
-  nav a[href="#features"],
-  nav a[href="#how"],
-  nav a[href="#rules"] {
+  /* Slim the nav on mobile — keep logo, theme toggle, and CTA.
+     The hero shows the "now Scorius" badge, so the nav tag is redundant here. */
+  .bb-nav-link,
+  .bb-nav-tag {
     display: none !important;
   }
   .bb-hero {
@@ -129,7 +135,7 @@ a { color: inherit; }
   }
   .bb-features,
   section#how,
-  section#rules,
+  section#sports,
   section#waitlist {
     padding-left: 18px !important;
     padding-right: 18px !important;

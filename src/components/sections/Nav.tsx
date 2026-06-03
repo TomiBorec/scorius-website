@@ -40,6 +40,7 @@ export function Nav() {
           <Shuttlecock size={22} />
           <span style={{ fontWeight: 700, fontSize: 17, letterSpacing: -0.2 }}>Scorius</span>
           <span
+            className="bb-nav-tag"
             style={{
               fontSize: 10,
               fontWeight: 600,
