@@ -32,6 +32,7 @@ export function Footer() {
           <h4>{t.footer.legalHead}</h4>
           <Link href="/privacy">{t.footer.privacy}</Link>
           <Link href="/terms">{t.footer.terms}</Link>
+          <Link href="/imprint">{t.footer.imprint}</Link>
         </div>
       </div>
       <div className="footer-bottom">

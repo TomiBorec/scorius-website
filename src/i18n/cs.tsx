@@ -161,6 +161,7 @@ export const cs: Dict = {
     giveFeedback: 'Napsat zpětnou vazbu',
     privacy: 'Soukromí',
     terms: 'Podmínky použití',
+    imprint: 'Imprint',
     rights: '© 2026 Scorius. Pro všechny, kdo si počítají skóre.',
   },
 
@@ -418,7 +419,7 @@ export const cs: Dict = {
       kicker: 'Soukromí',
       title: 'Tvoje zápasy patří tobě.',
       lead: 'Scorius je postavený tak, aby vývojář nikdy neviděl tvoje data. Žádné účty, žádná analytika, žádná SDK třetích stran — tvoje zápasy zůstávají na tvých zařízeních a v tvém iCloudu.',
-      meta: 'Naposledy aktualizováno · červen 2026 · Platí pro Scorius 2.0',
+      meta: 'Naposledy aktualizováno · červenec 2026 · Platí pro Scorius 2.0',
       tocTitle: 'Na této stránce',
       article: (
         <>
@@ -435,6 +436,9 @@ export const cs: Dict = {
                 <a href="#network">Síť a třetí strany</a>
               </li>
               <li>
+                <a href="#website">Webové stránky a lokální úložiště</a>
+              </li>
+              <li>
                 <a href="#health">Zdravotní data</a>
               </li>
               <li>
@@ -442,6 +446,9 @@ export const cs: Dict = {
               </li>
               <li>
                 <a href="#children">Děti</a>
+              </li>
+              <li>
+                <a href="#gdpr">Tvoje práva podle GDPR</a>
               </li>
               <li>
                 <a href="#changes">Změny a kontakt</a>
@@ -492,6 +499,32 @@ export const cs: Dict = {
           </p>
           <p>Nejsou tu žádná reklamní SDK, žádné služby pro hlášení pádů ani žádná analytika používání.</p>
 
+          <h2 id="website">Webové stránky a lokální úložiště</h2>
+          <p>
+            Tato webová stránka (scorius.app) je statický marketingový web. Nepoužívá cookies, neobsahuje
+            skripty třetích stran pro sledování a nesbírá žádné osobní údaje prostřednictvím formulářů.
+          </p>
+          <p>
+            Webová stránka využívá <strong>localStorage</strong> ve tvém prohlížeči k zapamatování tří čistě
+            funkčních preferencí:
+          </p>
+          <ul>
+            <li>
+              <strong>scorius-theme</strong> &mdash; tvoje zvolené barevné schéma (světlý nebo tmavý režim)
+            </li>
+            <li>
+              <strong>scorius-sport</strong> &mdash; právě vybraný sport
+            </li>
+            <li>
+              <strong>scorius-lang</strong> &mdash; preferovaný jazyk (angličtina nebo čeština)
+            </li>
+          </ul>
+          <p>
+            Tato data nikdy neopouštějí tvůj prohlížeč. Nejsou odesílána na žádný server &mdash; včetně
+            serveru vývojáře &mdash; a nejsou používána pro analytiku, reklamu, profilování ani žádný jiný
+            účel. Můžeš je kdykoli smazat v nastavení svého prohlížeče.
+          </p>
+
           <h2 id="health">Zdravotní data</h2>
           <p>
             Když spustíš zápas z Apple Watch, Scorius může spustit trénink a zaznamenat <strong>tepovou frekvenci</strong> a{' '}
@@ -521,6 +554,45 @@ export const cs: Dict = {
             žádný účet ani profil.
           </p>
 
+          <h2 id="gdpr">Tvoje práva podle GDPR</h2>
+          <p>
+            Pokud se nacházíš v Evropském hospodářském prostoru, máš následující práva týkající se svých
+            osobních údajů:
+          </p>
+          <ul>
+            <li>
+              <strong>Právo na přístup (čl.&nbsp;15 GDPR)</strong> &mdash; požádat o kopii údajů, které o tobě
+              zpracováváme.
+            </li>
+            <li>
+              <strong>Právo na opravu (čl.&nbsp;16 GDPR)</strong> &mdash; opravit nepřesné nebo neúplné údaje.
+            </li>
+            <li>
+              <strong>Právo na výmaz (čl.&nbsp;17 GDPR)</strong> &mdash; požádat o smazání svých údajů.
+            </li>
+            <li>
+              <strong>Právo na omezení zpracování (čl.&nbsp;18 GDPR)</strong> &mdash; omezit, jak zpracováváme
+              tvoje údaje.
+            </li>
+            <li>
+              <strong>Právo na přenositelnost (čl.&nbsp;20 GDPR)</strong> &mdash; získat své údaje ve
+              strukturovaném formátu.
+            </li>
+            <li>
+              <strong>Právo vznést námitku (čl.&nbsp;21 GDPR)</strong> &mdash; namítat zpracování svých údajů.
+            </li>
+          </ul>
+          <p>
+            Jelikož Scorius neukládá žádné osobní údaje na svých serverech (aplikace používá jen tvůj
+            soukromý iCloud a webová stránka využívá pouze lokální úložiště v tvém prohlížeči), uplatnění
+            těchto práv je přímočaré: napiš na{' '}
+            <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
+              {SUPPORT_EMAIL}
+            </a>{' '}
+            a tvoje žádost bude vyřízena do 30 dnů. Máš také právo podat stížnost u svého místního úřadu
+            pro ochranu osobních údajů.
+          </p>
+
           <h2 id="changes">Změny a kontakt</h2>
           <p>
             Pokud se tyto zásady někdy změní, aktualizovaná verze se objeví tady s novým datem. Máš dotazy ohledně soukromí?
@@ -542,7 +614,7 @@ export const cs: Dict = {
       kicker: 'Právní',
       title: 'Podmínky použití.',
       lead: 'Srozumitelné podmínky pro používání Scoria. Stažením nebo používáním aplikace souhlasíš s tím, co je níže.',
-      meta: 'Naposledy aktualizováno · červen 2026 · Platí pro Scorius 2.0',
+      meta: 'Naposledy aktualizováno · červenec 2026 · Platí pro Scorius 2.0',
       tocTitle: 'Na této stránce',
       article: (
         <>
@@ -652,6 +724,22 @@ export const cs: Dict = {
           </p>
         </>
       ),
+    },
+
+    imprint: {
+      kicker: 'Právní',
+      title: 'Imprint / Kontaktní údaje',
+      lead: 'Kontaktní údaje provozovatele podle §3 zákona č. 480/2004 Sb., o službách informační společnosti.',
+      nameLabel: 'Jméno',
+      name: 'Tomáš Kalmus',
+      addressLabel: 'Adresa',
+      address: 'Petra Rezka 1114/8, Praha 4, 14000, Česká republika',
+      businessIdLabel: 'IČO',
+      businessId: '22478680',
+      emailLabel: 'Email',
+      email: SUPPORT_EMAIL,
+      note: 'Tomáš Kalmus podniká jako fyzická osoba podle českého práva.',
+      noteTitle: 'Právní status',
     },
   },
 };

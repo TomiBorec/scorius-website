@@ -165,6 +165,7 @@ export const en = {
     giveFeedback: 'Give feedback',
     privacy: 'Privacy',
     terms: 'Terms of use',
+    imprint: 'Imprint',
     rights: '© 2026 Scorius. Made for people who keep score.',
   },
 
@@ -422,7 +423,7 @@ export const en = {
       kicker: 'Privacy',
       title: 'Your matches are yours.',
       lead: 'Scorius is built so the developer never sees your data. No accounts, no analytics, no third-party SDKs — your matches stay on your devices and in your iCloud.',
-      meta: 'Last updated · June 2026 · Applies to Scorius 2.0',
+      meta: 'Last updated · July 2026 · Applies to Scorius 2.0',
       tocTitle: 'On this page',
       article: (
         <>
@@ -439,6 +440,9 @@ export const en = {
                 <a href="#network">Network &amp; third parties</a>
               </li>
               <li>
+                <a href="#website">Website data &amp; local storage</a>
+              </li>
+              <li>
                 <a href="#health">Health data</a>
               </li>
               <li>
@@ -446,6 +450,9 @@ export const en = {
               </li>
               <li>
                 <a href="#children">Children</a>
+              </li>
+              <li>
+                <a href="#gdpr">Your GDPR rights</a>
               </li>
               <li>
                 <a href="#changes">Changes &amp; contact</a>
@@ -496,6 +503,32 @@ export const en = {
           </p>
           <p>There are no advertising SDKs, no crash-reporting services and no usage analytics of any kind.</p>
 
+          <h2 id="website">Website data &amp; local storage</h2>
+          <p>
+            This website (scorius.app) is a static marketing site. It does not set cookies, does not embed
+            third-party tracking scripts, and does not collect any personal data through forms.
+          </p>
+          <p>
+            The website uses your browser&rsquo;s <strong>localStorage</strong> to remember three strictly
+            functional preferences so they persist between visits:
+          </p>
+          <ul>
+            <li>
+              <strong>scorius-theme</strong> &mdash; your chosen colour scheme (light or dark)
+            </li>
+            <li>
+              <strong>scorius-sport</strong> &mdash; your currently selected sport
+            </li>
+            <li>
+              <strong>scorius-lang</strong> &mdash; your preferred language (English or Czech)
+            </li>
+          </ul>
+          <p>
+            This data never leaves your browser. It is not sent to any server &mdash; including the
+            developer&rsquo;s &mdash; and is not used for analytics, advertising, profiling or any other
+            purpose. You can clear it at any time through your browser settings.
+          </p>
+
           <h2 id="health">Health data</h2>
           <p>
             If you start a match from Apple Watch, Scorius can run a workout to record <strong>heart rate</strong> and{' '}
@@ -525,6 +558,40 @@ export const en = {
             and it requires no account or profile.
           </p>
 
+          <h2 id="gdpr">Your rights under GDPR</h2>
+          <p>
+            If you are in the European Economic Area, you have the following rights regarding your personal data:
+          </p>
+          <ul>
+            <li>
+              <strong>Right of access (Art.&nbsp;15 GDPR)</strong> &mdash; request a copy of the data we hold about you.
+            </li>
+            <li>
+              <strong>Right to rectification (Art.&nbsp;16 GDPR)</strong> &mdash; correct inaccurate or incomplete data.
+            </li>
+            <li>
+              <strong>Right to erasure (Art.&nbsp;17 GDPR)</strong> &mdash; request deletion of your data.
+            </li>
+            <li>
+              <strong>Right to restriction (Art.&nbsp;18 GDPR)</strong> &mdash; limit how we process your data.
+            </li>
+            <li>
+              <strong>Right to portability (Art.&nbsp;20 GDPR)</strong> &mdash; receive your data in a structured format.
+            </li>
+            <li>
+              <strong>Right to object (Art.&nbsp;21 GDPR)</strong> &mdash; object to processing of your data.
+            </li>
+          </ul>
+          <p>
+            Since Scorius stores no personal data on its servers (the app uses only your private iCloud, and the
+            website uses only local storage in your browser), exercising these rights is straightforward: email{' '}
+            <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
+              {SUPPORT_EMAIL}
+            </a>{' '}
+            and your request will be handled within 30 days. You also have the right to lodge a complaint with
+            your local data protection authority.
+          </p>
+
           <h2 id="changes">Changes &amp; contact</h2>
           <p>
             If this policy ever changes, the updated version will appear here with a new date. Questions about privacy?
@@ -546,7 +613,7 @@ export const en = {
       kicker: 'Legal',
       title: 'Terms of use.',
       lead: 'Plain-language terms for using Scorius. By downloading or using the app, you agree to what’s below.',
-      meta: 'Last updated · June 2026 · Applies to Scorius 2.0',
+      meta: 'Last updated · July 2026 · Applies to Scorius 2.0',
       tocTitle: 'On this page',
       article: (
         <>
@@ -656,6 +723,22 @@ export const en = {
           </p>
         </>
       ),
+    },
+
+    imprint: {
+      kicker: 'Legal',
+      title: 'Imprint',
+      lead: 'Operator and contact information as required by §3 of Act No. 480/2004 Coll., on information society services.',
+      nameLabel: 'Name',
+      name: 'Tomáš Kalmus',
+      addressLabel: 'Address',
+      address: 'Petra Rezka 1114/8, Praha 4, 14000, Czech Republic',
+      businessIdLabel: 'Business ID (IČO)',
+      businessId: '22478680',
+      emailLabel: 'Email',
+      email: SUPPORT_EMAIL,
+      note: 'Tomáš Kalmus operates as a sole trader (fyzická osoba podnikající) under Czech law.',
+      noteTitle: 'Legal status',
     },
   },
 };
