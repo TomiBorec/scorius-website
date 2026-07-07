@@ -1,8 +1,6 @@
 # Scorius — Marketing site
 
-Marketing website for **Scorius** (formerly Badminton Log) — the multi-sport score keeper for iPhone, iPad, and Apple Watch that keeps score across badminton, tennis, basketball, football and golf.
-
-The site URL — `badmintonlog.com` — is preserved while the brand transitions.
+Marketing website for **Scorius** — the multi-sport score keeper for iPhone, iPad, and Apple Watch that keeps score across badminton, tennis, basketball, football and golf.
 
 Stack: Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · static export.
 
@@ -61,4 +59,4 @@ Build settings used in Cloudflare Pages:
 | Root directory | `/` |
 | Node version | 20 |
 
-Live URL: https://badmintonlog.com
+Live URL: https://scorius.app

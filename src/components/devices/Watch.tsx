@@ -35,7 +35,11 @@ function GolfScreen({ golf, loc }: { golf: GolfVM; loc: DeviceLoc }) {
       <div className="w-golf-head">
         {loc.hole} <b>{golf.hole}</b>/<span>{golf.holes}</span> · {loc.par} <b>{golf.par}</b>
       </div>
-      <div className={`w-golf-strokes${golf.flash ? ' pop' : ''}`}>{golf.strokes}</div>
+      <div className="w-golf-step">
+        <span className="w-golf-btn">−</span>
+        <div className={`w-golf-strokes${golf.flash ? ' pop' : ''}`}>{golf.strokes}</div>
+        <span className="w-golf-btn">+</span>
+      </div>
       <div className="w-golf-tot">
         <span>{golf.toParLabel}</span> · <span>{golf.thru}</span>
       </div>

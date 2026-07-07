@@ -436,6 +436,8 @@ img, svg { display: block; }
 .w-golf { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #fff; text-align: center; }
 .w-golf-head { font-size: 11px; color: rgba(255,255,255,.6); font-weight: 600; white-space: nowrap; }
 .w-golf-head b { color: #3ad06a; }
+.w-golf-step { display: flex; align-items: center; gap: 8px; margin: 2px 0; }
+.w-golf-btn { width: 28px; height: 28px; border-radius: 50%; background: rgba(91,155,255,.25); color: #5b9bff; display: grid; place-items: center; font-weight: 700; font-size: 15px; line-height: 1; }
 .w-golf-strokes { font-family: var(--font-jetbrains-mono), monospace; font-weight: 700; font-size: 46px; line-height: 1; color: #5b9bff; transition: transform .25s var(--ease); }
 .w-golf-strokes.pop { transform: scale(1.16); }
 .w-golf-tot { font-size: 11.5px; color: rgba(255,255,255,.55); font-weight: 600; }
