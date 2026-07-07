@@ -1,4 +1,6 @@
 name = 'scorius-website'
 compatibility_date = '2026-07-07'
 
-assets = { directory = './out', not_found_handling = '404-page' }
+[assets]
+directory = './out'
+not_found_handling = '404-page'
