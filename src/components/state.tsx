@@ -25,6 +25,7 @@ export const SPORTS: Sport[] = [
   'squash',
   'tableTennis',
   'volleyball',
+  // todo: add cricket 🏏
   'basketball',
   'football',
   'floorball',
