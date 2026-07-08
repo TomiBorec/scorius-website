@@ -571,7 +571,7 @@ img, svg { display: block; }
   /* Let the grid track shrink below the devices' intrinsic width (min-width:0)
      and scale the whole stage to fit the viewport so the iPhone+Watch never
      bleed past the screen edge (which caused sideways page scroll on mobile). */
-  .device-stage { min-height: 560px; min-width: 0; transform: scale(min(.92, calc((100vw - 44px) / 440px))); transform-origin: top center; margin-top: 8px; }
+  .device-stage { min-height: 560px; min-width: 0; transform: scale(.78); transform: scale(min(.92, calc((100vw - 44px) / 440px))); transform-origin: top center; margin-top: 8px; }
   .spotlight { grid-template-columns: 1fr; gap: 28px; padding: 36px; }
   .privacy-inner { grid-template-columns: 1fr; gap: 36px; }
   .feat-grid { grid-template-columns: repeat(2, 1fr); }
