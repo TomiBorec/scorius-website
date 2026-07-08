@@ -253,11 +253,12 @@ img, svg { display: block; }
 
 /* ---------------- Sport switcher (segmented) ---------------- */
 .sport-switch {
-  display: inline-flex; gap: 4px; padding: 5px;
+  display: inline-flex; max-width: 100%; gap: 4px; padding: 5px;
   background: var(--pill); border: 1px solid var(--hairline-2);
-  border-radius: 999px; justify-content: center;
+  border-radius: 999px; justify-content: flex-start;
   overflow-x: auto; -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  touch-action: pan-x;
 }
 .sport-switch::-webkit-scrollbar { display: none; }
 .sport-pill {
