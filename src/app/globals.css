@@ -485,8 +485,12 @@ img, svg { display: block; }
   position: relative; display: flex; align-items: flex-end; justify-content: center;
   gap: 0; min-height: 620px;
 }
-.device-stage .iphone { z-index: 2; }
-.device-stage .watch { position: relative; z-index: 3; margin-left: -34px; margin-bottom: 64px;
+/* flex:none keeps the fixed device sizes rigid — without it, once the mobile
+   grid track is allowed to shrink (min-width:0 below), these flex children get
+   squeezed narrower than tall, distorting the mockups. Fitting is handled by
+   the uniform transform:scale on .device-stage instead. */
+.device-stage .iphone { z-index: 2; flex: none; }
+.device-stage .watch { position: relative; z-index: 3; flex: none; margin-left: -34px; margin-bottom: 64px;
   animation: floaty 6s ease-in-out infinite; }
 .device-stage .iphone { animation: floaty 7s ease-in-out infinite reverse; }
 @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
