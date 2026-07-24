@@ -23,6 +23,8 @@ function wantsMarkdown(accept: string): boolean {
 export const onRequest: PagesFunction = async (context) => {
   const response = await context.next();
 
+  // Only GET has a body to convert (HEAD asset responses are body-less).
+  if (context.request.method !== 'GET') return response;
   if (!wantsMarkdown(context.request.headers.get('accept') ?? '')) return response;
   if (!response.ok) return response;
   if (!(response.headers.get('content-type') ?? '').includes('text/html')) return response;
@@ -35,8 +37,6 @@ export const onRequest: PagesFunction = async (context) => {
   const vary = headers.get('vary');
   headers.set('vary', vary ? `${vary}, accept` : 'accept');
   headers.set('x-markdown-tokens', String(tokens));
-  // TEMP DEBUG
-  headers.set('x-debug-md', `mdlen=${markdown.length} tokens=${tokens} est=${Math.ceil(markdown.length / 4)}`);
   // Body no longer matches the HTML representation's metadata.
   headers.delete('content-length');
   headers.delete('content-encoding');
