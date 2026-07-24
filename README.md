@@ -45,6 +45,15 @@ npm run build
 
 Outputs static HTML/CSS/JS into `out/`. The `out/` directory is what gets deployed.
 
+## Agent readiness
+
+- `public/robots.txt` — crawl rules (RFC 9309): wildcard allow, explicit allow stanzas for AI
+  crawlers (GPTBot, ClaudeBot, PerplexityBot, …), content-usage preference
+  `Content-Signal: ai-train=no, search=yes, ai-input=yes`, and the sitemap reference.
+- `src/app/sitemap.ts` — generates `/sitemap.xml` on every build with all canonical URLs.
+- `public/_headers` — Cloudflare response headers adding RFC 8288 `Link` relations
+  (`help` → /support, `privacy-policy` → /privacy, `terms-of-service` → /terms) on every page.
+
 ## Deploy
 
 Deployed automatically by **Cloudflare Pages** on every push to `main`.
