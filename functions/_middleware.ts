@@ -35,6 +35,8 @@ export const onRequest: PagesFunction = async (context) => {
   const vary = headers.get('vary');
   headers.set('vary', vary ? `${vary}, accept` : 'accept');
   headers.set('x-markdown-tokens', String(tokens));
+  // TEMP DEBUG
+  headers.set('x-debug-md', `mdlen=${markdown.length} tokens=${tokens} est=${Math.ceil(markdown.length / 4)}`);
   // Body no longer matches the HTML representation's metadata.
   headers.delete('content-length');
   headers.delete('content-encoding');
