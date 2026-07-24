@@ -52,7 +52,20 @@ Outputs static HTML/CSS/JS into `out/`. The `out/` directory is what gets deploy
   `Content-Signal: ai-train=no, search=yes, ai-input=yes`, and the sitemap reference.
 - `src/app/sitemap.ts` — generates `/sitemap.xml` on every build with all canonical URLs.
 - `public/_headers` — Cloudflare response headers adding RFC 8288 `Link` relations
-  (`help` → /support, `privacy-policy` → /privacy, `terms-of-service` → /terms) on every page.
+  (`help` → /support, `privacy-policy` → /privacy, `terms-of-service` → /terms) and a
+  `Content-Signal: ai-train=no, search=yes, ai-input=yes` usage-preference header on every page.
+- `functions/_middleware.ts` — Pages middleware implementing Markdown content negotiation:
+  `Accept: text/markdown` requests get a Markdown rendering of the page
+  (`Content-Type: text/markdown` + `x-markdown-tokens`), everyone else gets HTML.
+  (Cloudflare's own "Markdown for Agents" setting requires a paid plan; this runs on Free.)
+  The HTML→Markdown converter lives in `functions/markdown.ts`.
+
+DNS (managed in Cloudflare, not in this repo):
+
+- `_index._agents.scorius.app HTTPS 1 scorius.app. alpn="h2" port=443` — DNS for AI
+  Discovery (DNS-AID) entrypoint record (draft-mozleywilliams-dnsop-dnsaid).
+- DNSSEC signing enabled on the zone (registrar is Cloudflare, so the DS record is
+  published automatically).
 
 ## Deploy
 

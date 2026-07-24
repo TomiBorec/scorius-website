@@ -2,3 +2,4 @@
   Link: </support>; rel="help"
   Link: </privacy>; rel="privacy-policy"
   Link: </terms>; rel="terms-of-service"
+  Content-Signal: ai-train=no, search=yes, ai-input=yes
