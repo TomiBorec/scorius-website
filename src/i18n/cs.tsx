@@ -11,6 +11,10 @@ export const cs: Dict = {
     privacy: 'Soukromí',
     accessibility: 'Přístupnost',
     download: 'Stáhnout',
+    openMenu: 'Otevřít menu',
+    closeMenu: 'Zavřít menu',
+    menuTitle: 'Menu',
+    skipToContent: 'Přejít na obsah',
   },
 
   langSwitch: {
@@ -181,6 +185,8 @@ export const cs: Dict = {
     hole: 'Jamka',
     par: 'Par',
     liveActivity: 'LIVE AKTIVITA · ZAMČENÁ OBRAZOVKA',
+    srSummary:
+      'Ilustrace: iPhone a Apple Watch zobrazují stejný živý zápas, skóre na obou přibývá s každým bodem.',
     modes: {
       badminton: 'Dvouhra',
       tennis: 'Dvouhra',

@@ -49,7 +49,7 @@ function GolfScreen({ golf, loc }: { golf: GolfVM; loc: DeviceLoc }) {
 
 export function Watch({ vm, loc, style }: { vm: MatchVM; loc: DeviceLoc; style?: CSSProperties }) {
   return (
-    <div className="watch" style={style}>
+    <div className="watch" style={style} aria-hidden="true">
       <div className="watch-screen">{vm.golf ? <GolfScreen golf={vm.golf} loc={loc} /> : <StandardScreen vm={vm} />}</div>
     </div>
   );

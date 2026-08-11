@@ -15,7 +15,8 @@ export function HeroStage() {
   const vm = useMatch(sport);
   return (
     <div className="device-stage">
-      <div className="device-glow" />
+      <p className="sr-only">{t.devices.srSummary}</p>
+      <div className="device-glow" aria-hidden="true" />
       <Iphone vm={vm} loc={t.devices} />
       <Watch vm={vm} loc={t.devices} />
     </div>

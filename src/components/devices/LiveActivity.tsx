@@ -10,7 +10,7 @@ type DeviceLoc = Dict['devices'];
 export function LiveActivity({ vm, loc }: { vm: MatchVM; loc: DeviceLoc }) {
   const golf = !!vm.golf;
   return (
-    <div style={{ width: '100%', maxWidth: 340 }}>
+    <div style={{ width: '100%', maxWidth: 340 }} aria-hidden="true">
       <div
         style={{
           background: '#000',
@@ -33,7 +33,7 @@ export function LiveActivity({ vm, loc }: { vm: MatchVM; loc: DeviceLoc }) {
               background: 'var(--accent-soft)',
               display: 'grid',
               placeItems: 'center',
-              color: 'var(--accent)',
+              color: 'var(--accent-bright)',
               fontWeight: 800,
               fontSize: 13,
             }}
@@ -57,7 +57,8 @@ export function LiveActivity({ vm, loc }: { vm: MatchVM; loc: DeviceLoc }) {
           className="mono"
           style={{ fontWeight: 700, fontSize: 30, fontFeatureSettings: "'tnum'", display: 'flex', gap: 8, alignItems: 'center' }}
         >
-          <span style={{ color: 'var(--accent)' }}>{vm.scoreA}</span>
+          {/* The card is always black, so it takes the bright accent variant. */}
+          <span style={{ color: 'var(--accent-bright)' }}>{vm.scoreA}</span>
           {!golf && (
             <span style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
               <span style={{ color: 'rgba(255,255,255,.35)' }}>:</span>

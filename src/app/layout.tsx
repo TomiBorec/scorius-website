@@ -1,17 +1,14 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { JetBrains_Mono } from 'next/font/google';
 import { AppProvider } from '@/components/state';
 import { Nav } from '@/components/Nav';
 import { Footer } from '@/components/Footer';
+import { SkipLink } from '@/components/SkipLink';
 import './globals.css';
 
-const inter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  display: 'swap',
-});
-
+// The UI face is the platform's own (see globals.css) — on Apple devices that
+// is SF Pro, which already ships optical sizing and per-size tracking tables.
+// Only the mono face is a webfont; it carries the scoreboard numerals.
 const jetbrainsMono = JetBrains_Mono({
   variable: '--font-jetbrains-mono',
   subsets: ['latin'],
@@ -103,7 +100,7 @@ export default function RootLayout({
       lang="en"
       data-theme="light"
       data-sport="badminton"
-      className={`${inter.variable} ${jetbrainsMono.variable}`}
+      className={jetbrainsMono.variable}
       suppressHydrationWarning
     >
       <head>
@@ -111,8 +108,11 @@ export default function RootLayout({
       </head>
       <body>
         <AppProvider>
+          <SkipLink />
           <Nav />
-          <main>{children}</main>
+          <main id="main" tabIndex={-1}>
+            {children}
+          </main>
           <Footer />
         </AppProvider>
       </body>

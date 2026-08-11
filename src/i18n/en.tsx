@@ -15,6 +15,10 @@ export const en = {
     privacy: 'Privacy',
     accessibility: 'Accessibility',
     download: 'Download',
+    openMenu: 'Open menu',
+    closeMenu: 'Close menu',
+    menuTitle: 'Menu',
+    skipToContent: 'Skip to content',
   },
 
   langSwitch: {
@@ -185,6 +189,8 @@ export const en = {
     hole: 'Hole',
     par: 'Par',
     liveActivity: 'LIVE ACTIVITY · LOCK SCREEN',
+    srSummary:
+      'Illustration: an iPhone and an Apple Watch showing the same live match, the score rising on both as points are scored.',
     modes: {
       badminton: 'Singles',
       tennis: 'Singles',
