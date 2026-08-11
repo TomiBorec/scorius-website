@@ -9,8 +9,10 @@ Stack: Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · stati
 - `/` — landing: hero, sport switcher, features, how-it-works, privacy band, CTA
 - `/features` — feature detail blocks + per-sport rules table
 - `/support` — FAQ accordion + contact card
+- `/accessibility` — supported accessibility features
 - `/privacy` — privacy policy
 - `/terms` — terms of use
+- `/imprint` — imprint
 
 ## Signature interactions
 
@@ -25,8 +27,14 @@ Stack: Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · stati
   `prefers-color-scheme`. Both theme and sport are applied pre-paint by an inline bootstrap
   script in `app/layout.tsx`.
 
-The design system (tokens, devices, layouts) lives in `src/app/globals.css`; fonts (Inter +
-JetBrains Mono) are loaded via `next/font`.
+The design system (tokens, devices, layouts) lives in `src/app/globals.css`. UI type is the
+platform system face (SF Pro on Apple devices) — no webfont, so optical sizing and tracking
+tables come for free; only JetBrains Mono, which carries the scoreboard numerals, is loaded
+via `next/font`.
+
+Motion uses `src/lib/spring.ts` — springs in Apple's damping/response parameterisation, plus
+momentum projection and rubber-banding. Gesture-driven UI (sport switcher, nav sheet) animates
+from its current on-screen value so it can be grabbed and reversed mid-flight.
 
 ## Develop
 
@@ -69,16 +77,19 @@ DNS (managed in Cloudflare, not in this repo):
 
 ## Deploy
 
-Deployed automatically by **Cloudflare Pages** on every push to `main`.
+Deployed automatically by **Cloudflare** on every push to `main`.
 
-Build settings used in Cloudflare Pages:
+`wrangler.toml` is the source of truth for the output location:
 
-| Setting | Value |
-|---|---|
-| Framework preset | Next.js (Static HTML Export) |
-| Build command | `npm run build` |
-| Build output directory | `out` |
-| Root directory | `/` |
-| Node version | 20 |
+| Setting | Value | Where it's defined |
+|---|---|---|
+| Worker / project name | `scorius` | `wrangler.toml` |
+| Build output directory | `.open-next` | `wrangler.toml` (`pages_build_output_dir`) |
+| Build command | `npx opennextjs-cloudflare build` | Cloudflare dashboard |
+| Root directory | `/` | Cloudflare dashboard |
+| Node version | 20 | Cloudflare dashboard |
+
+The dashboard build command must be the OpenNext one above — `npm run build` on its own
+leaves `.open-next` empty.
 
 Live URL: https://scorius.app

@@ -105,7 +105,10 @@ function GolfScreen({ golf, loc }: { golf: GolfVM; loc: DeviceLoc }) {
 
 export function Iphone({ vm, loc, style }: { vm: MatchVM; loc: DeviceLoc; style?: CSSProperties }) {
   return (
-    <div className="iphone" style={style}>
+    // Decorative: the score changes on a timer, so exposing it to a screen
+    // reader would be a stream of meaningless numbers. The surrounding copy
+    // and the sr-only summary carry the meaning instead.
+    <div className="iphone" style={style} aria-hidden="true">
       <div className="island" />
       <div className="iphone-screen">
         <div className="statusbar">
