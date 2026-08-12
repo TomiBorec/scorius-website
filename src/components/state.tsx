@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useSyncExternalStore } from 'react';
 
 export type Theme = 'light' | 'dark';
 export type Sport =
@@ -38,7 +38,7 @@ export const SPORT_STORAGE_KEY = 'scorius-sport';
 export const LANG_STORAGE_KEY = 'scorius-lang';
 
 type AppState = {
-  theme: Theme;
+  /** Flips <html data-theme>; nothing renders from theme in React (see below). */
   toggleTheme: () => void;
   sport: Sport;
   setSport: (s: Sport) => void;
@@ -48,56 +48,78 @@ type AppState = {
 
 const AppContext = createContext<AppState | null>(null);
 
+/* ---- Attribute store ----
+   <html data-sport> and <html lang> are the source of truth: the pre-paint
+   bootstrap script writes them from localStorage before anything renders, and
+   the CSS accent system already keys off them. React subscribes to those
+   attributes instead of keeping a second copy in state — the old version
+   rendered the defaults first and corrected itself in an effect, which cost a
+   cascading render on every mount. */
+const listeners = new Set<() => void>();
+const subscribe = (cb: () => void) => {
+  listeners.add(cb);
+  return () => {
+    listeners.delete(cb);
+  };
+};
+const emit = () => listeners.forEach((l) => l());
+
+const readSport = (): Sport => {
+  const s = document.documentElement.dataset.sport as Sport | undefined;
+  return s && SPORTS.includes(s) ? s : 'badminton';
+};
+const readLang = (): Lang => {
+  const l = document.documentElement.lang as Lang;
+  return l === 'cs' || l === 'en' ? l : 'en';
+};
+/* Static export has no per-request language, so the server snapshot is the
+   same default the prerendered HTML contains. */
+const serverSport = (): Sport => 'badminton';
+const serverLang = (): Lang => 'en';
+
 /**
- * Single source of truth for theme + sport. Both are mirrored onto
- * <html data-theme data-sport> (so the CSS token / accent system reacts) and
- * persisted to localStorage. Initial values are read from the attributes the
- * inline bootstrap script already applied, mirroring the prototype's behaviour.
+ * Single source of truth for theme, sport and language — all three live on the
+ * <html> element and in localStorage, so the CSS token / accent system and
+ * React always agree, and the first painted frame is already correct.
  */
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('light');
-  const [sport, setSportState] = useState<Sport>('badminton');
-  const [lang, setLangState] = useState<Lang>('en');
+  const sport = useSyncExternalStore(subscribe, readSport, serverSport);
+  const lang = useSyncExternalStore(subscribe, readLang, serverLang);
 
-  useEffect(() => {
-    const root = document.documentElement;
-    const t = root.dataset.theme;
-    if (t === 'light' || t === 'dark') setTheme(t);
-    const s = root.dataset.sport as Sport | undefined;
-    if (s && SPORTS.includes(s)) setSportState(s);
-    const l = root.lang as Lang;
-    if (l === 'cs' || l === 'en') setLangState(l);
-  }, []);
-
+  /**
+   * The theme deliberately has no React state. Everything theme-dependent —
+   * colours, the App Store badge, the toggle's own icon and label — is styled
+   * off <html data-theme>, which the pre-paint bootstrap script sets. Mirroring
+   * it into state meant React rendered 'light' first and corrected itself after
+   * hydration, which flashed the wrong badge and icon on every dark load.
+   */
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const next: Theme = prev === 'dark' ? 'light' : 'dark';
-      document.documentElement.dataset.theme = next;
-      try {
-        localStorage.setItem(THEME_STORAGE_KEY, next);
-      } catch {}
-      return next;
-    });
+    const root = document.documentElement;
+    const next: Theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch {}
   }, []);
 
   const setSport = useCallback((s: Sport) => {
-    setSportState(s);
     document.documentElement.dataset.sport = s;
     try {
       localStorage.setItem(SPORT_STORAGE_KEY, s);
     } catch {}
+    emit();
   }, []);
 
   const setLang = useCallback((l: Lang) => {
-    setLangState(l);
     document.documentElement.lang = l;
     try {
       localStorage.setItem(LANG_STORAGE_KEY, l);
     } catch {}
+    emit();
   }, []);
 
   return (
-    <AppContext.Provider value={{ theme, toggleTheme, sport, setSport, lang, setLang }}>
+    <AppContext.Provider value={{ toggleTheme, sport, setSport, lang, setLang }}>
       {children}
     </AppContext.Provider>
   );

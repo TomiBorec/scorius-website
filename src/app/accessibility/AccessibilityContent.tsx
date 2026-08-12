@@ -32,7 +32,7 @@ export function AccessibilityContent() {
                 <A11yIcon />
               </div>
               <h3>{d.name}</h3>
-              <p style={{ fontSize: 13, color: 'var(--faint)' }}>{d.note}</p>
+              <p style={{ fontSize: '0.8125rem', color: 'var(--faint)' }}>{d.note}</p>
               <ul className="a11y-list">
                 {a.supported.map((feat) => (
                   <li key={feat}>

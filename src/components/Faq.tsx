@@ -35,7 +35,9 @@ export function Faq() {
               {item.q} <Chevron />
             </button>
             <div className="faq-a">
-              <div className="inner">{item.a}</div>
+              <div className="inner">
+                <p>{item.a}</p>
+              </div>
             </div>
           </div>
         );

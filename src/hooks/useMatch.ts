@@ -248,7 +248,12 @@ function computeVm(st: EngineState, cfg: SportCfg, sport: Sport, t: Dict): Match
   return { ...base, scoreA, scoreB, sub, games, golf: null };
 }
 
-export function useMatch(sport: Sport): MatchVM {
+/**
+ * @param active Run the engine at all. False when nothing is rendering a
+ *   device (legal pages, for instance), so no page pays for timers it cannot
+ *   show. The engine additionally halts itself whenever the tab is hidden.
+ */
+export function useMatch(sport: Sport, active = true): MatchVM {
   const { t } = useI18n();
   const [vm, setVm] = useState<MatchVM>(() => {
     const cfg = SPORT_DATA[sport];
@@ -256,6 +261,7 @@ export function useMatch(sport: Sport): MatchVM {
   });
 
   useEffect(() => {
+    if (!active) return;
     const cfg = SPORT_DATA[sport];
     let st = initState(cfg);
     let flashTimer: ReturnType<typeof setTimeout> | undefined;
@@ -362,15 +368,33 @@ export function useMatch(sport: Sport): MatchVM {
       }
     };
 
-    const pointTimer = setInterval(score, 2000);
-    const clockTimer = cfg.clock || cfg.countUp ? setInterval(tickClock, 90) : undefined;
+    let pointTimer: ReturnType<typeof setInterval> | undefined;
+    let clockTimer: ReturnType<typeof setInterval> | undefined;
+
+    const stop = () => {
+      if (pointTimer) clearInterval(pointTimer);
+      if (clockTimer) clearInterval(clockTimer);
+      pointTimer = clockTimer = undefined;
+    };
+    const start = () => {
+      stop();
+      pointTimer = setInterval(score, 2000);
+      if (cfg.clock || cfg.countUp) clockTimer = setInterval(tickClock, 90);
+    };
+
+    // A backgrounded tab should not be running a scoring simulation — the
+    // clocked sports tick every 90ms, which is a lot of wasted work for
+    // something nobody can see.
+    const onVisibility = () => (document.hidden ? stop() : start());
+    document.addEventListener('visibilitychange', onVisibility);
+    if (!document.hidden) start();
 
     return () => {
-      clearInterval(pointTimer);
-      if (clockTimer) clearInterval(clockTimer);
+      stop();
       if (flashTimer) clearTimeout(flashTimer);
+      document.removeEventListener('visibilitychange', onVisibility);
     };
-  }, [sport, t]);
+  }, [sport, t, active]);
 
   return vm;
 }

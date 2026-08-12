@@ -125,7 +125,7 @@ export function FeaturesContent() {
         <Reveal className="fvisual" delay={80}>
           <div className="surface" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 14 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <span style={{ fontWeight: 700, fontSize: 15 }}>{f.stats.widget.head2head}</span>
+              <span style={{ fontWeight: 700, fontSize: '0.9375rem' }}>{f.stats.widget.head2head}</span>
               <span className="mono" style={{ color: 'var(--accent)', fontWeight: 700 }}>
                 68%
               </span>
@@ -135,22 +135,22 @@ export function FeaturesContent() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, marginTop: 8 }}>
               <div style={{ background: 'var(--card)', border: '1px solid var(--hairline)', borderRadius: 14, padding: 16 }}>
-                <div className="mono" style={{ fontSize: 24, fontWeight: 700 }}>
+                <div className="mono" style={{ fontSize: '1.5rem', fontWeight: 700 }}>
                   17
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>{f.stats.widget.wins}</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 4 }}>{f.stats.widget.wins}</div>
               </div>
               <div style={{ background: 'var(--card)', border: '1px solid var(--hairline)', borderRadius: 14, padding: 16 }}>
-                <div className="mono" style={{ fontSize: 24, fontWeight: 700 }}>
+                <div className="mono" style={{ fontSize: '1.5rem', fontWeight: 700 }}>
                   8
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>{f.stats.widget.losses}</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 4 }}>{f.stats.widget.losses}</div>
               </div>
               <div style={{ background: 'var(--card)', border: '1px solid var(--hairline)', borderRadius: 14, padding: 16 }}>
-                <div className="mono" style={{ fontSize: 24, fontWeight: 700, color: 'var(--accent)' }}>
+                <div className="mono" style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--accent)' }}>
                   W5
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 4 }}>{f.stats.widget.streak}</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 4 }}>{f.stats.widget.streak}</div>
               </div>
             </div>
           </div>

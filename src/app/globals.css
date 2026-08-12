@@ -26,8 +26,11 @@
   --bg-2:          #f3f3f1;
   --fg:            #0a0a0a;
   --fg-2:          #1d1d1f;
-  --muted:         rgba(10,10,10,0.56);
-  --faint:         rgba(10,10,10,0.40);
+  /* Both text tiers clear WCAG AA (4.5:1) against --bg: muted 6.97:1,
+     faint 4.65:1. The hierarchy between them is carried by size/weight/caps
+     as much as by colour, so faint can sit at a legible contrast. */
+  --muted:         rgba(10,10,10,0.68);
+  --faint:         rgba(10,10,10,0.57);
   --hairline:      rgba(10,10,10,0.10);
   --hairline-2:    rgba(10,10,10,0.06);
   --card:          #ffffff;
@@ -42,9 +45,12 @@
   --rose:          #ff463a;
 
   /* default accent (badminton) — overridden by [data-sport] */
-  --accent:        #1f9d50;
+  --accent:        #1a8343;
   --accent-bright: #2fb457;
   --accent-soft:   rgba(47,180,87,0.12);
+  /* Text on a solid --accent fill. Light accents are dark, so white wins
+     (>=4.77:1 for every sport); dark themes invert this below. */
+  --accent-on:     #ffffff;
 
   --maxw: 1200px;
   --ease: cubic-bezier(.22,.61,.36,1);
@@ -56,8 +62,8 @@
   --bg-2:          #0f0f13;
   --fg:            #fafafa;
   --fg-2:          #ededf0;
-  --muted:         rgba(250,250,250,0.58);
-  --faint:         rgba(250,250,250,0.40);
+  --muted:         rgba(250,250,250,0.74);
+  --faint:         rgba(250,250,250,0.58);
   --hairline:      rgba(255,255,255,0.12);
   --hairline-2:    rgba(255,255,255,0.07);
   --card:          #121216;
@@ -70,20 +76,30 @@
   --shadow-lg:     0 8px 18px rgba(0,0,0,0.5), 0 40px 90px rgba(0,0,0,0.7);
   --device-stroke: rgba(255,255,255,0.14);
   --rose:          #ff6b60;
+  /* Dark theme accents are the bright hues, so a solid fill needs dark text
+     (5.2:1 floorball … 11.8:1 pickleball). */
+  --accent-on:     #07070a;
 }
 
-/* ---- Per-sport accent ---- */
-[data-sport="badminton"]  { --accent:#e53e30; --accent-bright:#ff5a4a; --accent-soft:rgba(255,90,74,0.12); }
-[data-sport="tennis"]     { --accent:#e07820; --accent-bright:#f09030; --accent-soft:rgba(240,144,48,0.14); }
-[data-sport="padel"]      { --accent:#d49a00; --accent-bright:#edb400; --accent-soft:rgba(237,180,0,0.13); }
-[data-sport="pickleball"] { --accent:#d4aa00; --accent-bright:#edc200; --accent-soft:rgba(237,194,0,0.14); }
-[data-sport="squash"]     { --accent:#7ab800; --accent-bright:#9ad60f; --accent-soft:rgba(154,214,15,0.14); }
-[data-sport="tableTennis"]{ --accent:#1f9d50; --accent-bright:#3ad06a; --accent-soft:rgba(58,208,106,0.12); }
-[data-sport="volleyball"] { --accent:#0a9c9c; --accent-bright:#1fd0d0; --accent-soft:rgba(31,208,208,0.13); }
-[data-sport="basketball"] { --accent:#1299d4; --accent-bright:#38b8f0; --accent-soft:rgba(56,184,240,0.12); }
+/* ---- Per-sport accent ----
+   --accent       : text-safe. Every value clears 4.5:1 against --bg in its
+                    own theme, so kickers/ticks/icons are legible for all 11
+                    sports. Light values are darkened from the brand hue;
+                    dark values are the bright hue (see the overrides below).
+   --accent-bright: the vivid brand hue. Large type, fills, glows only.
+   --accent-on    : text that sits ON a solid --accent fill (see :root blocks).
+   Anything colour-coded per sport reads these — no sport palette in JS. */
+[data-sport="badminton"]  { --accent:#db2a1b; --accent-bright:#ff5a4a; --accent-soft:rgba(255,90,74,0.12); }
+[data-sport="tennis"]     { --accent:#ad5c18; --accent-bright:#f09030; --accent-soft:rgba(240,144,48,0.14); }
+[data-sport="padel"]      { --accent:#946c00; --accent-bright:#edb400; --accent-soft:rgba(237,180,0,0.13); }
+[data-sport="pickleball"] { --accent:#8a6f00; --accent-bright:#edc200; --accent-soft:rgba(237,194,0,0.14); }
+[data-sport="squash"]     { --accent:#537d00; --accent-bright:#9ad60f; --accent-soft:rgba(154,214,15,0.14); }
+[data-sport="tableTennis"]{ --accent:#1a8343; --accent-bright:#3ad06a; --accent-soft:rgba(58,208,106,0.12); }
+[data-sport="volleyball"] { --accent:#087f7f; --accent-bright:#1fd0d0; --accent-soft:rgba(31,208,208,0.13); }
+[data-sport="basketball"] { --accent:#0e7aaa; --accent-bright:#38b8f0; --accent-soft:rgba(56,184,240,0.12); }
 [data-sport="football"]   { --accent:#2563eb; --accent-bright:#5b9bff; --accent-soft:rgba(91,155,255,0.12); }
 [data-sport="floorball"]  { --accent:#7a48b8; --accent-bright:#9a6ad8; --accent-soft:rgba(154,106,216,0.12); }
-[data-sport="golf"]       { --accent:#d43d8a; --accent-bright:#ee5dab; --accent-soft:rgba(238,93,171,0.13); }
+[data-sport="golf"]       { --accent:#cf2e80; --accent-bright:#ee5dab; --accent-soft:rgba(238,93,171,0.13); }
 :root[data-theme="dark"][data-sport="badminton"],  :root[data-theme="dark"] [data-sport="badminton"]  { --accent:#ff5a4a; }
 :root[data-theme="dark"][data-sport="tennis"],      :root[data-theme="dark"] [data-sport="tennis"]     { --accent:#f09030; }
 :root[data-theme="dark"][data-sport="padel"],       :root[data-theme="dark"] [data-sport="padel"]      { --accent:#edb400; }
@@ -102,6 +118,9 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   overflow-x: clip;
+  /* Anchor targets land below the sticky bar instead of underneath it.
+     Nav is ~69px; the extra 15px is breathing room. */
+  scroll-padding-top: 84px;
 }
 body {
   margin: 0;
@@ -116,16 +135,52 @@ body {
 }
 a { color: inherit; text-decoration: none; }
 img, svg { display: block; }
-::selection { background: var(--accent-soft); }
+/* 12% alpha was effectively invisible — selection needs to read as selected. */
+::selection { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+
+/* ---- Focus ----
+   One ring for every interactive element. --fg against --bg is the highest
+   contrast pair the theme has, and the 3px offset lifts it clear of dark or
+   accent-filled controls, so it reads on any surface. :focus-visible keeps it
+   off pointer interactions. */
+:where(a, button, [role="radio"], input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+/* Pills already carry the radius; match it so the ring hugs the shape. */
+.btn:focus-visible, .lang-pill:focus-visible, .a11y-pill:focus-visible,
+.app-store-badge-link:focus-visible { border-radius: 999px; }
+.theme-btn:focus-visible { border-radius: 50%; }
+.card:focus-visible, .contact-card:focus-visible { border-radius: 22px; }
+/* Inside the horizontally scrolling track an offset ring would be clipped, so
+   this one sits inset — and flips colour on the filled active pill. */
+.sport-pill:focus-visible { outline: 2px solid var(--fg); outline-offset: -2px; border-radius: 999px; }
+.sport-pill.active:focus-visible { outline-color: var(--accent-on); }
 
 .mono { font-family: var(--font-jetbrains-mono), ui-monospace, monospace; }
 .tnum { font-feature-settings: "tnum"; }
+
+/* ---- Theme-conditional content ----
+   Both variants ship in the HTML and CSS hides one. Because the bootstrap
+   script sets data-theme before first paint, the right one is correct on the
+   very first frame — React state (which starts at 'light' and only syncs in an
+   effect) used to flash the light badge and sun icon on every dark load.
+   This rule only ever hides, so each element keeps its own display value. */
+:root[data-theme="light"] [data-theme-only="dark"],
+:root[data-theme="dark"]  [data-theme-only="light"] { display: none !important; }
+
+/* Visually hidden but announced — used for the theme button's label. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
 
 /* ---- Layout helpers ---- */
 .wrap { max-width: var(--maxw); margin: 0 auto; padding-inline: 28px; }
 .eyebrow {
   display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
-  font-size: 12px; font-weight: 600; letter-spacing: .12em;
+  font-size: 0.75rem; font-weight: 600; letter-spacing: .12em;
   text-transform: uppercase; color: var(--muted);
 }
 .eyebrow .tick {
@@ -133,7 +188,7 @@ img, svg { display: block; }
   font-weight: 700; letter-spacing: 0;
 }
 .section-kicker {
-  font-size: 12.5px; font-weight: 700; letter-spacing: .14em;
+  font-size: 0.78125rem; font-weight: 700; letter-spacing: .14em;
   text-transform: uppercase; color: var(--accent);
   font-family: var(--font-jetbrains-mono), monospace;
 }
@@ -142,7 +197,7 @@ img, svg { display: block; }
 .btn {
   display: inline-flex; align-items: center; gap: 9px;
   padding: 13px 22px; border-radius: 999px;
-  font-size: 15px; font-weight: 600; letter-spacing: -.01em;
+  font-size: 0.9375rem; font-weight: 600; letter-spacing: -.01em;
   border: 1px solid transparent; cursor: pointer;
   transition: transform .18s var(--ease), background .25s var(--ease), opacity .2s;
   white-space: nowrap;
@@ -154,30 +209,98 @@ img, svg { display: block; }
 .btn-ghost:hover { background: var(--pill); }
 .btn-outline { background: transparent; color: var(--fg); border-color: var(--hairline); }
 .btn-outline:hover { background: var(--pill); }
-.btn-sm { padding: 9px 16px; font-size: 13.5px; }
+.btn-sm { padding: 9px 16px; font-size: 0.84375rem; }
 
-/* ---- Nav ---- */
+/* ---- Nav ----
+   The -webkit- alias comes FIRST so the standard property is the last
+   declaration: the minifier de-duplicates these and keeps only the last one,
+   and dropping the unprefixed form would leave Firefox with no blur at all. */
 .nav {
   position: sticky; top: 0; z-index: 100;
-  backdrop-filter: saturate(180%) blur(18px);
   -webkit-backdrop-filter: saturate(180%) blur(18px);
+  backdrop-filter: saturate(180%) blur(18px);
   background: var(--nav-bg);
-  border-bottom: 1px solid var(--hairline-2);
+  transition: background .5s var(--ease);
 }
+/* Scroll edge effect instead of a permanent hairline: the separation only
+   appears once there is actually content passing underneath the bar. */
+.nav::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 100%; height: 14px;
+  pointer-events: none; opacity: 0;
+  background: linear-gradient(var(--nav-edge, rgba(10,10,10,0.055)), transparent);
+  transition: opacity .3s var(--ease);
+}
+:root[data-theme="dark"] .nav { --nav-edge: rgba(0,0,0,0.5); }
+.nav[data-scrolled]::after { opacity: 1; }
 .nav-inner {
   max-width: var(--maxw); margin: 0 auto; padding: 14px 28px;
   display: flex; align-items: center; gap: 28px;
 }
-.brand { display: inline-flex; align-items: center; gap: 9px; font-weight: 700; font-size: 18px; letter-spacing: -.02em; color: var(--fg); }
+.brand { display: inline-flex; align-items: center; gap: 9px; font-weight: 700; font-size: 1.125rem; letter-spacing: -.02em; color: var(--fg); }
 .brand .dot {
   width: 9px; height: 9px; border-radius: 50%;
   background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft);
 }
 .nav-links { display: flex; align-items: center; gap: 26px; margin-left: 6px; }
-.nav-link { font-size: 14.5px; font-weight: 500; color: var(--muted); transition: color .16s; }
+.nav-link { font-size: 0.90625rem; font-weight: 500; color: var(--muted); transition: color .16s; }
 .nav-link:hover, .nav-link.active { color: var(--fg); }
 .nav-spacer { flex: 1; }
 .nav-actions { display: flex; align-items: center; gap: 12px; }
+
+/* ---- Mobile menu ---- */
+.menu-btn {
+  display: none; /* shown at the breakpoint that hides .nav-links */
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid var(--hairline); background: transparent; color: var(--fg);
+  place-items: center; cursor: pointer;
+  transition: background .2s, transform .12s var(--ease);
+}
+.menu-btn:hover { background: var(--pill); }
+.menu-btn:active { transform: scale(.92); }
+.menu-glyph { width: 18px; height: 18px; }
+.menu-glyph path { transition: d .28s var(--ease); }
+
+.nav-menu {
+  position: absolute; top: calc(100% + 8px); right: 18px; z-index: 99;
+  min-width: 208px; padding: 8px; border-radius: 20px;
+  border: 1px solid var(--hairline);
+  background: var(--nav-bg);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  box-shadow: var(--shadow-lg);
+  /* Anchored to the trigger it came from, so it grows out of the button and
+     collapses back into it along the same path. */
+  transform-origin: top right;
+  opacity: 0; visibility: hidden;
+  transform: scale(.92) translateY(-6px);
+  transition: opacity .24s var(--ease), transform .24s var(--ease),
+              visibility 0s linear .24s;
+}
+.nav-menu.open {
+  opacity: 1; visibility: visible; transform: none;
+  transition: opacity .24s var(--ease), transform .24s var(--ease), visibility 0s;
+}
+.nav-menu nav { display: flex; flex-direction: column; }
+.nav-menu-link {
+  display: flex; align-items: center; min-height: 44px; padding: 0 14px;
+  border-radius: 13px; font-size: 0.96875rem; font-weight: 500; color: var(--fg-2);
+  transition: background .16s var(--ease), color .16s var(--ease);
+}
+.nav-menu-link:hover { background: var(--pill); color: var(--fg); }
+.nav-menu-link:active { background: var(--pill-strong); }
+.nav-menu-link.active { color: var(--accent); font-weight: 600; }
+.nav-menu-cta {
+  margin-top: 6px; justify-content: center; font-weight: 600;
+  background: var(--fg); color: var(--bg);
+}
+.nav-menu-cta:hover { background: var(--fg); color: var(--bg); opacity: .88; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Cross-fade in place rather than growing out of the trigger. */
+  .nav-menu { transform: none; transition: opacity .18s var(--ease), visibility 0s linear .18s; }
+  .nav-menu.open { transform: none; transition: opacity .18s var(--ease), visibility 0s; }
+  .menu-glyph path { transition: none; }
+}
 
 /* theme toggle */
 .theme-btn {
@@ -189,6 +312,8 @@ img, svg { display: block; }
 .theme-btn:hover { background: var(--pill); }
 .theme-btn:active { transform: scale(.92); }
 .theme-btn svg { width: 17px; height: 17px; }
+/* The icons are wrapped so CSS can swap them per theme; keep them centred. */
+.theme-btn span:not(.sr-only) { display: grid; place-items: center; }
 
 /* language switch (CZ / EN) */
 .lang-switch {
@@ -199,7 +324,7 @@ img, svg { display: block; }
 .lang-pill {
   padding: 6px 11px; border-radius: 999px; border: 0; cursor: pointer;
   background: transparent; color: var(--muted);
-  font: inherit; font-size: 12.5px; font-weight: 700; letter-spacing: .01em;
+  font: inherit; font-size: 0.78125rem; font-weight: 700; letter-spacing: .01em;
   transition: background .2s var(--ease), color .2s var(--ease);
 }
 .lang-pill:hover { color: var(--fg); }
@@ -212,29 +337,101 @@ img, svg { display: block; }
   max-width: var(--maxw); margin: 0 auto; padding: 56px 28px 40px;
   display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px;
 }
-.footer h4 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); margin: 0 0 16px; font-weight: 700; }
-.footer-col a { display: block; font-size: 14.5px; color: var(--muted); margin-bottom: 11px; transition: color .16s; }
+.footer h4 { font-size: 0.75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); margin: 0 0 16px; font-weight: 700; }
+.footer-col a { display: block; font-size: 0.90625rem; color: var(--muted); margin-bottom: 11px; transition: color .16s; }
 .footer-col a:hover { color: var(--fg); }
-.footer-brand p { font-size: 14px; color: var(--muted); max-width: 280px; margin: 14px 0 0; line-height: 1.6; }
+.footer-brand p { font-size: 0.875rem; color: var(--muted); max-width: 280px; margin: 14px 0 0; line-height: 1.6; }
 .footer-bottom {
   max-width: var(--maxw); margin: 0 auto; padding: 22px 28px 48px;
   border-top: 1px solid var(--hairline-2);
   display: flex; justify-content: space-between; align-items: center; gap: 16px;
-  font-size: 13px; color: var(--faint);
+  font-size: 0.8125rem; color: var(--faint);
 }
 
 /* ---- Reveal on scroll ---- */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
 .reveal.in { opacity: 1; transform: none; }
 
+/* ---- Theme change ----
+   body already cross-fades over .5s; without these the large surfaces snapped
+   instantly against it, which read as a rendering glitch rather than a
+   deliberate transition. Small controls keep their fast hover timings. */
+.spotlight, .contact-card, .toc, .iphone-screen, .stable thead th, .gf-tot, .gchip {
+  transition: background-color .5s var(--ease), border-color .5s var(--ease);
+}
+.divider, .footer, .faq-item, .article, .footer-bottom {
+  transition: border-color .5s var(--ease);
+}
+
+/* ============================================================
+   Accessibility preferences
+   Reduced motion is not "no feedback" — it swaps travel for cross-fades and
+   stops ambient loops. The old blanket `animation-duration:.001ms` left the
+   infinite float running at ~0 duration, which sampled a new phase every
+   frame and made the devices jitter for exactly the people who asked for
+   less movement; iteration-count is what actually stops a loop.
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  * { animation-duration: .001ms !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
-  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto !important; }
+
+  /* Ambient/decorative loops stop outright. */
+  .device-stage .iphone, .device-stage .watch { animation: none !important; }
+  *, *::before, *::after { animation-iteration-count: 1 !important; }
+
+  /* Movement goes away; opacity and colour stay, because they carry meaning. */
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .card.hover:hover { transform: none; }
+  .lm-num.pop, .w-num.pop, .lm-tap.pop, .w-tap.pop,
+  .gf-strokes.pop, .w-golf-strokes.pop { transform: none; }
+  .faq-item.open .faq-q .chev { transition: color .2s var(--ease); }
+  /* Score changes still need to register — fade rather than scale. */
+  .lm-num, .w-num, .gf-strokes, .w-golf-strokes { transition: opacity .2s var(--ease); }
+}
+
+/* Frosted surfaces become solid rather than translucent. */
+@media (prefers-reduced-transparency: reduce) {
+  .nav { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .nav::after { opacity: 1; }
+  .lang-switch, .sport-switch { background: var(--bg-2); }
+}
+
+/* Near-solid surfaces with defined borders. */
+@media (prefers-contrast: more) {
+  :root {
+    --muted:      rgba(10,10,10,0.82);
+    --faint:      rgba(10,10,10,0.72);
+    --hairline:   rgba(10,10,10,0.34);
+    --hairline-2: rgba(10,10,10,0.22);
+  }
+  :root[data-theme="dark"] {
+    --muted:      rgba(250,250,250,0.88);
+    --faint:      rgba(250,250,250,0.78);
+    --hairline:   rgba(255,255,255,0.38);
+    --hairline-2: rgba(255,255,255,0.24);
+  }
+  .nav { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .card, .contact-card, .toc, .surface, .a11y-pill { border-color: var(--hairline); }
+  .sport-pill { border-color: var(--hairline-2); }
+  .sport-pill.active { border-color: var(--accent); }
+}
+
+/* ---- Touch targets ----
+   Apple's 44pt minimum, applied only where the pointer is actually coarse so
+   precise-pointer layouts keep their density. Nav links measured 60x22,
+   footer links 233x22 and the pill controls ~31-38px tall. */
+@media (pointer: coarse) {
+  .nav-link { padding-block: 11px; }
+  .footer-col a { padding-block: 11px; margin-bottom: 0; }
+  .lang-pill { min-height: 44px; }
+  .theme-btn, .menu-btn { width: 44px; height: 44px; }
+  .toc a, .article a.inline { padding-block: 4px; }
 }
 
 /* ---- Responsive chrome ---- */
 @media (max-width: 860px) {
+  /* The inline links move into the menu panel — they are never just dropped. */
   .nav-links { display: none; }
+  .menu-btn { display: grid; }
   .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
   .footer-brand { grid-column: 1 / -1; }
 }
@@ -246,21 +443,30 @@ img, svg { display: block; }
   .nav-actions .btn-sm { padding: 9px 14px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
   .hero { padding-inline: 18px; }
-  .sport-pill { padding: 6px 10px; font-size: 12px; gap: 4px; }
+  .sport-pill { padding: 6px 10px; font-size: 0.75rem; gap: 4px; }
   .sport-pill .si { width: 12px; height: 12px; }
   .sport-switch { gap: 3px; padding: 4px; }
 }
-/* On the very narrowest phones there is no room for the nav CTA next to the
-   language + theme controls — drop it (the hero + CTA sections still have it). */
-@media (max-width: 360px) {
+/* Once the menu trigger joins the row there is no room for the nav CTA beside
+   the language + theme controls, so it moves into the menu panel (and the hero
+   + CTA sections still carry it). Was 360px, which overflowed at 375px. */
+@media (max-width: 560px) {
   .nav-actions .btn-primary { display: none; }
+}
+/* Above that the panel does not need to repeat the button that is right there. */
+@media (min-width: 561px) {
+  .nav-menu-cta { display: none; }
 }
 
 /* ============================================================
    Components : devices, sport switcher, cards
    ============================================================ */
 
-/* ---------------- Sport switcher (segmented) ---------------- */
+/* ---------------- Sport switcher (segmented) ----------------
+   Colour comes from each button's own [data-sport] attribute, which resolves
+   --accent / --accent-on per theme — so every pill is contrast-safe in both
+   themes and there is no sport palette duplicated in JS. */
+.sport-switch-wrap { position: relative; max-width: 100%; }
 .sport-switch {
   display: inline-flex; max-width: 100%; gap: 4px; padding: 5px;
   background: var(--pill); border: 1px solid var(--hairline-2);
@@ -268,19 +474,41 @@ img, svg { display: block; }
   overflow-x: auto; -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   touch-action: pan-x;
+  scroll-padding-inline: 12px;
 }
 .sport-switch::-webkit-scrollbar { display: none; }
+
+/* Edge fade telling you there is more to scroll to. Applied only on the side
+   that actually has content off-screen (React sets the flags on scroll). */
+.sport-switch-wrap[data-scroll~="start"] .sport-switch { mask-image: linear-gradient(90deg, transparent 0, #000 28px); }
+.sport-switch-wrap[data-scroll~="end"]   .sport-switch { mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent 100%); }
+.sport-switch-wrap[data-scroll~="start"][data-scroll~="end"] .sport-switch {
+  mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 28px), transparent 100%);
+}
+
 .sport-pill {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 7px 14px; border-radius: 999px; border: 1px solid transparent;
-  cursor: pointer; background: transparent;
-  font: inherit; font-size: 13px; font-weight: 600; letter-spacing: -.01em;
-  transition: background .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px 15px; border-radius: 999px; border: 1px solid transparent;
+  cursor: pointer; background: transparent; color: var(--fg-2);
+  font: inherit; font-size: 0.8125rem; font-weight: 600; letter-spacing: -.01em;
+  transition: background .2s var(--ease), color .2s var(--ease), transform .12s var(--ease);
   white-space: nowrap; flex: none;
 }
-.sport-pill .si { width: 15px; height: 15px; flex: none; }
-.sport-pill:hover { filter: brightness(1.15); }
-.sport-pill.active { box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+.sport-pill .si { width: 15px; height: 15px; flex: none; color: var(--accent); }
+.sport-pill:hover { background: var(--pill-strong); }
+/* Feedback lands on pointer-down, not on click. */
+.sport-pill:active { transform: scale(.96); }
+.sport-pill.active {
+  background: var(--accent); color: var(--accent-on);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+.sport-pill.active .si { color: currentColor; }
+.sport-pill.active:hover { background: var(--accent); }
+
+/* Touch pointers get the full 44px target; precise pointers keep the density. */
+@media (pointer: coarse) {
+  .sport-pill { min-height: 44px; padding-inline: 17px; }
+}
 
 /* ---------------- iPhone ---------------- */
 .iphone {
@@ -393,7 +621,8 @@ img, svg { display: block; }
 .card {
   background: var(--card); border: 1px solid var(--hairline); border-radius: 22px;
   padding: 28px; box-shadow: var(--shadow-sm);
-  transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s;
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s,
+              background-color .5s var(--ease);
 }
 .card.hover:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--hairline); }
 .card .ico {
@@ -401,8 +630,8 @@ img, svg { display: block; }
   background: var(--accent-soft); color: var(--accent); margin-bottom: 18px;
 }
 .card .ico svg { width: 23px; height: 23px; }
-.card h3 { font-size: 18px; font-weight: 700; letter-spacing: -.02em; margin: 0 0 8px; }
-.card p { font-size: 14.5px; color: var(--muted); margin: 0; line-height: 1.6; }
+.card h3 { font-size: 1.125rem; font-weight: 700; letter-spacing: -.02em; margin: 0 0 8px; }
+.card p { font-size: 0.90625rem; color: var(--muted); margin: 0; line-height: 1.6; }
 
 /* monochrome icon variant (privacy etc.) — the `mono` class also renders the
    card text in JetBrains Mono, matching the prototype. */
@@ -466,20 +695,21 @@ img, svg { display: block; }
   display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center;
 }
 .hero h1 {
-  font-size: clamp(44px, 5.6vw, 80px); font-weight: 800; letter-spacing: -.035em;
-  line-height: 0.98; margin: 20px 0 0;
+  font-size: clamp(2.75rem, 5.6vw, 5rem); font-weight: 800; letter-spacing: -.035em;
+  /* leading tracks size inversely: ~1.09 at 44px, ~0.99 at 80px */
+  line-height: clamp(3rem, 5.9vw, 4.9375rem); margin: 20px 0 0;
 }
 .hero h1 .accent { color: var(--accent); }
 .hero-lead {
-  font-size: 21px; line-height: 1.45; font-weight: 500; letter-spacing: -.015em;
+  font-size: 1.3125rem; line-height: 1.45; font-weight: 500; letter-spacing: -.015em;
   margin: 22px 0 0; max-width: 520px;
 }
 .hero-lead .muted { color: var(--muted); }
-.hero-sub { font-size: 16px; line-height: 1.6; color: var(--muted); margin: 14px 0 0; max-width: 500px; }
+.hero-sub { font-size: 1rem; line-height: 1.6; color: var(--muted); margin: 14px 0 0; max-width: 500px; }
 .hero-cta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 32px; }
 .hero-stats { display: flex; gap: 36px; margin-top: 44px; }
-.hero-stat .v { font-family: var(--font-jetbrains-mono), monospace; font-size: 26px; font-weight: 700; letter-spacing: -.02em; }
-.hero-stat .l { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-top: 4px; }
+.hero-stat .v { font-family: var(--font-jetbrains-mono), monospace; font-size: 1.625rem; font-weight: 700; letter-spacing: -.02em; }
+.hero-stat .l { font-size: 0.75rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-top: 4px; }
 
 .device-stage {
   position: relative; display: flex; align-items: flex-end; justify-content: center;
@@ -493,7 +723,9 @@ img, svg { display: block; }
 .device-stage .watch { position: relative; z-index: 3; flex: none; margin-left: -34px; margin-bottom: 64px;
   animation: floaty 6s ease-in-out infinite; }
 .device-stage .iphone { animation: floaty 7s ease-in-out infinite reverse; }
-@keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+/* 8px rather than 12px: these are large objects on a slow loop (~0.15Hz), the
+   band where ambient motion starts to nag rather than charm. */
+@keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 .device-glow {
   position: absolute; inset: 8% 12% 12%; z-index: 0; border-radius: 50%;
   background: radial-gradient(closest-side, var(--accent-soft), transparent 72%);
@@ -506,14 +738,14 @@ img, svg { display: block; }
   display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center;
   overflow: hidden;
 }
-.switch-strip .hint { font-size: 13.5px; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; }
+.switch-strip .hint { font-size: 0.84375rem; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; }
 .switch-strip .hint .arrow { color: var(--accent); }
 
 /* ---------------- Section scaffold ---------------- */
 .section { max-width: var(--maxw); margin: 0 auto; padding: 96px 28px; }
 .section-head { max-width: 640px; }
-.section-head h2 { font-size: clamp(30px, 4vw, 46px); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; margin: 14px 0 0; }
-.section-head p { font-size: 18px; color: var(--muted); margin: 16px 0 0; line-height: 1.55; }
+.section-head h2 { font-size: clamp(1.875rem, 4vw, 2.875rem); font-weight: 800; letter-spacing: -.03em; line-height: clamp(2.125rem, 4.3vw, 2.9375rem); margin: 14px 0 0; }
+.section-head p { font-size: 1.125rem; color: var(--muted); margin: 16px 0 0; line-height: 1.55; }
 .divider { border: 0; border-top: 1px solid var(--hairline); max-width: var(--maxw); margin: 0 auto; }
 
 /* ---------------- Feature grid ---------------- */
@@ -526,8 +758,8 @@ img, svg { display: block; }
   background: var(--card); border: 1px solid var(--hairline); border-radius: 28px;
   padding: 48px; box-shadow: var(--shadow-sm); overflow: hidden;
 }
-.spotlight .stext h3 { font-size: 30px; font-weight: 800; letter-spacing: -.03em; margin: 16px 0 0; }
-.spotlight .stext p { font-size: 16.5px; color: var(--muted); line-height: 1.6; margin: 14px 0 0; max-width: 420px; }
+.spotlight .stext h3 { font-size: 1.875rem; font-weight: 800; letter-spacing: -.03em; margin: 16px 0 0; }
+.spotlight .stext p { font-size: 1.03125rem; color: var(--muted); line-height: 1.6; margin: 14px 0 0; max-width: 420px; }
 .spotlight .swatch-row { display: flex; justify-content: center; }
 
 /* ---------------- How it works ---------------- */
@@ -535,11 +767,11 @@ img, svg { display: block; }
 .step { position: relative; padding-top: 28px; }
 .step::before {
   counter-increment: step; content: counter(step, decimal-leading-zero);
-  font-family: var(--font-jetbrains-mono), monospace; font-size: 13px; font-weight: 700; color: var(--accent);
+  font-family: var(--font-jetbrains-mono), monospace; font-size: 0.8125rem; font-weight: 700; color: var(--accent);
   position: absolute; top: 0; left: 0; letter-spacing: .05em;
 }
-.step h3 { font-size: 20px; font-weight: 700; letter-spacing: -.02em; margin: 0 0 8px; }
-.step p { font-size: 15px; color: var(--muted); line-height: 1.6; margin: 0; }
+.step h3 { font-size: 1.25rem; font-weight: 700; letter-spacing: -.02em; margin: 0 0 8px; }
+.step p { font-size: 0.9375rem; color: var(--muted); line-height: 1.6; margin: 0; }
 .step .bar { height: 2px; background: var(--hairline); margin-bottom: 16px; position: relative; }
 .step .bar::after { content:''; position:absolute; left:0; top:0; height:100%; width: 34%; background: var(--accent); }
 
@@ -550,13 +782,13 @@ img, svg { display: block; }
 .ppoint { display: flex; gap: 16px; align-items: flex-start; }
 .ppoint .pi { width: 40px; height: 40px; border-radius: 11px; background: var(--card); border: 1px solid var(--hairline); display: grid; place-items: center; flex: none; color: var(--fg); }
 .ppoint .pi svg { width: 20px; height: 20px; }
-.ppoint h4 { margin: 2px 0 4px; font-size: 16px; font-weight: 700; letter-spacing: -.01em; }
-.ppoint p { margin: 0; font-size: 14.5px; color: var(--muted); line-height: 1.55; }
+.ppoint h4 { margin: 2px 0 4px; font-size: 1rem; font-weight: 700; letter-spacing: -.01em; }
+.ppoint p { margin: 0; font-size: 0.90625rem; color: var(--muted); line-height: 1.55; }
 
 /* ---------------- CTA ---------------- */
 .cta { text-align: center; max-width: 760px; margin: 0 auto; padding: 110px 28px; }
-.cta h2 { font-size: clamp(34px, 5vw, 60px); font-weight: 800; letter-spacing: -.035em; line-height: 1.0; margin: 18px 0 0; }
-.cta p { font-size: 19px; color: var(--muted); margin: 18px 0 34px; }
+.cta h2 { font-size: clamp(2.125rem, 5vw, 3.75rem); font-weight: 800; letter-spacing: -.035em; line-height: clamp(2.375rem, 5.3vw, 3.75rem); margin: 18px 0 0; }
+.cta p { font-size: 1.1875rem; color: var(--muted); margin: 18px 0 34px; }
 .cta .badges { display: inline-flex; gap: 12px; }
 .app-store-badge-link { display: inline-flex; }
 .app-store-badge-link img { display: block; height: 40px; width: auto; }
@@ -566,8 +798,8 @@ img, svg { display: block; }
 }
 .app-store-badge svg { width: 24px; height: 24px; }
 .app-store-badge .t { text-align: left; line-height: 1.1; }
-.app-store-badge .t small { font-size: 10px; opacity: .75; display: block; }
-.app-store-badge .t b { font-size: 16px; font-weight: 600; letter-spacing: -.01em; }
+.app-store-badge .t small { font-size: 0.625rem; opacity: .75; display: block; }
+.app-store-badge .t b { font-size: 1rem; font-weight: 600; letter-spacing: -.01em; }
 
 /* ---------------- Landing responsive ---------------- */
 @media (max-width: 980px) {
@@ -576,6 +808,11 @@ img, svg { display: block; }
      and scale the whole stage to fit the viewport so the iPhone+Watch never
      bleed past the screen edge (which caused sideways page scroll on mobile). */
   .device-stage { min-height: 560px; min-width: 0; transform: scale(.78); transform: scale(min(.92, calc((100vw - 44px) / 440px))); transform-origin: top center; margin-top: 8px; }
+  /* The stage itself is transform-scaled here. An animating child inside a
+     scaled ancestor gets promoted to a compositor layer and rasterised once,
+     at the wrong resolution — which is what made the mockup text fuzzy on
+     phones. A static scale re-rasterises crisply, so the float stops. */
+  .device-stage .iphone, .device-stage .watch { animation: none; }
   .spotlight { grid-template-columns: 1fr; gap: 28px; padding: 36px; }
   .privacy-inner { grid-template-columns: 1fr; gap: 36px; }
   .feat-grid { grid-template-columns: repeat(2, 1fr); }
@@ -597,17 +834,17 @@ img, svg { display: block; }
 
 /* ---- Page hero (sub-pages) ---- */
 .page-hero { max-width: var(--maxw); margin: 0 auto; padding: 80px 28px 40px; }
-.page-hero h1 { font-size: clamp(40px, 5.4vw, 68px); font-weight: 800; letter-spacing: -.035em; line-height: 1.0; margin: 16px 0 0; }
-.page-hero .lead { font-size: 20px; color: var(--muted); margin: 20px 0 0; max-width: 620px; line-height: 1.5; }
-.page-hero .meta { font-size: 13px; color: var(--faint); margin-top: 18px; font-family: var(--font-jetbrains-mono), monospace; }
+.page-hero h1 { font-size: clamp(2.5rem, 5.4vw, 4.25rem); font-weight: 800; letter-spacing: -.035em; line-height: clamp(2.75rem, 5.7vw, 4.25rem); margin: 16px 0 0; }
+.page-hero .lead { font-size: 1.25rem; color: var(--muted); margin: 20px 0 0; max-width: 620px; line-height: 1.5; }
+.page-hero .meta { font-size: 0.8125rem; color: var(--faint); margin-top: 18px; font-family: var(--font-jetbrains-mono), monospace; }
 
 /* ---- Feature detail blocks ---- */
 .fblock { max-width: var(--maxw); margin: 0 auto; padding: 64px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
 .fblock.flip .fcopy { order: 2; }
-.fblock .fcopy h2 { font-size: clamp(28px, 3.6vw, 40px); font-weight: 800; letter-spacing: -.03em; line-height: 1.07; margin: 14px 0 0; }
-.fblock .fcopy p { font-size: 17px; color: var(--muted); line-height: 1.6; margin: 16px 0 0; max-width: 460px; }
+.fblock .fcopy h2 { font-size: clamp(1.75rem, 3.6vw, 2.5rem); font-weight: 800; letter-spacing: -.03em; line-height: clamp(2rem, 3.9vw, 2.625rem); margin: 14px 0 0; }
+.fblock .fcopy p { font-size: 1.0625rem; color: var(--muted); line-height: 1.6; margin: 16px 0 0; max-width: 460px; }
 .fblock .flist { margin: 22px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; }
-.fblock .flist li { display: flex; gap: 11px; align-items: flex-start; font-size: 15px; color: var(--fg-2); }
+.fblock .flist li { display: flex; gap: 11px; align-items: flex-start; font-size: 0.9375rem; color: var(--fg-2); }
 .fblock .flist svg { width: 18px; height: 18px; color: var(--accent); flex: none; margin-top: 2px; }
 .fvisual { display: flex; align-items: center; justify-content: center; }
 
@@ -621,8 +858,8 @@ img, svg { display: block; }
 /* ---- Sports table ---- */
 .sports-table { max-width: var(--maxw); margin: 0 auto; padding: 24px 28px 64px; }
 .stable { width: 100%; border-collapse: collapse; border: 1px solid var(--hairline); border-radius: 18px; overflow: hidden; }
-.stable th, .stable td { text-align: left; padding: 18px 20px; font-size: 15px; border-bottom: 1px solid var(--hairline-2); vertical-align: top; }
-.stable thead th { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); font-weight: 700; background: var(--bg-2); }
+.stable th, .stable td { text-align: left; padding: 18px 20px; font-size: 0.9375rem; border-bottom: 1px solid var(--hairline-2); vertical-align: top; }
+.stable thead th { font-size: 0.75rem; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); font-weight: 700; background: var(--bg-2); }
 .stable tbody tr:last-child td { border-bottom: 0; }
 .stable .sname { font-weight: 700; display: flex; align-items: center; gap: 10px; }
 .stable .sname .sdot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
@@ -632,10 +869,10 @@ img, svg { display: block; }
 
 /* ---- Legal / FAQ article ---- */
 .article { max-width: 760px; margin: 0 auto; padding: 24px 28px 90px; }
-.article h2 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; margin: 44px 0 12px; }
+.article h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; margin: 44px 0 12px; }
 .article h2:first-child { margin-top: 8px; }
-.article h3 { font-size: 17px; font-weight: 700; margin: 26px 0 8px; }
-.article p, .article li { font-size: 16px; line-height: 1.7; color: var(--fg-2); }
+.article h3 { font-size: 1.0625rem; font-weight: 700; margin: 26px 0 8px; }
+.article p, .article li { font-size: 1rem; line-height: 1.7; color: var(--fg-2); }
 .article p { margin: 12px 0; }
 .article ul { padding-left: 22px; margin: 12px 0; }
 .article li { margin: 7px 0; }
@@ -645,9 +882,9 @@ img, svg { display: block; }
   border: 1px solid var(--hairline); border-radius: 16px; padding: 22px 24px; margin: 8px 0 28px;
   background: var(--card-2);
 }
-.toc h4 { margin: 0 0 12px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+.toc h4 { margin: 0 0 12px; font-size: 0.75rem; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
 .toc ol { margin: 0; padding-left: 18px; display: grid; gap: 7px; }
-.toc a { font-size: 14.5px; color: var(--muted); }
+.toc a { font-size: 0.90625rem; color: var(--muted); }
 .toc a:hover { color: var(--accent); }
 .imprint-grid { display: grid; grid-template-columns: auto 1fr; gap: 12px 24px; margin: 8px 0 28px; }
 .imprint-grid dt { font-weight: 600; color: var(--fg); white-space: nowrap; }
@@ -660,13 +897,22 @@ img, svg { display: block; }
 .faq-q {
   width: 100%; background: none; border: 0; cursor: pointer; text-align: left;
   display: flex; justify-content: space-between; align-items: center; gap: 20px;
-  padding: 22px 4px; font: inherit; font-size: 18px; font-weight: 600; letter-spacing: -.015em; color: var(--fg);
+  padding: 22px 4px; font: inherit; font-size: 1.125rem; font-weight: 600; letter-spacing: -.015em; color: var(--fg);
 }
 .faq-q .chev { width: 20px; height: 20px; flex: none; color: var(--muted); transition: transform .3s var(--ease), color .3s; }
 .faq-item.open .faq-q .chev { transform: rotate(45deg); color: var(--accent); }
-.faq-a { max-height: 0; overflow: hidden; transition: max-height .35s var(--ease); }
-.faq-a .inner { padding: 0 4px 24px; font-size: 16px; line-height: 1.65; color: var(--muted); max-width: 640px; }
-.faq-item.open .faq-a { max-height: 320px; }
+/* 0fr → 1fr animates to the content's own height. The old `max-height: 320px`
+   was a magic number that silently clipped anything longer (overflow:hidden,
+   no scrollbar) and eased over 320px of travel regardless of how tall the
+   answer actually was, so the reveal finished early and then sat still. */
+.faq-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s var(--ease); }
+/* Spacing lives on the paragraph, not on .inner: padding on the grid item
+   itself keeps a 24px floor even at 0fr, so a closed answer would never fully
+   collapse. Clipped by .inner's overflow, the paragraph's padding costs
+   nothing when closed. */
+.faq-a .inner { overflow: hidden; }
+.faq-a .inner p { margin: 0; padding: 0 4px 24px; font-size: 1rem; line-height: 1.65; color: var(--muted); max-width: 640px; }
+.faq-item.open .faq-a { grid-template-rows: 1fr; }
 
 /* ---- Contact band ---- */
 .contact-band { max-width: 760px; margin: 0 auto 90px; padding: 0 28px; }
@@ -675,20 +921,20 @@ img, svg { display: block; }
   display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
   box-shadow: var(--shadow-sm);
 }
-.contact-card h3 { margin: 0 0 6px; font-size: 21px; font-weight: 700; letter-spacing: -.02em; }
-.contact-card p { margin: 0; color: var(--muted); font-size: 15px; }
+.contact-card h3 { margin: 0 0 6px; font-size: 1.3125rem; font-weight: 700; letter-spacing: -.02em; }
+.contact-card p { margin: 0; color: var(--muted); font-size: 0.9375rem; }
 
 /* ---- Accessibility page : supported-feature list inside cards ---- */
 .a11y-list { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-.a11y-list li { display: flex; gap: 11px; align-items: flex-start; font-size: 15px; color: var(--fg-2); }
+.a11y-list li { display: flex; gap: 11px; align-items: flex-start; font-size: 0.9375rem; color: var(--fg-2); }
 .a11y-list svg { width: 18px; height: 18px; color: var(--accent); flex: none; margin-top: 1px; }
 
 /* ---- Accessibility note (landing) ---- */
 .a11y-note { max-width: 760px; margin: 0 auto; padding: 80px 28px; text-align: center; }
-.a11y-note h2 { font-size: clamp(30px, 4vw, 46px); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; margin: 14px 0 0; }
-.a11y-note p { font-size: 18px; color: var(--muted); line-height: 1.6; margin: 18px auto 0; max-width: 640px; }
+.a11y-note h2 { font-size: clamp(1.875rem, 4vw, 2.875rem); font-weight: 800; letter-spacing: -.03em; line-height: clamp(2.125rem, 4.3vw, 2.9375rem); margin: 14px 0 0; }
+.a11y-note p { font-size: 1.125rem; color: var(--muted); line-height: 1.6; margin: 18px auto 0; max-width: 640px; }
 .a11y-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 26px; }
-.a11y-pill { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px; background: var(--pill); border: 1px solid var(--hairline-2); font-size: 13.5px; font-weight: 600; color: var(--fg-2); }
+.a11y-pill { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 999px; background: var(--pill); border: 1px solid var(--hairline-2); font-size: 0.84375rem; font-weight: 600; color: var(--fg-2); }
 .a11y-pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .a11y-note .btn { margin-top: 28px; }
 @media (max-width: 520px) { .a11y-note { padding-inline: 18px; } }

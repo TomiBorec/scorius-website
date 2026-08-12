@@ -1,18 +1,19 @@
 'use client';
 
 import type { CSSProperties } from 'react';
-import { useAppState } from '@/components/state';
-import { useMatch } from '@/hooks/useMatch';
 import { useI18n } from '@/i18n';
+import { useMatchVm } from './MatchProvider';
 import { Iphone } from '@/components/devices/Iphone';
 import { Watch } from '@/components/devices/Watch';
 import { LiveActivity } from '@/components/devices/LiveActivity';
 
+/* Every device below reads the same shared match, so multiple mockups on one
+   page always show the same score. */
+
 /** Hero device stage: an iPhone + Watch sharing one live match, on a glow. */
 export function HeroStage() {
-  const { sport } = useAppState();
   const { t } = useI18n();
-  const vm = useMatch(sport);
+  const vm = useMatchVm();
   return (
     <div className="device-stage">
       <div className="device-glow" />
@@ -22,26 +23,23 @@ export function HeroStage() {
   );
 }
 
-/** A standalone Watch running its own live match (synced to the page sport). */
+/** A Watch running the page's live match. */
 export function MatchWatch({ style }: { style?: CSSProperties }) {
-  const { sport } = useAppState();
   const { t } = useI18n();
-  const vm = useMatch(sport);
+  const vm = useMatchVm();
   return <Watch vm={vm} loc={t.devices} style={style} />;
 }
 
-/** A standalone iPhone running its own live match. */
+/** An iPhone running the page's live match. */
 export function MatchPhone({ style }: { style?: CSSProperties }) {
-  const { sport } = useAppState();
   const { t } = useI18n();
-  const vm = useMatch(sport);
+  const vm = useMatchVm();
   return <Iphone vm={vm} loc={t.devices} style={style} />;
 }
 
-/** A Live-Activity island running its own live match. */
+/** A Live-Activity island running the page's live match. */
 export function MatchIsland() {
-  const { sport } = useAppState();
   const { t } = useI18n();
-  const vm = useMatch(sport);
+  const vm = useMatchVm();
   return <LiveActivity vm={vm} loc={t.devices} />;
 }
