@@ -17,6 +17,12 @@ export const en = {
     download: 'Download',
   },
 
+  navMenu: {
+    open: 'Open menu',
+    close: 'Close menu',
+    label: 'Site',
+  },
+
   langSwitch: {
     aria: 'Choose language',
     cs: 'CZ',

@@ -1,6 +1,6 @@
 'use client';
 
-import { type CSSProperties, type ElementType, type ReactNode, useEffect, useRef, useState } from 'react';
+import { type CSSProperties, type ElementType, type ReactNode, useEffect, useRef } from 'react';
 
 type RevealProps = {
   as?: ElementType;
@@ -15,17 +15,22 @@ type RevealProps = {
 /**
  * Scroll-reveal wrapper: renders with `.reveal` and adds `.in` when it first
  * intersects the viewport. Respects prefers-reduced-motion via the CSS (which
- * forces `.reveal` visible). Re-expresses the prototype's IntersectionObserver.
+ * forces `.reveal` visible).
+ *
+ * The revealed flag lives on the DOM node, not in React state. It only ever
+ * drives a CSS class, so there is nothing for React to re-render — and the
+ * previous version called setState from inside the effect for every element
+ * already on screen at mount, which cascaded a second render per reveal (22 of
+ * them on the landing page).
  */
 export function Reveal({ as: Tag = 'div', delay, className = '', style, children, ...rest }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
-  const [inView, setInView] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     if (!('IntersectionObserver' in window)) {
-      setInView(true);
+      el.classList.add('in');
       return;
     }
 
@@ -33,7 +38,7 @@ export function Reveal({ as: Tag = 'div', delay, className = '', style, children
     const reveal = () => {
       if (done) return;
       done = true;
-      setInView(true);
+      el.classList.add('in');
       io.disconnect();
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
@@ -78,7 +83,7 @@ export function Reveal({ as: Tag = 'div', delay, className = '', style, children
   return (
     <Tag
       ref={ref}
-      className={`${className} reveal${inView ? ' in' : ''}`.trim()}
+      className={`${className} reveal`.trim()}
       style={delay ? { transitionDelay: `${delay}ms`, ...style } : style}
       {...rest}
     >

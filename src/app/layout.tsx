@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import { AppProvider } from '@/components/state';
+import { MatchProvider } from '@/components/match/MatchProvider';
 import { Nav } from '@/components/Nav';
 import { Footer } from '@/components/Footer';
 import './globals.css';
@@ -111,9 +112,11 @@ export default function RootLayout({
       </head>
       <body>
         <AppProvider>
-          <Nav />
-          <main>{children}</main>
-          <Footer />
+          <MatchProvider>
+            <Nav />
+            <main>{children}</main>
+            <Footer />
+          </MatchProvider>
         </AppProvider>
       </body>
     </html>

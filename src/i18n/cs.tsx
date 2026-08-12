@@ -13,6 +13,12 @@ export const cs: Dict = {
     download: 'Stáhnout',
   },
 
+  navMenu: {
+    open: 'Otevřít menu',
+    close: 'Zavřít menu',
+    label: 'Web',
+  },
+
   langSwitch: {
     aria: 'Volba jazyka',
     cs: 'CZ',
