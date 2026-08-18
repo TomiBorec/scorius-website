@@ -153,18 +153,25 @@ scores update without a reload, dark mode resolves, mobile layout holds.
 - [x] Dark mode + reduced motion, consistent with the rest of the site.
 - [x] Accessibility: live region announcements on score change, not a silent DOM swap.
 
-## Phase C — Web scorer (stripped)
+## Phase C — Web scorer (stripped) — 🔨 IN PROGRESS
 
-Est. **43–59 days**. English only, local storage, no account. **Not a blocker for
+Engines ported and pinned to Swift. Remaining: the in-progress state machine, the
+scoring UI, setup, per-sport rules editors, persistence and PWA work.
+
+Est. **43–59 days** total. English only, local storage, no account. **Not a blocker for
 spectate** — with the publish path in 2.2, Tom's TestFlight build is the live source
 during development.
 
-- [ ] Port the 6 engines + model (`BadmintonRules`, `TennisRules`, `FootballRules`,
-      `BasketballRules`, `PickleballRules`, `GolfRules`, `PeriodClockCarrying`,
-      `Match`, `MatchSettings`, `ActiveMatchData`, `makeFinishedMatch`).
-- [ ] **Generate JSON test fixtures from the Swift suite** (point sequence → expected state)
-      and run them against the TS engines in CI. Two implementations that must agree; this
-      is the only thing that catches drift before a user does.
+- [x] **Port the 6 engines + the shared model.** Done: `src/engine/` — `rally.ts`,
+      `tennis.ts`, `pickleball.ts`, `clock.ts`, `basketball.ts`, `football.ts`, `golf.ts`,
+      `types.ts`. Still to port from the model side: `ActiveMatchData` (the in-progress
+      state machine and undo stack) and `makeFinishedMatch`.
+- [x] **Generate JSON test fixtures from the Swift suite.** Done:
+      `BB3Tests/EngineFixtureExport.swift` (app build 365) exports the engines' observable
+      behaviour; `src/engine/engine.fixtures.test.ts` replays it via `npm run test:engine`.
+      All six engines pass. Verified to actually catch divergence — disabling the tennis
+      4-4 → deuce normalisation fails it at a named point in a named match.
+      **Not yet wired into CI** (there is no CI on this repo yet); it runs on demand.
 - [ ] Scoring screens: 5 layouts + golf, undo, clock editor, serve chip, game-end banner.
 - [ ] Setup flow: sport, side names, singles/doubles, team size, golf holes/pars.
 - [ ] Per-sport rules editors for all 12 sports (port `SportRulesSections.swift`, 434 LOC).
