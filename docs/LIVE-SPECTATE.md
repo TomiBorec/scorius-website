@@ -150,6 +150,11 @@ scores update without a reload, dark mode resolves, mobile layout holds.
 - [x] Friendly "code not found" page, not the site's 404 (`not_found_handling` is
       currently `404-page`).
 - [x] Responsive: phone, desktop, and readable across a room on a laptop or TV.
+- [x] **Courtside mode** — the score filling the screen. A fixed overlay does the work
+      (iPhone Safari has no element Fullscreen API, only video), with
+      `requestFullscreen()` attempted on top purely to hide browser chrome. Wake Lock
+      while it is up. Portrait stacks the two sides so each gets the full width;
+      landscape puts them side by side. Escape and the browser's own exit both leave it.
 - [x] Dark mode + reduced motion, consistent with the rest of the site.
 - [x] Accessibility: live region announcements on score change, not a silent DOM swap.
 

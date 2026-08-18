@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { FullscreenBoard } from '@/components/spectate/FullscreenBoard';
 import { ScoreBoard } from '@/components/spectate/ScoreBoard';
 import { DEMO_CODE, normaliseCode, useSpectate } from '@/lib/spectate';
 
@@ -28,8 +29,15 @@ export function SpectateContent() {
 function Spectator({ code }: { code: string }) {
   const { status, frame } = useSpectate(code);
   const isDemo = code === DEMO_CODE;
+  const [courtside, setCourtside] = useState(false);
 
   if (status === 'notfound') return <BadCode expired />;
+
+  // Courtside mode replaces the page rather than layering over it — the marketing
+  // nav and footer are exactly what you do not want on a board across a room.
+  if (courtside) {
+    return <FullscreenBoard frame={frame} code={code} onExit={() => setCourtside(false)} />;
+  }
 
   return (
     <Shell>
@@ -47,6 +55,11 @@ function Spectator({ code }: { code: string }) {
       <div aria-live="polite" aria-atomic="true">
         {frame ? <ScoreBoard frame={frame} /> : <Waiting status={status} />}
       </div>
+      {frame ? (
+        <button className="sp-cta ghost" onClick={() => setCourtside(true)}>
+          Courtside mode — fill the screen
+        </button>
+      ) : null}
       <Footnote />
     </Shell>
   );
