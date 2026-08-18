@@ -164,14 +164,21 @@ during development.
 
 - [x] **Port the 6 engines + the shared model.** Done: `src/engine/` — `rally.ts`,
       `tennis.ts`, `pickleball.ts`, `clock.ts`, `basketball.ts`, `football.ts`, `golf.ts`,
-      `types.ts`. Still to port from the model side: `ActiveMatchData` (the in-progress
-      state machine and undo stack) and `makeFinishedMatch`.
+      `types.ts`. `ActiveMatchData` is ported too — `active.ts`, with the flat-field
+      mirrors, snapshot undo and the point-log gate. Still to port: `makeFinishedMatch`
+      (the finish/save switch) and the `Match` record it produces.
 - [x] **Generate JSON test fixtures from the Swift suite.** Done:
       `BB3Tests/EngineFixtureExport.swift` (app build 365) exports the engines' observable
       behaviour; `src/engine/engine.fixtures.test.ts` replays it via `npm run test:engine`.
       All six engines pass. Verified to actually catch divergence — disabling the tennis
       4-4 → deuce normalisation fails it at a named point in a named match.
       **Not yet wired into CI** (there is no CI on this repo yet); it runs on demand.
+- [ ] **Extend the fixture export to cover `ActiveMatchData`.** The engines are pinned to
+      Swift; the state machine on top of them is not — `active.test.ts` asserts properties
+      (undo completeness, mirror consistency, the point-log gate) rather than
+      byte-agreement. The rally game-close path is the piece most worth pinning, since its
+      serve handoff and log hand-over were written by reading Swift rather than by
+      replaying it.
 - [ ] Scoring screens: 5 layouts + golf, undo, clock editor, serve chip, game-end banner.
 - [ ] Setup flow: sport, side names, singles/doubles, team size, golf holes/pars.
 - [ ] Per-sport rules editors for all 12 sports (port `SportRulesSections.swift`, 434 LOC).
