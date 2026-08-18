@@ -118,10 +118,12 @@ demo loop.
 - [x] **Envelope version field** (`{v: 1, state: {...}}`). The app ships independently of
       the web; without a version the first `ContentState` change breaks every old client.
 - [x] Alarm-based TTL cleanup per the decision above.
-- [x] **Rate-limit `/start` by IP.** Done in the Cloudflare dashboard. Verified against
-      production: the 5th allocate in quick succession returns 429. Note it is tighter
-      than the 10/min originally proposed — worth revisiting if a club or tournament ever
-      reports failures, since several people behind one public IP share the budget.
+- [x] **Rate-limit `/start` by IP.** Done in the Cloudflare dashboard: **4 requests per
+      10 seconds**, which is the shortest (and on the free plan the only) period offered.
+      Verified against production — the 5th allocate in quick succession returns 429.
+      That works out around 24/min, so a club or tournament sharing one public IP has
+      ample headroom; four people starting a session inside ten seconds is not a thing
+      humans do, while it makes the endpoint useless to a script.
 - [x] Reject frames for an unknown/expired code with a distinguishable status so the app
       can tell "session died" from "network hiccup".
 - [x] No logging of frame contents. Names are in there.
