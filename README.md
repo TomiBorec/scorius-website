@@ -82,3 +82,17 @@ Build settings used in Cloudflare Pages:
 | Node version | 20 |
 
 Live URL: https://scorius.app
+
+### Live Spectate worker — deployed separately
+
+`workers/spectate/` is **not** part of the Pages build. Pages Functions can bind to a
+Durable Object but cannot define one, so the live-score relay is a standalone Worker
+routed onto the same hostname (`scorius.app/api/spectate/*`), which keeps the spectator
+page same-origin and CORS-free.
+
+```bash
+npx wrangler deploy --config workers/spectate/wrangler.toml
+```
+
+It has its own `package.json`; run `npm install` inside the directory first. Full
+architecture, checklists and the manual steps only Tom can do: `docs/LIVE-SPECTATE.md`.

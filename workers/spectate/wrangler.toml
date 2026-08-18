@@ -1,0 +1,36 @@
+# Scorius Live Spectate — the live-score relay.
+#
+# Deployed SEPARATELY from the marketing site. The site is a Cloudflare Pages
+# project (auto-deploy on push to main); Pages Functions can *bind* to a Durable
+# Object but cannot *define* one, so the DO and its API live in this standalone
+# Worker instead, routed onto the same hostname so the browser stays same-origin
+# and needs no CORS.
+#
+#   npx wrangler deploy --config workers/spectate/wrangler.toml
+#
+# See docs/LIVE-SPECTATE.md.
+
+name = "scorius-spectate"
+main = "src/index.ts"
+compatibility_date = "2026-07-07"
+
+# Same-origin with the Pages site. A Workers route takes precedence over Pages
+# for matching paths, so /api/spectate/* lands here and everything else still
+# serves the static site.
+routes = [
+  { pattern = "scorius.app/api/spectate/*", zone_name = "scorius.app" }
+]
+
+[[durable_objects.bindings]]
+name = "SPECTATE"
+class_name = "SpectateSession"
+
+# SQLite-backed Durable Objects — the storage class available on the Workers
+# free plan. If `wrangler deploy` rejects this, Durable Objects are not enabled
+# on the account and the fallback in docs/LIVE-SPECTATE.md §4 applies.
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["SpectateSession"]
+
+[observability]
+enabled = true

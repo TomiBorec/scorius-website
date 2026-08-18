@@ -42,3 +42,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Live Spectate worker
+/workers/*/node_modules
+/workers/*/.wrangler
+/workers/*/package-lock.json
