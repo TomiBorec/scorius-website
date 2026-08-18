@@ -126,7 +126,7 @@ export const cs: Dict = {
   privacyBand: {
     kicker: 'Soukromí na prvním místě',
     heading: 'Tvoje zápasy patří tobě.',
-    body: 'Žádné účty. Žádná analytika. Žádné SDK třetích stran. Scorius nekomunikuje s žádným serverem kromě Applu — vývojář na tvoje data nevidí.',
+    body: 'Žádné účty. Žádná analytika. Žádné SDK třetích stran. Tvoje zápasy nikdy neopustí tvoje zařízení a tvůj iCloud — vývojář na ně nevidí. Jediné, co jde dál, je živé skóre, které se sám rozhodneš sdílet, a jen dokud zápas běží.',
     cta: 'Přečíst zásady ochrany soukromí →',
     points: [
       {
@@ -268,7 +268,8 @@ export const cs: Dict = {
         a: (
           <>
             Naprosto. Žádné účty, žádná analytika, žádná SDK třetích stran. Tvoje data zůstávají v tvém iCloudu a Apple
-            Health — vývojář na ně nevidí. Podrobnosti najdeš v{' '}
+            Health — vývojář na ně nevidí. Jedinou výjimkou je živé skóre, které se výslovně rozhodneš sdílet; drží se jen
+            po dobu zápasu a nikdy neobsahuje tvoji historii. Podrobnosti najdeš v{' '}
             <Link className="inline" href="/privacy">
               zásadách ochrany soukromí
             </Link>
@@ -415,7 +416,7 @@ export const cs: Dict = {
           body: (
             <>
               Žádné účty, žádná analytika, žádná SDK třetích stran. Data žijí v tvém iCloudu a Apple Health — vývojář na ně
-              nevidí.{' '}
+              nevidí. Putuje jen živé skóre, které se rozhodneš sdílet.{' '}
               <Link href="/privacy" style={{ color: 'var(--accent)', fontWeight: 600 }}>
                 Přečíst zásady →
               </Link>
@@ -485,7 +486,7 @@ export const cs: Dict = {
       kicker: 'Soukromí',
       title: 'Tvoje zápasy patří tobě.',
       lead: 'Scorius je postavený tak, aby vývojář nikdy neviděl tvoje data. Žádné účty, žádná analytika, žádná SDK třetích stran — tvoje zápasy zůstávají na tvých zařízeních a v tvém iCloudu.',
-      meta: 'Naposledy aktualizováno · červenec 2026 · Platí pro Scorius 2.0',
+      meta: 'Naposledy aktualizováno · srpen 2026 · Platí pro Scorius 2.2',
       tocTitle: 'Na této stránce',
       article: (
         <>
@@ -497,6 +498,9 @@ export const cs: Dict = {
               </li>
               <li>
                 <a href="#stored">Co Scorius ukládá — a kde</a>
+              </li>
+              <li>
+                <a href="#spectate">Sledování živě</a>
               </li>
               <li>
                 <a href="#network">Síť a třetí strany</a>
@@ -525,14 +529,18 @@ export const cs: Dict = {
           <h2 id="summary">Ve zkratce</h2>
           <p>
             Scorius nemá <strong>žádné účty, žádnou analytiku, žádnou telemetrii ani žádná SDK třetích stran</strong>.
-            Aplikace nikdy nekomunikuje s žádným serverem kromě Applu — a s jednou veřejnou databází golfových hřišť, a to
-            jen když aktivně hledáš hřiště. Vývojář nevidí tvoje zápasy, tvoje statistiky ani nic dalšího.
+            Tvoje historie zápasů žije na tvých vlastních zařízeních a nikdy se nikam nenahrává. Jediný okamžik, kdy něco
+            opustí tvoje zařízení směrem k serveru provozovanému vývojářem, je když <strong>ty</strong> spustíš sledování
+            živě — a i tehdy jde jen o živé skóre toho jednoho zápasu, po dobu, kdy se hraje. Vývojář nevidí tvoji
+            historii, tvoje statistiky ani nic dalšího.
           </p>
 
           <h2 id="stored">Co Scorius ukládá — a kde</h2>
           <p>
-            Všechno, co Scorius uchovává, žije na tvých vlastních zařízeních a v tvém vlastním iCloudu. Nic se nenahrává na
-            server provozovaný vývojářem.
+            Všechno, co Scorius uchovává, žije na tvých vlastních zařízeních a v tvém vlastním iCloudu. Nic z toho se
+            nenahrává na server provozovaný vývojářem — ani tvoje historie, ani statistiky, ani seznam hráčů. Jedinou
+            výjimku popisuje sekce <a className="inline" href="#spectate">Sledování živě</a> a nikdy nezahrnuje nic
+            z tohoto.
           </p>
           <ul>
             <li>
@@ -556,19 +564,56 @@ export const cs: Dict = {
             . Vývojář k ní nemá přístup.
           </p>
 
+          <h2 id="spectate">Sledování živě</h2>
+          <p>
+            Sledování živě je <strong>ve výchozím stavu vypnuté a spustí se jen tvým ťuknutím</strong>. Dokud relace běží,
+            posílá Scorius živé skóre toho jednoho zápasu — body, gamy, období, hodiny a jména, která jsi stranám dal —
+            na server provozovaný vývojářem na Cloudflare, aby kdokoli, komu dáš kód nebo odkaz, mohl zápas sledovat
+            v prohlížeči.
+          </p>
+          <ul>
+            <li>
+              <strong>Sledovat může kdokoli s kódem.</strong> Není tam žádné heslo. Skóre může měnit jen tvoje zařízení;
+              diváci ho mohou pouze číst.
+            </li>
+            <li>
+              <strong>Nikde se neukládá.</strong> Skóre se drží v paměti po dobu zápasu a několik hodin po poslední
+              aktualizaci se zahodí. Neexistují žádné záložní kopie ani žádné logy obsahu zápasu.
+            </li>
+            <li>
+              <strong>Tvoje historie se neposílá nikdy.</strong> Jen právě hraný zápas, a jen dokud je relace otevřená.
+              Sdílení skončí s koncem zápasu.
+            </li>
+            <li>
+              <strong>Nic tě neidentifikuje.</strong> Žádný účet, žádný identifikátor zařízení, žádné logování IP nad
+              rámec standardní ochrany sítě Cloudflare.
+            </li>
+            <li>
+              <strong>Jména jsou na tobě.</strong> Když stranu pojmenuješ skutečným jménem, uvidí ho kdokoli s kódem.
+              Pokud nechceš, použij přezdívku.
+            </li>
+          </ul>
+          <p>
+            Stránky pro diváky jsou vyloučené z vyhledávačů. Celou funkci můžeš vypnout v Nastavení, což z aplikace
+            odstraní možnost sdílení úplně.
+          </p>
+
           <h2 id="network">Síť a třetí strany</h2>
           <p>
-            Scorius dělá přesně jeden druh volitelného odchozího požadavku: když <strong>hledáš golfové hřiště</strong>,
-            aplikace se dotáže veřejné databáze hřišť na informace o hřišti a parech. K tomuto požadavku se kromě textu
-            tvého hledání nepřipojují žádná osobní data. Pokud hřiště nikdy nehledáš, Scorius nedělá vůbec žádné síťové
-            požadavky na třetí strany.
+            Scorius dělá dva druhy volitelných odchozích požadavků a oba spouštíš ty sám. Když{' '}
+            <strong>hledáš golfové hřiště</strong>, aplikace se dotáže veřejné databáze hřišť na informace o hřišti
+            a parech; kromě textu tvého hledání se nepřipojují žádná osobní data. Když spustíš{' '}
+            <strong>sledování živě</strong>, jde živé skóre na relay vývojáře, jak je popsáno výše. Pokud neuděláš ani
+            jedno, Scorius nedělá žádné síťové požadavky nad rámec tvého vlastního iCloudu.
           </p>
           <p>Nejsou tu žádná reklamní SDK, žádné služby pro hlášení pádů ani žádná analytika používání.</p>
 
           <h2 id="website">Webové stránky a lokální úložiště</h2>
           <p>
             Tato webová stránka (scorius.app) je statický marketingový web. Nepoužívá cookies, neobsahuje
-            skripty třetích stran pro sledování a nesbírá žádné osobní údaje prostřednictvím formulářů.
+            skripty třetích stran pro sledování a nesbírá žádné osobní údaje prostřednictvím formulářů. Stránky pro
+            diváky (<span className="mono">/w/</span> a <span className="mono">/watch</span>) zobrazují živé skóre a nic
+            neukládají; jsou vyloučené z vyhledávačů.
           </p>
           <p>
             Webová stránka využívá <strong>localStorage</strong> ve tvém prohlížeči k zapamatování tří čistě

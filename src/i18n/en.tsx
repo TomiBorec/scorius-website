@@ -130,7 +130,7 @@ export const en = {
   privacyBand: {
     kicker: 'Privacy first',
     heading: 'Your matches are yours.',
-    body: 'No accounts. No analytics. No third-party SDKs. Scorius never talks to any server other than Apple’s — the developer cannot see your data.',
+    body: 'No accounts. No analytics. No third-party SDKs. Your matches never leave your devices and your iCloud — the developer cannot see them. The one thing that ever goes further is a live score you choose to share, and only while the match is on.',
     cta: 'Read the privacy policy →',
     points: [
       {
@@ -272,7 +272,8 @@ export const en = {
         a: (
           <>
             Completely. No accounts, no analytics, no third-party SDKs. Your data stays in your iCloud and Apple Health — the
-            developer can’t see it. See the{' '}
+            developer can’t see it. The only exception is a live score you explicitly choose to share, which is held
+            just while the match is played and never includes your history. See the{' '}
             <Link className="inline" href="/privacy">
               privacy policy
             </Link>{' '}
@@ -419,7 +420,7 @@ export const en = {
           body: (
             <>
               No accounts, no analytics, no third-party SDKs. Data lives in your iCloud and Apple Health — the developer
-              can’t see it.{' '}
+              can’t see it. Only a live score you choose to share ever travels.{' '}
               <Link href="/privacy" style={{ color: 'var(--accent)', fontWeight: 600 }}>
                 Read the policy →
               </Link>
@@ -489,7 +490,7 @@ export const en = {
       kicker: 'Privacy',
       title: 'Your matches are yours.',
       lead: 'Scorius is built so the developer never sees your data. No accounts, no analytics, no third-party SDKs — your matches stay on your devices and in your iCloud.',
-      meta: 'Last updated · July 2026 · Applies to Scorius 2.0',
+      meta: 'Last updated · August 2026 · Applies to Scorius 2.2',
       tocTitle: 'On this page',
       article: (
         <>
@@ -501,6 +502,9 @@ export const en = {
               </li>
               <li>
                 <a href="#stored">What Scorius stores — and where</a>
+              </li>
+              <li>
+                <a href="#spectate">Live Spectate</a>
               </li>
               <li>
                 <a href="#network">Network &amp; third parties</a>
@@ -528,15 +532,18 @@ export const en = {
 
           <h2 id="summary">The short version</h2>
           <p>
-            Scorius has <strong>no accounts, no analytics, no telemetry and no third-party SDKs</strong>. The app never
-            talks to any server other than Apple’s — and one public golf-course database, only when you actively search
-            for a course. The developer cannot see your matches, your stats or anything else.
+            Scorius has <strong>no accounts, no analytics, no telemetry and no third-party SDKs</strong>. Your match
+            history lives on your own devices and is never uploaded anywhere. The only time anything leaves your device
+            for a server run by the developer is when <strong>you</strong> start a Live Spectate session — and even then
+            it is only the live score of that one match, for as long as it is being played. The developer cannot see your
+            history, your stats or anything else.
           </p>
 
           <h2 id="stored">What Scorius stores — and where</h2>
           <p>
-            Everything Scorius keeps lives on your own devices and in your own iCloud. Nothing is uploaded to a server run
-            by the developer.
+            Everything Scorius keeps lives on your own devices and in your own iCloud. Nothing here is uploaded to a
+            server run by the developer — not your history, not your stats, not your roster. The one exception is
+            described under <a className="inline" href="#spectate">Live Spectate</a>, and it never includes any of this.
           </p>
           <ul>
             <li>
@@ -560,19 +567,56 @@ export const en = {
             . The developer has no access to it.
           </p>
 
+          <h2 id="spectate">Live Spectate</h2>
+          <p>
+            Live Spectate is <strong>off by default and starts only when you tap it</strong>. While a session is running,
+            Scorius sends the live score of that single match — points, games, period, clock and the side names you chose
+            — to a server operated by the developer on Cloudflare, so anyone you give the code or link to can follow
+            along in a browser.
+          </p>
+          <ul>
+            <li>
+              <strong>Anyone with the code can watch.</strong> There is no password. Only your device can update the
+              score; spectators can only read it.
+            </li>
+            <li>
+              <strong>It is never stored.</strong> The score is held in memory for the duration of the match and
+              discarded within a few hours of the last update. There are no backups, and no logs of match content.
+            </li>
+            <li>
+              <strong>Your history is never sent.</strong> Only the match currently being played, and only while the
+              session is open. Sharing stops when the match ends.
+            </li>
+            <li>
+              <strong>Nothing identifies you.</strong> No account, no device identifier, no IP logging beyond
+              Cloudflare&rsquo;s standard network protection.
+            </li>
+            <li>
+              <strong>Names are up to you.</strong> If you name a side with a real name, that name is visible to anyone
+              with the code. Use a nickname if you&rsquo;d rather not.
+            </li>
+          </ul>
+          <p>
+            Spectator pages are excluded from search engines. You can turn the whole feature off in Settings, which
+            removes the sharing option from the app entirely.
+          </p>
+
           <h2 id="network">Network &amp; third parties</h2>
           <p>
-            Scorius makes exactly one kind of optional outbound request: when you <strong>search for a golf course</strong>,
-            the app queries a public golf-course database to fetch course and par information. No personal data is attached
-            to that request beyond your search text. If you never search for a course, Scorius makes no third-party network
-            calls at all.
+            Scorius makes two kinds of optional outbound request, and you trigger both yourself. When you{' '}
+            <strong>search for a golf course</strong>, the app queries a public golf-course database to fetch course and
+            par information; no personal data is attached beyond your search text. When you start{' '}
+            <strong>Live Spectate</strong>, the live score goes to the developer&rsquo;s relay as described above. If you
+            do neither, Scorius makes no network calls at all beyond your own iCloud.
           </p>
           <p>There are no advertising SDKs, no crash-reporting services and no usage analytics of any kind.</p>
 
           <h2 id="website">Website data &amp; local storage</h2>
           <p>
             This website (scorius.app) is a static marketing site. It does not set cookies, does not embed
-            third-party tracking scripts, and does not collect any personal data through forms.
+            third-party tracking scripts, and does not collect any personal data through forms. The spectator pages
+            (<span className="mono">/w/</span> and <span className="mono">/watch</span>) display a live score and store
+            nothing; they are excluded from search engines.
           </p>
           <p>
             The website uses your browser&rsquo;s <strong>localStorage</strong> to remember three strictly

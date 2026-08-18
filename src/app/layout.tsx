@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://scorius.app'),
   title: 'Scorius — Score every game from your wrist',
   description:
-    'Scorius is a native iPhone, iPad and Apple Watch app that keeps score across eleven sports — badminton, tennis, padel, pickleball, squash, table tennis, volleyball, basketball, football, floorball and golf. Heart rate, calories and per-sport rules built in. No servers, no accounts. (Formerly Badminton Log.)',
+    'Scorius is a native iPhone, iPad and Apple Watch app that keeps score across eleven sports — badminton, tennis, padel, pickleball, squash, table tennis, volleyball, basketball, football, floorball and golf. Heart rate, calories and per-sport rules built in. No accounts, and your history never leaves your devices. (Formerly Badminton Log.)',
   applicationName: 'Scorius',
   authors: [{ name: 'Tomáš Kalmus' }],
   keywords: [
