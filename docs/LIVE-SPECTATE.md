@@ -93,30 +93,36 @@ clock therefore costs zero requests.
 
 ---
 
-## Phase A — Server (Cloudflare Worker + Durable Object)
+## Phase A — Server (Cloudflare Worker + Durable Object) — ✅ DONE
 
-Est. **4–6 days**. ~150–250 LOC TypeScript.
+Shipped in `workers/spectate/` (572 LOC TS). Verified locally against `wrangler dev`:
+session lifecycle, two-spectator fanout, viewer count, immediate current-frame delivery
+on join, missing/wrong token, unknown and malformed codes, oversized and malformed
+frames, stop, and the demo stream.
 
-- [ ] Add the Worker to the existing `wrangler.toml`; keep it **same-origin** under
+**Not yet deployed** — that needs Tom (see §8).
+
+- [x] Add the Worker to the existing `wrangler.toml`; keep it **same-origin** under
       `scorius.app/api/spectate/*` so the browser needs no CORS.
-- [ ] `POST /api/spectate/start` → allocate an unused code, return `{code, token}`.
-- [ ] `PUT /api/spectate/:code` → verify `x-scorius-token`, forward the frame to the DO.
+- [x] `POST /api/spectate/start` → allocate an unused code, return `{code, token}`.
+- [x] `PUT /api/spectate/:code` → verify `x-scorius-token`, forward the frame to the DO.
       **Response body returns `{viewers: N}`** so the phone learns the watcher count with
       zero extra requests.
-- [ ] `GET /api/spectate/:code/stream` → SSE subscription.
-- [ ] Durable Object: `idFromName(code)`, holds the last frame + open connections.
-- [ ] **On new subscriber, send the current frame immediately** — do not wait for the next
+- [x] `GET /api/spectate/:code/stream` → SSE subscription.
+- [x] Durable Object: `idFromName(code)`, holds the last frame + open connections.
+- [x] **On new subscriber, send the current frame immediately** — do not wait for the next
       point. Without this a spectator joining mid-match stares at an empty screen until
       someone scores.
-- [ ] SSE keepalive comment (`:ka\n\n`) every ~25 s so proxies don't drop idle connections.
-- [ ] **Envelope version field** (`{v: 1, state: {...}}`). The app ships independently of
+- [x] SSE keepalive comment (`:ka\n\n`) every ~25 s so proxies don't drop idle connections.
+- [x] **Envelope version field** (`{v: 1, state: {...}}`). The app ships independently of
       the web; without a version the first `ContentState` change breaks every old client.
-- [ ] Alarm-based TTL cleanup per the decision above.
-- [ ] Rate-limit `/start` by IP (Cloudflare rule + an in-DO guard). An unlimited public
-      allocate endpoint is an invitation to burn the whole code space.
-- [ ] Reject frames for an unknown/expired code with a distinguishable status so the app
+- [x] Alarm-based TTL cleanup per the decision above.
+- [ ] **Rate-limit `/start` by IP.** The only Phase A item not in code — it is a
+      Cloudflare dashboard rule, so it is Tom's step (§8). The short TTL bounds the damage
+      of an unlimited allocate endpoint but does not prevent it.
+- [x] Reject frames for an unknown/expired code with a distinguishable status so the app
       can tell "session died" from "network hiccup".
-- [ ] No logging of frame contents. Names are in there.
+- [x] No logging of frame contents. Names are in there.
 
 ## Phase B — Web spectator UI
 
@@ -384,7 +390,7 @@ optional per-match display overrides, and when set they win over the joined play
 | # | What | Blocked by | Est. |
 |---|---|---|---:|
 | 1 | Confirm DO availability | — | hours |
-| 2 | Phase A — server | 1 | 4–6 d |
+| 2 | ~~Phase A — server~~ | — | ✅ **done** |
 | 3 | Phase D — iOS publish path (TestFlight) | 2 | 5–7 d |
 | 4 | Phase B — spectator UI | 2, and 3 for a real source | 6–9 d |
 | 5 | Phase F — privacy + policy deploy | 4 | 1–2 d |
