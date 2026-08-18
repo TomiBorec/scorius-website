@@ -8,7 +8,9 @@
     "build": "next build",
     "postbuild": "command -v xattr >/dev/null 2>&1 && xattr -w 'com.apple.fileprovider.ignore#P' 1 out || true",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --import tsx --test \"src/**/*.test.ts\"",
+    "test:engine": "node --import tsx --test src/engine/engine.fixtures.test.ts"
   },
   "dependencies": {
     "next": "^16.2.10",
@@ -24,6 +26,7 @@
     "eslint": "^9",
     "eslint-config-next": "^16.2.10",
     "tailwindcss": "^4",
+    "tsx": "^4.23.12",
     "typescript": "^5"
   }
 }
