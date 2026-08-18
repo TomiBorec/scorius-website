@@ -952,3 +952,170 @@ img, svg { display: block; }
 @media (max-width: 520px) {
   .page-hero, .article, .faq-list, .contact-band, .sports-table { padding-inline: 18px; }
 }
+
+/* ============================================================
+   Live Spectate — /w/<CODE> and /watch
+   Big, legible from across a room, and honest about its own state:
+   a score that has stopped arriving must never look live.
+   ============================================================ */
+
+:root {
+  --sp-good: #1a8343;
+  --sp-bad:  #c02718;
+}
+:root[data-theme="dark"] {
+  --sp-good: #43c97a;
+  --sp-bad:  #ff6b60;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --sp-good: #43c97a;
+    --sp-bad:  #ff6b60;
+  }
+}
+
+.sp-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sp-board {
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: 24px;
+  box-shadow: var(--shadow-sm);
+  padding: 28px 24px;
+}
+
+.sp-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.sp-sport { font-weight: 700; letter-spacing: -.02em; }
+.sp-tier {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.sp-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.sp-half, .sp-solo { text-align: center; min-width: 0; }
+.sp-two .sp-half + .sp-half { border-left: 1px solid var(--hairline); }
+
+.sp-side-name {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  font-size: 0.95rem; color: var(--muted); font-weight: 600;
+  min-height: 1.6em;
+}
+.sp-side-name > span { overflow-wrap: anywhere; }
+
+/* Serve dot — matches the app's own serve chip vocabulary. */
+.sp-serve {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent-bright); flex: none;
+}
+
+.sp-score {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: clamp(3.5rem, 18vw, 6.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -.04em;
+  font-variant-numeric: tabular-nums;
+}
+.sp-point {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 1.5rem; font-weight: 700; color: var(--accent);
+}
+.sp-clock {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 2rem; font-weight: 700; text-align: center;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 12px;
+}
+/* Semantic, NOT the sport accent. The per-sport accents are brand hues —
+   golf's is pink — so tinting "under par" with one would say nothing about
+   whether the number is good. Under is good, over is not, in every sport. */
+.sp-topar.under { color: var(--sp-good); }
+.sp-topar.over  { color: var(--sp-bad); }
+.sp-strokes { font-size: 0.95rem; color: var(--muted); margin-top: 8px; }
+
+.sp-caption {
+  text-align: center; margin: 20px 0 0;
+  font-size: 1rem; font-weight: 600; color: var(--accent);
+}
+.sp-caption.done { color: var(--fg); }
+
+/* --- status --- */
+
+.sp-status {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  font-size: 0.9rem; color: var(--muted);
+}
+.sp-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--faint); flex: none;
+}
+.sp-status.live .sp-dot { background: var(--sp-good); animation: sp-pulse 2s var(--ease) infinite; }
+.sp-status.live { color: var(--sp-good); }
+.sp-status.stale .sp-dot, .sp-status.offline .sp-dot { background: var(--sp-bad); }
+.sp-status.stale, .sp-status.offline { color: var(--sp-bad); }
+.sp-code {
+  margin-left: auto;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  background: var(--pill); border-radius: 8px; padding: 3px 8px;
+  letter-spacing: .12em;
+}
+
+@keyframes sp-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) {
+  .sp-status.live .sp-dot { animation: none; }
+}
+
+/* --- text, forms, actions --- */
+
+.sp-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -.03em; margin: 0 0 10px; }
+.sp-note { color: var(--muted); line-height: 1.6; margin: 0; }
+.sp-foot { font-size: 0.85rem; color: var(--faint); line-height: 1.6; text-align: center; margin: 0; }
+.sp-foot a { color: var(--accent); font-weight: 600; }
+
+.sp-form { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+.sp-label { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+.sp-input {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 1.75rem; font-weight: 700; letter-spacing: .18em; text-align: center;
+  text-transform: uppercase;
+  padding: 14px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--hairline);
+  background: var(--bg);
+  color: var(--fg);
+  width: 100%;
+}
+.sp-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sp-input.invalid { border-color: var(--sp-bad); }
+.sp-error { color: var(--sp-bad); font-size: 0.85rem; margin: 0; }
+
+.sp-cta {
+  display: inline-block; text-align: center;
+  margin-top: 16px; padding: 13px 22px;
+  border-radius: 999px; border: 0;
+  background: var(--accent); color: var(--accent-on);
+  font-weight: 700; font-size: 1rem; cursor: pointer;
+  width: 100%;
+}
+.sp-cta:hover { background: var(--accent-bright); }
+
+@media (max-width: 420px) {
+  .sp-wrap { padding-inline: 14px; }
+  .sp-board { padding: 22px 16px; border-radius: 20px; }
+  .sp-two { gap: 6px; }
+}

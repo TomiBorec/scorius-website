@@ -53,3 +53,12 @@ User-agent: Amazonbot
 Allow: /
 
 Sitemap: https://scorius.app/sitemap.xml
+
+# --- Live Spectate: never index a live score ---
+# Player names travel in the payload, so these pages must stay out of every
+# index. Belt and braces: the pages also send robots meta noindex and the relay
+# sets x-robots-tag on the stream.
+
+User-agent: *
+Disallow: /w/
+Disallow: /watch

@@ -1,0 +1,7 @@
+# Live Spectate: one static page serves every code.
+#
+# The site is a Next.js static export, so /w/<CODE> has no route to generate —
+# there is no finite list of codes. A 200 rewrite serves /w for any code and the
+# page reads the code from the URL, which keeps the link pretty (the code IS the
+# path segment) without giving up the static build.
+/w/*  /w  200
