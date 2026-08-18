@@ -122,30 +122,32 @@ frames, stop, and the demo stream.
       can tell "session died" from "network hiccup".
 - [x] No logging of frame contents. Names are in there.
 
-## Phase B — Web spectator UI
+## Phase B — Web spectator UI — ✅ DONE
 
-Est. **6–9 days**.
+`/w/<CODE>` and `/watch`. Verified end to end against `wrangler dev` through a local
+Pages simulator: badminton, tennis, football with a live clock and golf all render,
+scores update without a reload, dark mode resolves, mobile layout holds.
 
-- [ ] Route `/w/[code]` — the site is `output: 'export'`, so serve the static shell via a
+- [x] Route `/w/[code]` — the site is `output: 'export'`, so serve the static shell via a
       Pages Function on `/w/*` and read the code client-side.
-- [ ] Route `/watch` — code entry field. Uppercase-normalise, strip spaces and dashes,
+- [x] Route `/watch` — code entry field. Uppercase-normalise, strip spaces and dashes,
       tolerate a pasted full URL.
-- [ ] Per-sport renderers over the flat frame — 5 layouts: rally, tennis/padel,
+- [x] Per-sport renderers over the flat frame — 5 layouts: rally, tennis/padel,
       clocked (football/floorball/basketball), pickleball, golf/disc golf.
       **Port `SpectatorMatchView.swift` (283 LOC); it already renders exactly one frame.**
-- [ ] Local clock countdown from `periodEndsAt`; static `periodRemainingSeconds` when paused.
-- [ ] States: connecting · live · **stale** (no frame for ~2 min — the phone may have died;
+- [x] Local clock countdown from `periodEndsAt`; static `periodRemainingSeconds` when paused.
+- [x] States: connecting · live · **stale** (no frame for ~2 min — the phone may have died;
       say so rather than showing a frozen score as live) · match complete · code not found ·
       session expired.
-- [ ] `EventSource` reconnect with backoff; show reconnecting, don't blank the score.
-- [ ] **`noindex` on `/w/*` and `/watch`.** Player names must never land in Google.
+- [x] `EventSource` reconnect with backoff; show reconnecting, don't blank the score.
+- [x] **`noindex` on `/w/*` and `/watch`.** Player names must never land in Google.
       Add the meta tag *and* a `robots.txt` disallow, and confirm `src/app/sitemap.ts`
       does not emit these routes.
-- [ ] Friendly "code not found" page, not the site's 404 (`not_found_handling` is
+- [x] Friendly "code not found" page, not the site's 404 (`not_found_handling` is
       currently `404-page`).
-- [ ] Responsive: phone, desktop, and readable across a room on a laptop or TV.
-- [ ] Dark mode + reduced motion, consistent with the rest of the site.
-- [ ] Accessibility: live region announcements on score change, not a silent DOM swap.
+- [x] Responsive: phone, desktop, and readable across a room on a laptop or TV.
+- [x] Dark mode + reduced motion, consistent with the rest of the site.
+- [x] Accessibility: live region announcements on score change, not a silent DOM swap.
 
 ## Phase C — Web scorer (stripped)
 
@@ -398,8 +400,8 @@ optional per-match display overrides, and when set they win over the joined play
 |---|---|---|---:|
 | 1 | Confirm DO availability | — | hours |
 | 2 | ~~Phase A — server~~ | — | ✅ **done** |
-| 3 | Phase D — iOS publish path (TestFlight) | 2 | 5–7 d |
-| 4 | Phase B — spectator UI | 2, and 3 for a real source | 6–9 d |
+| 3 | Phase D — iOS publish path | 2 | ✅ **code done** (build 364) |
+| 4 | ~~Phase B — spectator UI~~ | — | ✅ **done** |
 | 5 | Phase F — privacy + policy deploy | 4 | 1–2 d |
 | 6 | Phase G — testing on TestFlight, web live | 3, 4, 5 | 3–4 d |
 | 7 | **Ship 2.2 to the App Store** | 6 | — |
