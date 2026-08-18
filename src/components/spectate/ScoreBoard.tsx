@@ -73,9 +73,45 @@ function SideName({ name, fallback, serving }: { name?: string; fallback: string
   );
 }
 
+/**
+ * The caption, composed here rather than taken from the payload's `gameMessage`.
+ *
+ * `gameMessage` is built in the app for the scorer: first person ("You won the
+ * game!") and in the scorer's language. Both are right on their own Lock Screen
+ * and wrong here — the viewer is someone else, often somewhere else. So the app
+ * sends a language-neutral token plus the side it refers to, and the sentence gets
+ * built with the actual names.
+ *
+ * Falls back to nothing rather than to `gameMessage`: no caption reads better than
+ * a caption about the wrong person.
+ */
 function Caption({ frame }: { frame: SpectateFrame }) {
-  if (!frame.gameMessage) return null;
-  return <p className={`sp-caption${frame.isMatchComplete ? ' done' : ''}`}>{frame.gameMessage}</p>;
+  const text = captionText(frame);
+  if (!text) return null;
+  const done = frame.captionKey === 'wonMatch' || frame.isMatchComplete;
+  return <p className={`sp-caption${done ? ' done' : ''}`}>{text}</p>;
+}
+
+function captionText(frame: SpectateFrame): string | null {
+  const name = (side: 'player' | 'opponent') =>
+    side === 'player'
+      ? frame.team1Name || 'Side 1'
+      : frame.team2Name || 'Side 2';
+
+  switch (frame.captionKey) {
+    case 'wonGame':  return frame.captionSide ? `${name(frame.captionSide)} has won the game.` : null;
+    case 'wonSet':   return frame.captionSide ? `${name(frame.captionSide)} has won the set.` : null;
+    case 'wonMatch':
+      // A drawn match has a winning caption with no side — the clocked sports allow it.
+      return frame.captionSide ? `${name(frame.captionSide)} has won the match.` : 'Match drawn.';
+    case 'gamePoint': return frame.captionSide ? `Game point — ${name(frame.captionSide)}` : 'Game point';
+    case 'setPoint':  return frame.captionSide ? `Set point — ${name(frame.captionSide)}` : 'Set point';
+    case 'matchPoint': return frame.captionSide ? `Match point — ${name(frame.captionSide)}` : 'Match point';
+    default:
+      // No token: a wrist-scored match sends none, because the payload carries
+      // neither the rules nor a completion flag to derive one from.
+      return null;
+  }
 }
 
 /* ---------- rally: badminton, volleyball, table tennis, squash, pickleball ---------- */

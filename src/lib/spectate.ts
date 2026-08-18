@@ -44,6 +44,18 @@ export interface SpectateFrame {
   team1Name?: string;
   team2Name?: string;
   servingSide?: 'player' | 'opponent';
+  /**
+   * Language-neutral caption identity, plus the side it is about.
+   *
+   * `gameMessage` is deliberately NOT used by this page. It is pre-formatted in
+   * the app from the scorer's perspective and in the scorer's language — "You won
+   * the game!" names the wrong person for a viewer, and arrives in a language the
+   * viewer may not read. Reaching an Android phone in another country is the whole
+   * point of this feature, so the caption is composed here instead, from these two
+   * fields and the side names.
+   */
+  captionKey?: 'gamePoint' | 'setPoint' | 'matchPoint' | 'wonGame' | 'wonSet' | 'wonMatch';
+  captionSide?: 'player' | 'opponent';
 }
 
 export type SpectateStatus =
