@@ -12,7 +12,7 @@
 
 name = "scorius-spectate"
 main = "src/index.ts"
-compatibility_date = "2026-07-07"
+compatibility_date = "2026-08-18"
 
 # Same-origin with the Pages site. A Workers route takes precedence over Pages
 # for matching paths, so /api/spectate/* lands here and everything else still
