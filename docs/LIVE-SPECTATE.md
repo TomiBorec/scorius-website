@@ -76,9 +76,10 @@ clock therefore costs zero requests.
 
 ## 4. Decisions — settled
 
-- **Durable Objects on the current plan.** The Worker declares `new_sqlite_classes`, the
-  storage class available on the Workers free plan. Confirmed only by a real
-  `wrangler deploy`; if it is rejected, the fallback is Worker + KV + ~3 s polling.
+- **Durable Objects on the current plan.** ✅ **Confirmed available.** `wrangler deploy`
+  succeeded with `new_sqlite_classes` on account `c1de6ff5…`; the fallback (Worker + KV +
+  polling) is not needed. Worker `scorius-spectate`, route `scorius.app/api/spectate/*`,
+  8 ms startup, 3.78 KiB gzipped.
 - **Code:** 6 chars from `23456789ABCDEFGHJKMNPQRSTUVWXYZ` (31 symbols, no `0/O/1/I/L`)
   ≈ 887M combinations. A pasted URL, lowercase and stray dashes all normalise.
 - **TTL:** 4 h after the last frame; 30 min after the final `isMatchComplete` frame.
@@ -98,7 +99,9 @@ session lifecycle, two-spectator fanout, viewer count, immediate current-frame d
 on join, missing/wrong token, unknown and malformed codes, oversized and malformed
 frames, stop, and the demo stream.
 
-**Not yet deployed** — that needs Tom (see §8).
+**Deployed and verified in production:** session start, publish, immediate frame delivery,
+403 without a token, 410 on an unknown code, `x-robots-tag: noindex` on the stream, and the
+demo loop.
 
 - [x] Add the Worker to the existing `wrangler.toml`; keep it **same-origin** under
       `scorius.app/api/spectate/*` so the browser needs no CORS.
@@ -115,9 +118,10 @@ frames, stop, and the demo stream.
 - [x] **Envelope version field** (`{v: 1, state: {...}}`). The app ships independently of
       the web; without a version the first `ContentState` change breaks every old client.
 - [x] Alarm-based TTL cleanup per the decision above.
-- [ ] **Rate-limit `/start` by IP.** The only Phase A item not in code — it is a
-      Cloudflare dashboard rule, so it is Tom's step (§8). The short TTL bounds the damage
-      of an unlimited allocate endpoint but does not prevent it.
+- [ ] **Rate-limit `/start` by IP.** The only Phase A item still open — it is a Cloudflare
+      dashboard rule, so it is Tom's step (§8). The short TTL bounds the damage of an
+      unlimited allocate endpoint but does not prevent it. **This is now live traffic, so
+      it is no longer theoretical.**
 - [x] Reject frames for an unknown/expired code with a distinguishable status so the app
       can tell "session died" from "network hiccup".
 - [x] No logging of frame contents. Names are in there.
@@ -321,23 +325,27 @@ optional per-match display overrides, and when set they win over the joined play
 - [ ] Whichever is chosen, state it in the web UI so the user is not surprised by what does
       and doesn't carry over.
 
-## Phase F — Privacy & legal
+## Phase F — Privacy & legal — ✅ WEB SIDE DONE
 
-**Ships in the same deploy as the feature, not before and not after.**
+Shipped in the same deploy as the spectator page. The homepage privacy band, the FAQ
+answer, the features card and the root metadata description all repeated the same absolute
+claim and all needed rewording — that sweep is the part that is easy to miss.
 
-- [ ] Rewrite the two claims in `src/i18n/en.tsx` that stop being true:
+App Store Connect (below) is still open, and is Tom's.
+
+- [x] Rewrite the two claims in `src/i18n/en.tsx` that stop being true:
       *"The app never talks to any server other than Apple's…"* and
       *"Nothing is uploaded to a server run by the developer."*
       Replacement keeps the promise and adds the boundary — the only upload is the live
       score of one match, only while you have a session open.
-- [ ] New **Live Spectate** section in the privacy policy covering: off by default;
+- [x] New **Live Spectate** section in the privacy policy covering: off by default;
       anyone with the code can watch; read-only for spectators; held in memory only and
       discarded after the TTL; history is never sent; no account or device identifier;
       names you type are visible to anyone with the code.
-- [ ] Update **Website data & local storage** for the web scorer's IndexedDB.
-- [ ] Bump the policy's `meta` line (currently *"July 2026 · Applies to Scorius 2.0"*).
-- [ ] Mirror the change in `src/i18n/cs.tsx` — the site ships EN + CS.
-- [ ] Check the same claim isn't repeated elsewhere on the site (the `privacyBand`
+- [x] Update **Website data & local storage** for the web scorer's IndexedDB.
+- [x] Bump the policy's `meta` line (currently *"July 2026 · Applies to Scorius 2.0"*).
+- [x] Mirror the change in `src/i18n/cs.tsx` — the site ships EN + CS.
+- [x] Check the same claim isn't repeated elsewhere on the site (the `privacyBand`
       section and the features page both make privacy claims).
 
 ### App Store Connect — for the 2.2 submission
@@ -402,7 +410,7 @@ optional per-match display overrides, and when set they win over the joined play
 | 2 | ~~Phase A — server~~ | — | ✅ **done** |
 | 3 | Phase D — iOS publish path | 2 | ✅ **code done** (build 364) |
 | 4 | ~~Phase B — spectator UI~~ | — | ✅ **done** |
-| 5 | Phase F — privacy + policy deploy | 4 | 1–2 d |
+| 5 | ~~Phase F — privacy + policy deploy~~ | — | ✅ **done, live** |
 | 6 | Phase G — testing on TestFlight, web live | 3, 4, 5 | 3–4 d |
 | 7 | **Ship 2.2 to the App Store** | 6 | — |
 | 8 | Phase C — web scorer | independent | 43–59 d |
