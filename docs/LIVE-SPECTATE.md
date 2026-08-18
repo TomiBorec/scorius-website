@@ -170,31 +170,45 @@ during development.
 - [ ] PWA manifest, offline service worker, cross-browser QA.
 - [ ] Web-scored matches can publish a spectate session too — same Worker, same code.
 
-## Phase D — iOS publish path (in 2.2)
+## Phase D — iOS publish path (in 2.2) — ✅ CODE COMPLETE
 
-Est. **6–8 days** plus the repo's gate.
+Build 364. New: `MatchStore+WebSpectate.swift` (250), `WebSpectateSheet.swift` (224),
+`WebSpectateSettings.swift` (69), `ShareLiveScoreButton.swift` (109, replaces the old
+`SharePlayToolbarButton`). Build green, 18 new strings translated into all 34 languages,
+localization verifier green.
 
-- [ ] New `BB3/MatchStore+WebSpectate.swift` (~250 LOC): session start/stop, frame publish,
+Remaining in this phase: the error/edge-case matrix below, and on-device testing (Phase G).
+
+- [x] New `BB3/MatchStore+WebSpectate.swift` (~250 LOC): session start/stop, frame publish,
       viewer count, error handling.
-- [ ] Hook into the **same two funnels** as SharePlay — `MatchStore.swift:185` and
-      `MatchStore.swift:262`. Two traps:
-      - `broadcastSpectateState()` bails on its `spectateMessenger` guard at the top, so the
-        web path must be a **sibling call**, not code added inside it.
-      - Both funnels sit under `#if canImport(ActivityKit)`. That is the wrong gate for web
-        spectate — restructure so the web publish is not silently compiled out.
-- [ ] Throttle on equality against the last published frame, mirroring `broadcastSpectateState`.
-- [ ] **Failed frame → drop it.** A stale live score is worth nothing; the next point sends a
+- [x] Hook into the **same two funnels** as SharePlay — now `MatchStore.swift:191` and
+      `MatchStore.swift:273`. One real trap and one that turned out to be a non-issue:
+      - **Real:** `broadcastSpectateState()` bails on its `spectateMessenger` guard at the
+        top, so the web path is a **sibling call**, not code added inside it.
+      - **Non-issue, corrected:** an earlier draft of this plan called
+        `#if canImport(ActivityKit)` "the wrong gate". It isn't a choice —
+        `MatchAttributes.ContentState` is *declared* inside that same conditional
+        (`ActivityAttributes` comes from ActivityKit), so anything naming the type must
+        live under it. `BB3/` is iPhone-only, where ActivityKit is always present, so
+        nothing is compiled out. The gate to stay out of is the *runtime* one:
+        `refreshLiveActivity()` returns early when the user disables the Lock Screen card,
+        and neither broadcast may sit inside that.
+- [x] Throttle on equality against the last published frame, mirroring `broadcastSpectateState`.
+- [x] **Failed frame → drop it.** A stale live score is worth nothing; the next point sends a
       fresh one. Never queue.
-- [ ] **Final `isMatchComplete` frame gets 2–3 retries** — otherwise spectators are left
+- [x] **Final `isMatchComplete` frame gets 2–3 retries** — otherwise spectators are left
       watching a score that stopped moving and looks live.
-- [ ] **On return to foreground, force-send the current frame** ignoring the throttle. iOS
+- [x] **On return to foreground, force-send the current frame** ignoring the throttle. iOS
       suspends URLSession tasks in the background; without this the score silently desyncs.
-      Expect this to be the fiddliest part.
-- [ ] Code sheet: the code, the link, share sheet, stop button (+ QR if decided).
-- [ ] Scorer toolbar control across all six scoring screens (see the open design decision).
-- [ ] `WebSpectateSettings` — per-device toggle, `@AppStorage`, **default off**. Mirror
-      `LiveActivitySettings.swift`.
-- [ ] Clear in-UI disclosure at the moment the session starts: this publishes the live score
+      Done via `UIApplication.didBecomeActiveNotification` → `publishWebSpectateState(force:)`.
+- [x] Code sheet: the code, the link, share sheet, stop button (+ QR if decided).
+- [x] Scorer toolbar control across all six scoring screens (see the open design decision).
+- [x] `WebSpectateSettings` — per-device toggle, `@AppStorage`, **default on**, mirroring
+      `LiveActivitySettings.swift`. Corrected from "default off" in an earlier draft: this
+      flag only controls whether the control is *offered*; publishing still requires an
+      explicit per-match tap. Defaulting it off would hide the feature behind a switch
+      nobody goes looking for, which is the same as not shipping it.
+- [x] Clear in-UI disclosure at the moment the session starts: this publishes the live score
       to anyone with the code, including the side names.
 - [ ] Handle: session expired server-side mid-match · no network at start · user starts a
       second session · app killed with a session open.
@@ -207,15 +221,15 @@ Watch-scored source via `liveActivityState(forLive:)`, and the second funnel
 The web publish, being a sibling call in the same two funnels, gets Watch matches for free.
 What is missing is only the control.
 
-- [ ] Put the share control in the **Live tab toolbar** — `ContentView.swift:317`, beside
+- [x] Put the share control in the **Live tab toolbar** — `ContentView.swift:317`, beside
       the existing scoreboard button. That view is the iPhone's mirror of a Watch-scored
       match, so it is exactly where someone reaches for it.
-- [ ] Gate it on `liveMatchData?.isSessionActive` only. **Do not copy the neighbouring
+- [x] Gate it on `liveMatchData?.isSessionActive` only. **Do not copy the neighbouring
       button's `!live.effectiveSport.isGolfLike` exclusion** — that exists because the
       courtside scoreboard has no two-sided score to draw for golf. Spectate has no such
       problem: `ContentState` already carries `golfHole` / `golfPar` / `golfToPar`, so a
       golf round on the wrist is perfectly watchable.
-- [ ] Same code sheet as the iPhone-scored path — one sheet, two entry points.
+- [x] Same code sheet as the iPhone-scored path — one sheet, two entry points.
 
 #### The limitation, and be honest about it in the UI
 
@@ -236,16 +250,16 @@ Same behaviour, same caveats.
 
 ### The repo's own gate (from `BB3/CLAUDE.md`) — none of this is optional
 
-- [ ] All new UI strings translated into **all 34 languages** in the same commit.
+- [x] All new UI strings translated into **all 34 languages** in the same commit.
       English-only strings are not shippable.
-- [ ] `python3 scripts/verify-localization.py` green.
+- [x] `python3 scripts/verify-localization.py` green.
 - [ ] Build green; tests green (`** TEST SUCCEEDED **`).
-- [ ] `CURRENT_PROJECT_VERSION` bumped — **6 occurrences carry the real value**; leave the
+- [x] `CURRENT_PROJECT_VERSION` bumped — **6 occurrences carry the real value**; leave the
       eight `= 1` test-target entries. Next build is **364**.
-- [ ] Design-first approval for the toolbar/sheet UI before coding.
-- [ ] `docs/ARCHITECTURE.md` — add the new file to §1 and the data flow.
-- [ ] `docs/TESTING.md` — new manual section (see Phase G).
-- [ ] `docs/ROADMAP-2.2.md` — update the "next build" line.
+- [x] Design-first approval for the toolbar/sheet UI before coding.
+- [x] `docs/ARCHITECTURE.md` — add the new file to §1 and the data flow.
+- [x] `docs/TESTING.md` — new manual section (see Phase G).
+- [x] `docs/ROADMAP-2.2.md` — update the "next build" line.
 - [ ] Commit title `Build NNN — …`, explicit file list, no `git add -A`.
 
 ## Phase E — Export / import
