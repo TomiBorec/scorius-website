@@ -74,24 +74,22 @@ clock therefore costs zero requests.
 - Web scorer is English-only, local-storage-only, no Scorius account.
 - Export format is the app's existing `MatchesArchive` envelope (see Phase E).
 
-## 4. Decisions still open — settle before Phase A
+## 4. Decisions — settled
 
-- [ ] **Durable Objects on the current Cloudflare plan.** Free-tier gating for DOs has
-      changed over time; confirm in the dashboard. Fallback is Worker + KV + ~3 s polling,
-      which is noticeably worse but works. **This gates everything — check it first.**
-- [ ] **Code length and alphabet.** Proposal: 6 chars from `23456789ABCDEFGHJKMNPQRSTUVWXYZ`
-      (31 chars, no `0/O/1/I/L`) ≈ 887M combinations. Long enough that guessing finds
-      nothing, short enough to read out courtside.
-- [ ] **TTL.** Proposal: 4 h after the last frame, 30 min after the final `isMatchComplete`
-      frame.
-- [ ] **Toolbar UX in the app.** There is already a `SharePlayToolbarButton`. Two share
-      controls side by side is clutter — one button opening a menu (SharePlay / Link) is
-      better but changes existing SharePlay UX. **This triggers the repo's design-first
-      rule: present ~2 approaches and get Tom's OK before coding.**
-- [ ] **QR code on the code sheet.** Courtside, showing a QR beats reading out characters.
-      ~1 day. In or out?
-
----
+- **Durable Objects on the current plan.** The Worker declares `new_sqlite_classes`, the
+  storage class available on the Workers free plan. Confirmed only by a real
+  `wrangler deploy`; if it is rejected, the fallback is Worker + KV + ~3 s polling.
+- **Code:** 6 chars from `23456789ABCDEFGHJKMNPQRSTUVWXYZ` (31 symbols, no `0/O/1/I/L`)
+  ≈ 887M combinations. A pasted URL, lowercase and stray dashes all normalise.
+- **TTL:** 4 h after the last frame; 30 min after the final `isMatchComplete` frame.
+- **Toolbar UX:** **one** "Share live score" button opening a menu — SharePlay (only when
+  a FaceTime session is eligible) and Link & code (always). Replaces the standalone
+  `SharePlayToolbarButton`, so the FaceTime path must be re-verified.
+- **QR code:** yes. QR + code + link on the sheet, generated locally via CoreImage's
+  `CIQRCodeGenerator` — no dependency.
+- **Player identity on export (Phase E):** **names only.** The web writes
+  `side1Name` / `side2Name` and leaves the UUID arrays nil. Zero app changes. Web matches
+  will not feed per-player stats or the ranking; say so in the web UI.
 
 ## Phase A — Server (Cloudflare Worker + Durable Object) — ✅ DONE
 
@@ -299,16 +297,11 @@ A naive web export would therefore import as a history of matches between "Unkno
 There is an escape hatch already in the model: `Match.side1Name` / `side2Name` are
 optional per-match display overrides, and when set they win over the joined player names.
 
-- [ ] **Pick one:**
-      - **(a) Names only — recommended for v1.** The web writes `side1Name` / `side2Name`
-        and leaves the UUID arrays nil. Names display correctly, zero app changes.
-        Cost: web matches don't attach to roster players, so they don't feed per-player
-        stats or the ranking. Since the owner is always Side 1, the positional
-        `outcome` still reads correctly for win/loss.
-      - **(b) Add `players: [Player]?` to `MatchesArchive`.** Full fidelity, matches attach
-        to the roster. Cost: app-side change that must land **in 2.2**. An older app
-        reading a newer file ignores the unknown key safely, so it is backward-compatible —
-        but keep `version` at 1 or `decodeJSON` hard-rejects the file.
+- [x] **Settled: names only.** The web writes `side1Name` / `side2Name` and leaves the
+      UUID arrays nil. Names display correctly, **zero app changes**. Web matches don't
+      attach to roster players, so they don't feed per-player stats or the ranking; since
+      the owner is always Side 1, the positional `outcome` still reads correctly for
+      win/loss.
 - [ ] Whichever is chosen, state it in the web UI so the user is not surprised by what does
       and doesn't carry over.
 
