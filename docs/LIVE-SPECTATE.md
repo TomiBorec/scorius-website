@@ -186,11 +186,17 @@ during development.
       byte-agreement. The rally game-close path is the piece most worth pinning, since its
       serve handoff and log hand-over were written by reading Swift rather than by
       replaying it.
-- [ ] Scoring screens: 5 layouts + golf, undo, clock editor, serve chip, game-end banner.
+- [~] **Scoring screens.** The rally scorer is live at `/score` — badminton, volleyball,
+      table tennis and squash (4 of 12 sports), with the serve dot, the game-end banner,
+      undo that reaches back past a game close, and the match restored after a reload.
+      Still to build: tennis/padel, pickleball, the two clocked scorers and golf, plus the
+      clock editor.
 - [ ] Setup flow: sport, side names, singles/doubles, team size, golf holes/pars.
 - [ ] Per-sport rules editors for all 12 sports (port `SportRulesSections.swift`, 434 LOC).
-- [ ] Local persistence (IndexedDB) + history list + match detail.
-- [ ] Call `navigator.storage.persist()`. Safari ITP evicts non-installed PWA storage
+- [~] **Local persistence.** The in-progress match persists to localStorage and survives
+      a reload — synchronous, so the disk is never behind the screen. History and match
+      detail (IndexedDB) not built: ending a match currently discards it, and the UI says so.
+- [x] Call `navigator.storage.persist()`. Safari ITP evicts non-installed PWA storage
       after 7 days idle.
 - [ ] Wake Lock while scoring; reconstruct clocks from a monotonic stamp after backgrounding
       (timers throttle in background tabs).
