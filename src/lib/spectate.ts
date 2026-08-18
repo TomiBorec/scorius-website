@@ -65,6 +65,20 @@ const STALE_AFTER_MS = 120_000;
 const CODE_RE = /^[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{6}$/;
 
 /**
+ * The one reserved pseudo-code. `/w/demo` streams a canned match on a loop and
+ * never expires.
+ *
+ * It exists because App Review cannot test this feature otherwise: a real
+ * session is past its TTL long before a reviewer opens the code in the review
+ * notes, which reads as a broken feature. It also lets anyone see what
+ * spectating looks like before they own the app.
+ *
+ * `DEMO` is 4 characters, so it would fail CODE_RE — hence the special case
+ * rather than a code that happens to be reserved.
+ */
+export const DEMO_CODE = 'DEMO';
+
+/**
  * Pulls a code out of whatever the user typed or pasted — a bare code, a full
  * URL, lowercase, stray dashes or spaces. Returns null when it isn't one.
  * Courtside typing is sloppy; rejecting `scorius.app/w/4ktm-9p` would be
@@ -73,6 +87,7 @@ const CODE_RE = /^[23456789ABCDEFGHJKMNPQRSTUVWXYZ]{6}$/;
 export function normaliseCode(input: string): string | null {
   const tail = input.trim().split(/[/?#]/).filter(Boolean).pop() ?? '';
   const cleaned = tail.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (cleaned === DEMO_CODE) return DEMO_CODE;
   return CODE_RE.test(cleaned) ? cleaned : null;
 }
 
@@ -104,7 +119,12 @@ export function useSpectate(code: string | null): SpectateState {
     if (!code) return;
 
     let closed = false;
-    const url = `${SPECTATE_API}/${code}/stream`;
+    const isDemo = code === DEMO_CODE;
+    // The demo has its own sessionless endpoint; lowercase because the relay
+    // matches the literal path segment before any code normalisation.
+    const url = isDemo
+      ? `${SPECTATE_API}/demo/stream`
+      : `${SPECTATE_API}/${code}/stream`;
     const source = new EventSource(url);
 
     const onFrame = (event: MessageEvent) => {
@@ -114,7 +134,7 @@ export function useSpectate(code: string | null): SpectateState {
         setState((prev) => ({
           ...prev,
           frame: envelope.state,
-          status: envelope.state.isMatchComplete ? 'complete' : 'live',
+          status: !isDemo && envelope.state.isMatchComplete ? 'complete' : 'live',
         }));
       } catch {
         /* A frame we can't parse is a frame we ignore — the next one supersedes it. */

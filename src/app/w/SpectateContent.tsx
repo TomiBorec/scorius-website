@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ScoreBoard } from '@/components/spectate/ScoreBoard';
-import { normaliseCode, useSpectate } from '@/lib/spectate';
+import { DEMO_CODE, normaliseCode, useSpectate } from '@/lib/spectate';
 
 /**
  * The spectator screen at /w/<CODE>.
@@ -27,12 +27,21 @@ export function SpectateContent() {
 
 function Spectator({ code }: { code: string }) {
   const { status, frame } = useSpectate(code);
+  const isDemo = code === DEMO_CODE;
 
   if (status === 'notfound') return <BadCode expired />;
 
   return (
     <Shell>
-      <StatusLine status={status} code={code} />
+      {/* Say plainly that this is not a real match. A demo that presents itself
+          as live would be the one dishonest screen in the whole feature. */}
+      {isDemo ? (
+        <p className="sp-note">
+          <strong>This is a demonstration.</strong> A recorded match plays on a loop so you can see
+          what watching looks like. A real code comes from someone scoring in the Scorius app.
+        </p>
+      ) : null}
+      <StatusLine status={status} code={code} isDemo={isDemo} />
       {/* Announce score changes to screen readers — a silent DOM swap tells a
           non-sighted spectator nothing, and following the score is the point. */}
       <div aria-live="polite" aria-atomic="true">
@@ -43,7 +52,7 @@ function Spectator({ code }: { code: string }) {
   );
 }
 
-function StatusLine({ status, code }: { status: string; code: string }) {
+function StatusLine({ status, code, isDemo }: { status: string; code: string; isDemo?: boolean }) {
   const text: Record<string, string> = {
     connecting: 'Connecting…',
     waiting: 'Connected — waiting for the first point',
@@ -56,7 +65,7 @@ function StatusLine({ status, code }: { status: string; code: string }) {
   return (
     <div className={`sp-status ${status}`}>
       <span className="sp-dot" aria-hidden="true" />
-      <span>{text[status] ?? status}</span>
+      <span>{isDemo && status === 'live' ? 'Demo — replaying a recorded match' : text[status] ?? status}</span>
       <code className="sp-code">{code}</code>
     </div>
   );
