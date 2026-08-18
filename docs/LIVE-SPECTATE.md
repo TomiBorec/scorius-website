@@ -118,10 +118,10 @@ demo loop.
 - [x] **Envelope version field** (`{v: 1, state: {...}}`). The app ships independently of
       the web; without a version the first `ContentState` change breaks every old client.
 - [x] Alarm-based TTL cleanup per the decision above.
-- [ ] **Rate-limit `/start` by IP.** The only Phase A item still open — it is a Cloudflare
-      dashboard rule, so it is Tom's step (§8). The short TTL bounds the damage of an
-      unlimited allocate endpoint but does not prevent it. **This is now live traffic, so
-      it is no longer theoretical.**
+- [x] **Rate-limit `/start` by IP.** Done in the Cloudflare dashboard. Verified against
+      production: the 5th allocate in quick succession returns 429. Note it is tighter
+      than the 10/min originally proposed — worth revisiting if a club or tournament ever
+      reports failures, since several people behind one public IP share the budget.
 - [x] Reject frames for an unknown/expired code with a distinguishable status so the app
       can tell "session died" from "network hiccup".
 - [x] No logging of frame contents. Names are in there.
@@ -490,9 +490,9 @@ placeholders here.
 
 | Where | What |
 |---|---|
-| Cloudflare dashboard | Add the rate-limiting rule on `/api/spectate/start`. |
-| Cloudflare dashboard | Confirm routing for `/api/spectate/*` and `/w/*` on the `scorius.app` custom domain. |
-| Terminal | Run `wrangler deploy` for the Worker (or approve it being run). |
+| ~~Cloudflare dashboard~~ | ~~Rate-limiting rule on `/api/spectate/start`~~ — ✅ done, verified (429 on the 5th request). |
+| ~~Cloudflare dashboard~~ | ~~Routing for `/api/spectate/*` and `/w/*`~~ — ✅ live and verified. |
+| ~~Terminal~~ | ~~`wrangler deploy` for the Worker~~ — ✅ deployed; Durable Objects confirmed available. |
 | Xcode | Nothing new — outbound HTTPS needs no new entitlement or capability, and signing is unchanged. |
 | Here, in chat | Read and approve the final privacy-policy wording before it goes live. It is a publicly binding document; it should say what you are willing to stand behind. |
 
