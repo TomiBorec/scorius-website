@@ -17,7 +17,10 @@ import {
   type RallyRules,
 } from '@/engine/rally';
 import type { Sport } from '@/engine/types';
+import { History } from '@/components/score/History';
 import { RallyScorer } from '@/components/score/RallyScorer';
+import { finishMatch } from '@/engine/finish';
+import { saveMatch } from '@/lib/history';
 import { loadActiveMatch, requestPersistence, saveActiveMatch } from '@/lib/storage';
 
 /**
@@ -34,6 +37,8 @@ const AVAILABLE: { sport: Sport; label: string; rules: RallyRules; sides: [strin
 export function ScoreContent() {
   const [match, setMatch] = useState<ActiveMatch | null>(null);
   const [restored, setRestored] = useState(false);
+  /** Bumped on every save, so the history list below reloads without polling. */
+  const [savedCount, setSavedCount] = useState(0);
 
   // Pick up an interrupted match before rendering anything, so a reload mid-game
   // does not flash the setup screen at someone who is 18-16 up.
@@ -64,15 +69,28 @@ export function ScoreContent() {
     setMatch((prev) => (prev ? updater(prev) : prev));
   }, []);
 
+  /**
+   * Ends the match, saving it first.
+   *
+   * `finishMatch` returns null for a match nobody scored in — that is not history,
+   * and saving it would fill the list with empty rows. Anything with a point in it
+   * is kept.
+   */
   const end = useCallback(() => {
-    // History is not built yet, so ending discards. Said plainly in the UI rather
-    // than silently losing a match someone assumed was saved.
-    setMatch(null);
+    setMatch((current) => {
+      if (current) {
+        const record = finishMatch(current, { now: Date.now(), id: crypto.randomUUID() });
+        if (record) {
+          void saveMatch(record).then(() => setSavedCount((n) => n + 1));
+        }
+      }
+      return null;
+    });
   }, []);
 
   if (!restored) return <main className="sc-page" />;
 
-  if (!match) return <Setup onStart={(m) => setMatch(m)} />;
+  if (!match) return <Setup onStart={(m) => setMatch(m)} savedCount={savedCount} />;
 
   return (
     <main className="sc-page">
@@ -81,7 +99,7 @@ export function ScoreContent() {
   );
 }
 
-function Setup({ onStart }: { onStart: (m: ActiveMatch) => void }) {
+function Setup({ onStart, savedCount }: { onStart: (m: ActiveMatch) => void; savedCount: number }) {
   const [sport, setSport] = useState<Sport>('badminton');
   const [side1, setSide1] = useState('');
   const [side2, setSide2] = useState('');
@@ -135,10 +153,9 @@ function Setup({ onStart }: { onStart: (m: ActiveMatch) => void }) {
         </div>
 
         <button className="sc-primary" onClick={start}>Start match</button>
-        <p className="sp-foot">
-          Ending a match discards it — history and export are not built yet.
-        </p>
       </div>
+
+      <History reloadKey={savedCount} />
     </main>
   );
 }

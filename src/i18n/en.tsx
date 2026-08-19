@@ -68,6 +68,7 @@ export const en = {
     sub: 'Scorius keeps score for you on Apple Watch across eleven sports — with heart rate, calories and per-sport rules built in. iPhone and iPad mirror every point live, and everything syncs over iCloud.',
     download: 'Download on App Store',
     see: 'See it in action →',
+    scoreOnWeb: 'Keep score in your browser →',
     stats: { sports: 'Sports', sync: 'Live sync', accounts: 'Accounts' },
   },
 

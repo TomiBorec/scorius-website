@@ -64,6 +64,7 @@ export const cs: Dict = {
     sub: 'Scorius počítá skóre za tebe na Apple Watch v jedenácti sportech — s tepovou frekvencí, kaloriemi a pravidly pro každý sport. iPhone a iPad živě zrcadlí každý bod a všechno se synchronizuje přes iCloud.',
     download: 'Stáhnout z App Store',
     see: 'Podívej se na to v akci →',
+    scoreOnWeb: 'Skóruj rovnou v prohlížeči →',
     stats: { sports: 'Sportů', sync: 'Živá synchronizace', accounts: 'Účtů' },
   },
 

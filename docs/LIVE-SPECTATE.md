@@ -196,9 +196,9 @@ during development.
       clock editor.
 - [ ] Setup flow: sport, side names, singles/doubles, team size, golf holes/pars.
 - [ ] Per-sport rules editors for all 12 sports (port `SportRulesSections.swift`, 434 LOC).
-- [~] **Local persistence.** The in-progress match persists to localStorage and survives
-      a reload — synchronous, so the disk is never behind the screen. History and match
-      detail (IndexedDB) not built: ending a match currently discards it, and the UI says so.
+- [x] **Local persistence.** The in-progress match persists to localStorage (synchronous,
+      so the disk is never behind the screen); finished matches go to IndexedDB and show
+      in a history list with delete. Match *detail* is still to build.
 - [x] Call `navigator.storage.persist()`. Safari ITP evicts non-installed PWA storage
       after 7 days idle.
 - [ ] Wake Lock while scoring; reconstruct clocks from a monotonic stamp after backgrounding
@@ -321,12 +321,13 @@ A `sport` discriminator plus one payload key named after the sport. No `_0` wrap
 Envelope: `{ "version": 1, "exportedAt": "<ISO8601>", "matches": [...] }` —
 `tournaments` and `leagues` are optional and may be omitted entirely.
 
-- [ ] Emit that envelope, ISO8601 dates, from the web.
-- [ ] Import the same envelope on the web (so an app backup opens in the browser too).
-- [ ] **Round-trip a real file both directions before trusting any of this.**
-      Export from the app → import in the browser → export from the browser → import in
-      the app. Diff the two JSON files.
-- [ ] Make export prominent in the web UI. With local-only storage and no account it is
+- [x] Emit that envelope, ISO8601 dates, from the web.
+- [x] Import the same envelope on the web (so an app backup opens in the browser too).
+- [x] **Round-trip verified in the direction that matters.** A real browser export is
+      now pinned by `BB3Tests/WebExportImportTests.swift` in the app repo — score, rules,
+      names, the rally log and merge-idempotency all checked against the app's actual
+      importer. Still to do by hand: app export → browser import, on a device.
+- [x] Make export prominent in the web UI. With local-only storage and no account it is
       the only safety net there is.
 
 ### The merge is safe — verified
