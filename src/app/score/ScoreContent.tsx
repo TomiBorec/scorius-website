@@ -25,6 +25,7 @@ import type { Sport } from '@/engine/types';
 import { History } from '@/components/score/History';
 import { ClockedScorer } from '@/components/score/ClockedScorer';
 import { GolfScorer } from '@/components/score/GolfScorer';
+import { RulesEditor } from '@/components/score/RulesEditor';
 import { PickleballScorer } from '@/components/score/PickleballScorer';
 import { RallyScorer } from '@/components/score/RallyScorer';
 import { TennisScorer } from '@/components/score/TennisScorer';
@@ -149,14 +150,30 @@ function Setup({ onStart, savedCount }: { onStart: (m: ActiveMatch) => void; sav
   const [side1, setSide1] = useState('');
   const [side2, setSide2] = useState('');
   const [solo, setSolo] = useState(true);
+  const [showRules, setShowRules] = useState(false);
+  /**
+   * The rules this match will be played under, seeded from the sport's preset.
+   *
+   * Re-seeded whenever the sport changes — and the disclosure closes with it,
+   * because the edits belonged to the sport that was chosen before. Same
+   * reasoning as the app's one-off override.
+   */
+  const [rules, setRules] = useState<MatchSettings | null>(null);
 
   const chosen = AVAILABLE.find((s) => s.sport === sport) ?? AVAILABLE[0];
-  const isGolf = chosen.settings.kind === 'golf';
+  const settings = rules ?? chosen.settings;
+  const isGolf = settings.kind === 'golf';
+
+  function pickSport(next: Sport) {
+    setSport(next);
+    setRules(null);
+    setShowRules(false);
+  }
 
   function start() {
     onStart(startMatch({
       sport: chosen.sport,
-      settings: chosen.settings,
+      settings,
       side1Name: side1.trim() || undefined,
       side2Name: isGolf && solo ? undefined : side2.trim() || undefined,
       // Golf is a flight, not two sides. Capped at two here, not because the
@@ -187,7 +204,7 @@ function Setup({ onStart, savedCount }: { onStart: (m: ActiveMatch) => void; sav
               data-sport={s.sport}
               role="radio"
               aria-checked={s.sport === sport}
-              onClick={() => setSport(s.sport)}
+              onClick={() => pickSport(s.sport)}
             >
               {s.label}
             </button>
@@ -216,6 +233,28 @@ function Setup({ onStart, savedCount }: { onStart: (m: ActiveMatch) => void; sav
                      onChange={(e) => setSide2(e.target.value)} />
             </>
           )}
+        </div>
+
+        <div className="sc-rules">
+          <button className="sc-disclosure" aria-expanded={showRules}
+                  onClick={() => setShowRules((open) => !open)}>
+            <span>Rules for this match</span>
+            <span aria-hidden="true">{showRules ? '−' : '+'}</span>
+          </button>
+          {showRules ? (
+            <>
+              <RulesEditor
+                settings={settings}
+                gameNoun={sport === 'volleyball' || settings.kind === 'tennis' ? 'set' : 'game'}
+                onChange={(update) => setRules((prev) => update(prev ?? chosen.settings))}
+              />
+              {rules ? (
+                <button className="sc-link" onClick={() => setRules(null)}>
+                  Back to the standard rules
+                </button>
+              ) : null}
+            </>
+          ) : null}
         </div>
 
         <button className="sc-primary" onClick={start}>Start match</button>

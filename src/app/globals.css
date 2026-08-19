@@ -1582,3 +1582,77 @@ img, svg { display: block; }
 .sc-flightrow-topar.even  { color: var(--muted); }
 
 .sc-primary.sc-inline { width: auto; flex: 1; padding: 13px 18px; font-size: 1rem; }
+
+/* --- rules editor --- */
+
+.sc-rules {
+  display: flex; flex-direction: column; gap: 2px;
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  padding: 4px 14px 10px;
+  background: var(--card);
+}
+.sc-disclosure {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 14px 0;
+  border: 0; background: none; color: var(--fg);
+  font-weight: 600; font-size: 1rem; cursor: pointer;
+}
+
+.rc-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; padding: 11px 0;
+  border-top: 1px solid var(--hairline);
+}
+.rc-label { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rc-label > span:first-child { font-size: 0.95rem; }
+.rc-hint { font-size: 0.78rem; color: var(--muted); line-height: 1.4; }
+
+.rc-stepper { display: flex; align-items: center; gap: 8px; flex: none; }
+.rc-step {
+  width: 34px; height: 34px;
+  border: 1px solid var(--hairline); border-radius: 50%;
+  background: var(--pill); color: var(--fg);
+  font-size: 1.1rem; font-weight: 700; cursor: pointer;
+  touch-action: manipulation;
+}
+.rc-step:disabled { opacity: 0.35; cursor: default; }
+.rc-value {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-weight: 700; min-width: 5ch; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Checkbox stays in the DOM for keyboard and screen readers; the track is what
+   is drawn. Hiding it with display:none would take it out of the tab order. */
+.rc-switch { cursor: pointer; }
+.rc-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+.rc-track {
+  flex: none; position: relative;
+  width: 48px; height: 28px; border-radius: 999px;
+  background: var(--pill-strong);
+  transition: background .18s var(--ease);
+}
+.rc-track::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--card); box-shadow: var(--shadow-sm);
+  transition: transform .18s var(--ease);
+}
+.rc-switch input:checked ~ .rc-track { background: var(--accent); }
+.rc-switch input:checked ~ .rc-track::after { transform: translateX(20px); }
+.rc-switch input:focus-visible ~ .rc-track { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.rc-segmented-row { flex-wrap: wrap; }
+.rc-segmented { display: flex; gap: 4px; background: var(--pill); border-radius: 999px; padding: 3px; }
+.rc-segment {
+  border: 0; border-radius: 999px;
+  padding: 8px 13px;
+  background: none; color: var(--muted);
+  font-size: 0.86rem; font-weight: 600; cursor: pointer;
+}
+.rc-segment.on { background: var(--card); color: var(--fg); box-shadow: var(--shadow-sm); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rc-track, .rc-track::after { transition: none; }
+}
