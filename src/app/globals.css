@@ -1484,3 +1484,4 @@ img, svg { display: block; }
   cursor: pointer;
 }
 .sc-row-del:hover { background: var(--pill); color: var(--sp-bad); }
+.sc-hint { text-align: center; font-size: 0.85rem; }

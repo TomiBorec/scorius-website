@@ -14,24 +14,38 @@ import { useCallback, useEffect, useState } from 'react';
 import { startMatch, type ActiveMatch } from '@/engine/active';
 import {
   badmintonDefault, squashDefault, tableTennisDefault, volleyballDefault,
-  type RallyRules,
 } from '@/engine/rally';
+import { padelDefault, tennisDefault } from '@/engine/tennis';
+import { pickleballDefault } from '@/engine/pickleball';
+import type { MatchSettings } from '@/engine/active';
 import type { Sport } from '@/engine/types';
 import { History } from '@/components/score/History';
+import { PickleballScorer } from '@/components/score/PickleballScorer';
 import { RallyScorer } from '@/components/score/RallyScorer';
+import { TennisScorer } from '@/components/score/TennisScorer';
 import { finishMatch } from '@/engine/finish';
 import { saveMatch } from '@/lib/history';
 import { loadActiveMatch, requestPersistence, saveActiveMatch } from '@/lib/storage';
 
 /**
- * Only the sports whose scorer exists. Offering the other eight would mean a
- * picker that leads to a blank screen, which is worse than a short list.
+ * Only the sports whose scorer exists. Offering the rest would mean a picker
+ * that leads to a blank screen, which is worse than a short list.
  */
-const AVAILABLE: { sport: Sport; label: string; rules: RallyRules; sides: [string, string] }[] = [
-  { sport: 'badminton', label: 'Badminton', rules: badmintonDefault, sides: ['Side 1', 'Side 2'] },
-  { sport: 'volleyball', label: 'Volleyball', rules: volleyballDefault, sides: ['Home', 'Away'] },
-  { sport: 'tableTennis', label: 'Table Tennis', rules: tableTennisDefault, sides: ['Side 1', 'Side 2'] },
-  { sport: 'squash', label: 'Squash', rules: squashDefault, sides: ['Side 1', 'Side 2'] },
+interface SportOption {
+  sport: Sport;
+  label: string;
+  settings: MatchSettings;
+  sides: [string, string];
+}
+
+const AVAILABLE: SportOption[] = [
+  { sport: 'badminton', label: 'Badminton', settings: { kind: 'rally', rules: badmintonDefault }, sides: ['Side 1', 'Side 2'] },
+  { sport: 'tennis', label: 'Tennis', settings: { kind: 'tennis', rules: tennisDefault }, sides: ['Side 1', 'Side 2'] },
+  { sport: 'padel', label: 'Padel', settings: { kind: 'tennis', rules: padelDefault }, sides: ['Side 1', 'Side 2'] },
+  { sport: 'pickleball', label: 'Pickleball', settings: { kind: 'pickleball', rules: pickleballDefault }, sides: ['Side 1', 'Side 2'] },
+  { sport: 'volleyball', label: 'Volleyball', settings: { kind: 'rally', rules: volleyballDefault }, sides: ['Home', 'Away'] },
+  { sport: 'tableTennis', label: 'Table Tennis', settings: { kind: 'rally', rules: tableTennisDefault }, sides: ['Side 1', 'Side 2'] },
+  { sport: 'squash', label: 'Squash', settings: { kind: 'rally', rules: squashDefault }, sides: ['Side 1', 'Side 2'] },
 ];
 
 export function ScoreContent() {
@@ -94,9 +108,27 @@ export function ScoreContent() {
 
   return (
     <main className="sc-page">
-      <RallyScorer match={match} onChange={update} onEnd={end} />
+      <Scorer match={match} onChange={update} onEnd={end} />
     </main>
   );
+}
+
+/**
+ * Picks the scorer by the settings' engine kind rather than by sport, mirroring
+ * the app: twelve sports share six engines, and branching on the sport would mean
+ * repeating the mapping everywhere it is needed.
+ */
+function Scorer({ match, onChange, onEnd }: {
+  match: ActiveMatch;
+  onChange: (updater: (m: ActiveMatch) => ActiveMatch) => void;
+  onEnd: () => void;
+}) {
+  switch (match.settings.kind) {
+    case 'rally':  return <RallyScorer match={match} onChange={onChange} onEnd={onEnd} />;
+    case 'tennis': return <TennisScorer match={match} onChange={onChange} onEnd={onEnd} />;
+    case 'pickleball': return <PickleballScorer match={match} onChange={onChange} onEnd={onEnd} />;
+    default:       return null;
+  }
 }
 
 function Setup({ onStart, savedCount }: { onStart: (m: ActiveMatch) => void; savedCount: number }) {
@@ -109,7 +141,7 @@ function Setup({ onStart, savedCount }: { onStart: (m: ActiveMatch) => void; sav
   function start() {
     onStart(startMatch({
       sport: chosen.sport,
-      settings: { kind: 'rally', rules: chosen.rules },
+      settings: chosen.settings,
       side1Name: side1.trim() || undefined,
       side2Name: side2.trim() || undefined,
       now: Date.now(),
@@ -121,7 +153,7 @@ function Setup({ onStart, savedCount }: { onStart: (m: ActiveMatch) => void; sav
       <div className="sc-setup">
         <h1 className="sp-title">Keep score</h1>
         <p className="sp-note">
-          Four sports so far, and matches stay on this device — no account, nothing uploaded.
+          Seven sports so far, and matches stay on this device — no account, nothing uploaded.
           The full tracker, with every sport and iCloud sync, is the{' '}
           <Link className="inline" href="/">Scorius app</Link>.
         </p>
