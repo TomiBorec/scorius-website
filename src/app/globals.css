@@ -1399,3 +1399,50 @@ img, svg { display: block; }
   .sc-zones { gap: 6px; }
   .sc-zone { border-radius: 18px; }
 }
+
+/* --- golf flight: a line per player, on both boards ---
+   Every player in a flight plays their own ball. One figure beside a list of
+   names would be claiming they shared a score, which is the bug this replaces. */
+
+.sp-flight, .fsb-flight { list-style: none; margin: 0; padding: 0; }
+
+.sp-flight-row, .fsb-flight-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: baseline;
+  gap: 14px;
+}
+.sp-flight-row + .sp-flight-row,
+.fsb-flight-row + .fsb-flight-row { border-top: 1px solid var(--hairline); }
+
+.sp-flight-row { padding: 12px 2px; }
+.sp-flight-name { font-weight: 600; overflow-wrap: anywhere; }
+.sp-flight-strokes {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.sp-flight-topar {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-weight: 700; min-width: 3ch; text-align: right;
+}
+
+.fsb-flight { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.fsb-flight-row { padding: min(2.4vh, 20px) clamp(4px, 2vw, 24px); }
+.fsb-flight-name {
+  font-size: min(5vw, 5vh); font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.fsb-flight-strokes {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: min(11vw, 11vh); font-weight: 700; font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.fsb-flight-topar {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: min(7vw, 7vh); font-weight: 700;
+  min-width: 3ch; text-align: right;
+}
+
+.sp-flight-topar.under, .fsb-flight-topar.under { color: var(--sp-good); }
+.sp-flight-topar.over,  .fsb-flight-topar.over  { color: var(--sp-bad); }
+.sp-flight-topar.even,  .fsb-flight-topar.even  { color: var(--muted); }

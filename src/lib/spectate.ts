@@ -41,6 +41,13 @@ export interface SpectateFrame {
   golfHoleCount?: number;
   golfPar?: number;
   golfToPar?: number;
+  /**
+   * One line per player in a golf flight, present only when more than one ball is
+   * in play. A flight is not a team — everyone plays their own — so the single
+   * `golfToPar` above is the owner's alone and must not be shown beside a joined
+   * list of names.
+   */
+  golfPlayers?: { name?: string; strokes: number; toPar: number; holesPlayed: number }[];
   team1Name?: string;
   team2Name?: string;
   servingSide?: 'player' | 'opponent';

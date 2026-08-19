@@ -219,22 +219,48 @@ function formatClock(totalSeconds: number): string {
 
 /* ---------- golf + disc golf: one player, to-par is the hero ---------- */
 
+export function toParLabel(toPar: number): string {
+  return toPar === 0 ? 'E' : toPar > 0 ? `+${toPar}` : `${toPar}`;
+}
+
+export function toParTone(toPar: number): 'under' | 'even' | 'over' {
+  return toPar < 0 ? 'under' : toPar > 0 ? 'over' : 'even';
+}
+
 function GolfBoard({ frame }: { frame: SpectateFrame }) {
-  const toPar = frame.golfToPar ?? 0;
-  const label = toPar === 0 ? 'E' : toPar > 0 ? `+${toPar}` : `${toPar}`;
-  const tone = toPar < 0 ? 'under' : toPar > 0 ? 'over' : 'even';
   const hole = frame.golfHole;
   const holes = frame.golfHoleCount;
+  const header = hole && holes
+    ? `Hole ${hole} of ${holes}${frame.golfPar ? ` · Par ${frame.golfPar}` : ''}`
+    : undefined;
 
+  // A flight gets a line each. Everyone plays their own ball, so one hero figure
+  // above a list of names would be claiming they share a score.
+  if (frame.golfPlayers && frame.golfPlayers.length > 1) {
+    return (
+      <Board frame={frame}>
+        <Header frame={frame} extra={header} />
+        <ul className="sp-flight">
+          {frame.golfPlayers.map((p, i) => (
+            <li key={i} className="sp-flight-row">
+              <span className="sp-flight-name">{p.name || `Player ${i + 1}`}</span>
+              <span className="sp-flight-strokes">{p.strokes}</span>
+              <span className={`sp-flight-topar ${toParTone(p.toPar)}`}>{toParLabel(p.toPar)}</span>
+            </li>
+          ))}
+        </ul>
+        <Caption frame={frame} />
+      </Board>
+    );
+  }
+
+  const toPar = frame.golfToPar ?? 0;
   return (
     <Board frame={frame}>
-      <Header
-        frame={frame}
-        extra={hole && holes ? `Hole ${hole} of ${holes}${frame.golfPar ? ` · Par ${frame.golfPar}` : ''}` : undefined}
-      />
+      <Header frame={frame} extra={header} />
       <div className="sp-solo">
         <SideName name={frame.team1Name} fallback="Player" serving={false} />
-        <div className={`sp-score sp-topar ${tone}`}>{label}</div>
+        <div className={`sp-score sp-topar ${toParTone(toPar)}`}>{toParLabel(toPar)}</div>
         <div className="sp-strokes">
           {/* Total strokes ride in playerGames; the current hole's in playerScore. */}
           {frame.playerGames} strokes

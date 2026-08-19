@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import type { SpectateFrame } from '@/lib/spectate';
+import { toParLabel, toParTone } from './ScoreBoard';
 
 /* ============================================================
    Courtside mode — the score, as large as the screen allows.
@@ -146,15 +147,33 @@ function Half({ name, serving, big, point }: {
 }
 
 function GolfLayout({ frame }: { frame: SpectateFrame }) {
+  // A flight plays for its own numbers, so courtside shows a line each rather
+  // than one hero figure that belongs to whoever happens to be slot 0.
+  if (frame.golfPlayers && frame.golfPlayers.length > 1) {
+    return (
+      <>
+        <SubScore frame={frame} />
+        <ul className="fsb-flight">
+          {frame.golfPlayers.map((p, i) => (
+            <li key={i} className="fsb-flight-row">
+              <span className="fsb-flight-name">{p.name || `Player ${i + 1}`}</span>
+              <span className="fsb-flight-strokes">{p.strokes}</span>
+              <span className={`fsb-flight-topar ${toParTone(p.toPar)}`}>{toParLabel(p.toPar)}</span>
+            </li>
+          ))}
+        </ul>
+        <Caption frame={frame} />
+      </>
+    );
+  }
+
   const toPar = frame.golfToPar ?? 0;
-  const label = toPar === 0 ? 'E' : toPar > 0 ? `+${toPar}` : `${toPar}`;
-  const tone = toPar < 0 ? 'under' : toPar > 0 ? 'over' : 'even';
   return (
     <>
       <SubScore frame={frame} />
       <div className="fsb-solo">
         <div className="fsb-name"><span>{frame.team1Name || 'Player'}</span></div>
-        <div className={`fsb-big ${tone}`}>{label}</div>
+        <div className={`fsb-big ${toParTone(toPar)}`}>{toParLabel(toPar)}</div>
         <div className="fsb-point">{frame.playerGames} strokes</div>
       </div>
       <Caption frame={frame} />

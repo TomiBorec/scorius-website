@@ -139,7 +139,10 @@ scores update without a reload, dark mode resolves, mobile layout holds.
 - [x] Route `/watch` — code entry field. Uppercase-normalise, strip spaces and dashes,
       tolerate a pasted full URL.
 - [x] Per-sport renderers over the flat frame — 5 layouts: rally, tennis/padel,
-      clocked (football/floorball/basketball), pickleball, golf/disc golf.
+      clocked (football/floorball/basketball), pickleball, golf/disc golf. Golf has two
+      shapes: a hero to-par figure for a solo round, and **a row per player** for a
+      flight — everyone plays their own ball, so one figure beside several names is a
+      fiction (app build 367 added `golfPlayers` to the payload for this).
       **Port `SpectatorMatchView.swift` (283 LOC); it already renders exactly one frame.**
 - [x] Local clock countdown from `periodEndsAt`; static `periodRemainingSeconds` when paused.
 - [x] States: connecting · live · **stale** (no frame for ~2 min — the phone may have died;
