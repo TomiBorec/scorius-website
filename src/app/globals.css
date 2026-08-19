@@ -1724,3 +1724,36 @@ img, svg { display: block; }
 .sc-momentum-bar { flex: 1 1 0; min-width: 1px; border-radius: 1px; }
 .sc-momentum-bar.up { background: var(--sp-good); align-self: flex-start; }
 .sc-momentum-bar.down { background: var(--sp-bad); align-self: flex-end; }
+
+/* --- per-hole par grid --- */
+
+.rc-pars { flex-direction: column; align-items: stretch; gap: 10px; }
+
+.par-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
+  gap: 6px;
+}
+.par-cell {
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  padding: 7px 2px;
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--fg);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.par-hole { font-size: 0.68rem; color: var(--faint); }
+.par-value {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 1.15rem; font-weight: 700; line-height: 1;
+}
+/* A par-3 and a par-5 hole should be distinguishable at a glance while you copy
+   a scorecard in, without reading eighteen numbers. */
+.par-cell.p3 { border-color: color-mix(in srgb, var(--sp-good) 45%, var(--hairline)); }
+.par-cell.p5 { border-color: color-mix(in srgb, var(--sp-bad) 40%, var(--hairline)); }
+.par-cell.p6 { border-color: var(--sp-bad); }
+.par-cell:active { background: var(--pill-strong); }
+
+.par-presets { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }

@@ -23,6 +23,7 @@ import { normaliseBasketball } from '@/engine/basketball';
 import { normaliseFootball } from '@/engine/football';
 import { normaliseGolf } from '@/engine/golf';
 import { minutes, Segmented, Stepper, Switch } from './RuleControls';
+import { nextPar, ParGrid } from './ParGrid';
 
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 
@@ -199,19 +200,21 @@ export function RulesEditor({ settings, onChange, gameNoun }: {
         onChange((prev) => (prev.kind !== 'golf' ? prev : { kind: 'golf', rules: normaliseGolf({
           ...prev.rules, holeCount: clamp(prev.rules.holeCount + delta, 1, 18),
         }) }));
-      // Par applies to every hole at once; stepping it reads the first hole's par
-      // from current state rather than from what was painted.
-      const stepPar = (delta: number) =>
+      // Per hole, because a course is 4-4-3-5-4-… and not one number repeated.
+      // Read from current state inside the updater, never from the painted chip.
+      const cyclePar = (hole: number) =>
         onChange((prev) => (prev.kind !== 'golf' ? prev : { kind: 'golf', rules: normaliseGolf({
-          ...prev.rules, pars: Array(prev.rules.holeCount).fill(clamp((prev.rules.pars[0] ?? 4) + delta, 3, 6)),
+          ...prev.rules,
+          pars: prev.rules.pars.map((p, i) => (i === hole ? nextPar(p) : p)),
         }) }));
-      const uniformPar = r.pars.every((p) => p === r.pars[0]) ? r.pars[0] : null;
+      const setAllPars = (par: number) =>
+        onChange((prev) => (prev.kind !== 'golf' ? prev : { kind: 'golf', rules: normaliseGolf({
+          ...prev.rules, pars: Array(prev.rules.holeCount).fill(par),
+        }) }));
       return (
         <>
           <Stepper label="Holes" value={r.holeCount} min={1} max={18} onStep={stepHoles} />
-          <Stepper label="Par per hole" value={uniformPar ?? 4} min={3} max={6}
-                   hint={uniformPar === null ? 'Mixed — changing this sets every hole.' : undefined}
-                   onStep={stepPar} />
+          <ParGrid pars={r.pars} onCycle={cyclePar} onSetAll={setAllPars} />
           <Segmented label="Scoring" value={r.scoringFormat}
                      options={[
                        { value: 'strokePlay', label: 'Stroke' },
