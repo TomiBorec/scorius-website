@@ -23,6 +23,7 @@ import { floorballDefault, footballDefault } from '@/engine/football';
 import type { MatchSettings } from '@/engine/active';
 import type { Sport } from '@/engine/types';
 import { History } from '@/components/score/History';
+import { OfflineReady } from '@/components/score/OfflineReady';
 import { ClockedScorer } from '@/components/score/ClockedScorer';
 import { GolfScorer } from '@/components/score/GolfScorer';
 import { RulesEditor } from '@/components/score/RulesEditor';
@@ -32,6 +33,7 @@ import { TennisScorer } from '@/components/score/TennisScorer';
 import { finishMatch } from '@/engine/finish';
 import { saveMatch } from '@/lib/history';
 import { loadActiveMatch, requestPersistence, saveActiveMatch } from '@/lib/storage';
+import { useWakeLock } from '@/lib/wakeLock';
 
 /**
  * Only the sports whose scorer exists. Offering the rest would mean a picker
@@ -64,6 +66,10 @@ export function ScoreContent() {
   const [restored, setRestored] = useState(false);
   /** Bumped on every save, so the history list below reloads without polling. */
   const [savedCount, setSavedCount] = useState(0);
+
+  // Only while a match is actually running — holding the screen awake on the
+  // setup screen would be rude and pointless.
+  useWakeLock(match !== null);
 
   // Pick up an interrupted match before rendering anything, so a reload mid-game
   // does not flash the setup screen at someone who is 18-16 up.
@@ -115,10 +121,18 @@ export function ScoreContent() {
 
   if (!restored) return <main className="sc-page" />;
 
-  if (!match) return <Setup onStart={(m) => setMatch(m)} savedCount={savedCount} />;
+  if (!match) {
+    return (
+      <>
+        <OfflineReady />
+        <Setup onStart={(m) => setMatch(m)} savedCount={savedCount} />
+      </>
+    );
+  }
 
   return (
     <main className="sc-page">
+      <OfflineReady />
       <Scorer match={match} onChange={update} onEnd={end} />
     </main>
   );

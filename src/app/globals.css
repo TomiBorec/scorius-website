@@ -1656,3 +1656,71 @@ img, svg { display: block; }
 @media (prefers-reduced-motion: reduce) {
   .rc-track, .rc-track::after { transition: none; }
 }
+
+/* --- match detail --- */
+
+.sc-row-open {
+  display: flex; flex-direction: column; gap: 2px; align-items: flex-start;
+  border: 0; background: none; padding: 0; color: var(--fg);
+  cursor: pointer; text-align: left; min-width: 0; width: 100%;
+}
+.sc-row-open:hover .sc-row-title { color: var(--accent); }
+
+.sc-detail {
+  position: fixed; inset: 0; z-index: 90;
+  display: flex; align-items: flex-end; justify-content: center;
+  background: rgba(0,0,0,0.45);
+  padding: 0;
+}
+@media (min-width: 640px) {
+  .sc-detail { align-items: center; padding: 24px; }
+}
+.sc-detail-card {
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: 24px 24px 0 0;
+  padding: 22px 20px calc(22px + env(safe-area-inset-bottom));
+  width: 100%; max-width: 520px;
+  max-height: 88vh; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 16px;
+  box-shadow: var(--shadow-lg);
+}
+@media (min-width: 640px) { .sc-detail-card { border-radius: 24px; } }
+
+.sc-detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.sc-detail-score {
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--hairline);
+}
+.sc-detail-score > span:first-child { text-align: right; color: var(--muted); }
+.sc-detail-score > span:last-child { color: var(--muted); }
+.sc-detail-score strong {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 1.7rem; font-variant-numeric: tabular-nums;
+}
+.sc-detail-score .under { color: var(--sp-good); font-weight: 700; }
+.sc-detail-score .over  { color: var(--sp-bad); font-weight: 700; }
+
+.sc-segments { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.sc-segments li {
+  display: grid; grid-template-columns: auto auto 1fr; align-items: center; gap: 12px;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+.sc-segment-n {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--pill); color: var(--muted);
+  font-size: 0.72rem; display: grid; place-items: center;
+}
+.sc-segments li.won > span:nth-child(2) { color: var(--sp-good); font-weight: 700; }
+.sc-segments li.lost > span:nth-child(2) { color: var(--muted); }
+
+/* The momentum strip: bars above the line while side 1 leads, below while it
+   trails. Same "up follows side 1" rule the app's charts use. */
+.sc-momentum {
+  display: flex; align-items: center; gap: 1px;
+  height: 34px; min-width: 0; overflow: hidden;
+}
+.sc-momentum-bar { flex: 1 1 0; min-width: 1px; border-radius: 1px; }
+.sc-momentum-bar.up { background: var(--sp-good); align-self: flex-start; }
+.sc-momentum-bar.down { background: var(--sp-bad); align-self: flex-end; }

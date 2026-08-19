@@ -13,6 +13,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { SavedMatch } from '@/engine/finish';
 import { exportArchive, exportFilename, importArchive, ImportError } from '@/lib/archive';
 import { deleteMatch, listMatches } from '@/lib/history';
+import { MatchDetail } from './MatchDetail';
 
 const SPORT_LABEL: Record<string, string> = {
   badminton: 'Badminton', volleyball: 'Volleyball', tableTennis: 'Table Tennis', squash: 'Squash',
@@ -23,6 +24,7 @@ const SPORT_LABEL: Record<string, string> = {
 export function History({ reloadKey }: { reloadKey: number }) {
   const [matches, setMatches] = useState<SavedMatch[] | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [open, setOpen] = useState<SavedMatch | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
   const reload = useCallback(() => { void listMatches().then(setMatches); }, []);
@@ -68,12 +70,12 @@ export function History({ reloadKey }: { reloadKey: number }) {
         <ul className="sc-list">
           {matches.map((match) => (
             <li key={match.id} className="sc-row">
-              <div className="sc-row-main">
+              <button className="sc-row-main sc-row-open" onClick={() => setOpen(match)}>
                 <span className="sc-row-title">{sides(match)}</span>
                 <span className="sc-row-sub">
                   {SPORT_LABEL[match.sport] ?? match.sport} · {new Date(match.date).toLocaleDateString()}
                 </span>
-              </div>
+              </button>
               <span className="sc-row-score">{scoreLine(match)}</span>
               <button className="sc-row-del" aria-label="Delete match"
                       onClick={() => void deleteMatch(match.id).then(reload)}>✕</button>
@@ -99,6 +101,14 @@ export function History({ reloadKey }: { reloadKey: number }) {
       </div>
 
       {notice ? <p className="sp-note" role="status">{notice}</p> : null}
+
+      {open ? (
+        <MatchDetail
+          match={open}
+          onClose={() => setOpen(null)}
+          onDelete={() => { void deleteMatch(open.id).then(reload); setOpen(null); }}
+        />
+      ) : null}
 
       <p className="sp-foot">
         The export is the app’s own backup format — open it in Scorius on iPhone and the

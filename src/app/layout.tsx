@@ -55,6 +55,7 @@ export const metadata: Metadata = {
       'Badminton Log is now Scorius. Score on your wrist across eleven sports — badminton, tennis, padel, pickleball, squash, table tennis, volleyball, basketball, football, floorball and golf. Live BPM, calories and per-sport rules, synced over iCloud with no accounts.',
     type: 'website',
   },
+  manifest: '/manifest.webmanifest',
   icons: {
     icon: [
       { url: '/icon.svg', type: 'image/svg+xml' },
