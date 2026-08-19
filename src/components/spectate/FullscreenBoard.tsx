@@ -45,16 +45,35 @@ export function FullscreenBoard({ frame, code, onExit }: {
   onExit: () => void;
 }) {
   const host = useRef<HTMLDivElement>(null);
-  useNativeFullscreen(host, onExit);
+
+  // `onExit` must not be an effect dependency, and this is not a tidiness point.
+  //
+  // The caller passes an inline arrow, so its identity changes on every render —
+  // and this component re-renders on every incoming frame. Depending on it made
+  // the fullscreen effect tear down and re-run per frame: the cleanup called
+  // exitFullscreen(), that fired `fullscreenchange`, and the handler called
+  // onExit(). A golfer moving to the next hole, or a goal going in, dropped the
+  // viewer straight out of courtside mode. Re-requesting was hopeless too —
+  // requestFullscreen() needs a user gesture and a frame arriving is not one.
+  //
+  // Holding it in a ref lets the effects mount once and still call the latest
+  // callback.
+  const exitRef = useRef(onExit);
+  // Updated after commit rather than during render: the callback is only ever
+  // invoked from an event handler or a listener, both of which run post-commit,
+  // and writing a ref mid-render is the thing concurrent React asks you not to do.
+  useEffect(() => { exitRef.current = onExit; });
+
+  useNativeFullscreen(host, exitRef);
   useWakeLock();
 
   // Escape leaves the board even where the Fullscreen API never engaged, so the
   // overlay can't trap someone on a browser that ignored the request.
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onExit(); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') exitRef.current(); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [onExit]);
+  }, []);
 
   const sport = frame?.sport ?? 'badminton';
 
@@ -225,7 +244,13 @@ function Caption({ frame }: { frame: SpectateFrame }) {
  * Best-effort by design: iPhone Safari has no element fullscreen, and a rejected
  * request must not break the board — the overlay is already doing the work.
  */
-function useNativeFullscreen(ref: React.RefObject<HTMLDivElement | null>, onExit: () => void) {
+function useNativeFullscreen(
+  ref: React.RefObject<HTMLDivElement | null>,
+  exitRef: React.RefObject<() => void>,
+) {
+  // Empty deps on purpose: this must run exactly once for the life of the board.
+  // See the note at the call site — re-running it per frame is what kicked
+  // viewers out of fullscreen whenever the score changed.
   useEffect(() => {
     const el = ref.current;
     if (!el?.requestFullscreen) return;
@@ -233,13 +258,14 @@ function useNativeFullscreen(ref: React.RefObject<HTMLDivElement | null>, onExit
 
     // Leaving fullscreen by the browser's own affordance must leave the board too,
     // or the user ends up in an overlay they did not ask to stay in.
-    const onChange = () => { if (!document.fullscreenElement) onExit(); };
+    const onChange = () => { if (!document.fullscreenElement) exitRef.current(); };
     document.addEventListener('fullscreenchange', onChange);
     return () => {
       document.removeEventListener('fullscreenchange', onChange);
       if (document.fullscreenElement) void document.exitFullscreen().catch(() => {});
     };
-  }, [ref, onExit]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 }
 
 /** Keeps the screen awake. A scoreboard that sleeps is not a scoreboard. */
