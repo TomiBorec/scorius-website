@@ -191,10 +191,17 @@ during development.
       replaying it.
 - [~] **Scoring screens.** Live at `/score`: the rally scorer (badminton, volleyball,
       table tennis, squash), the tennis scorer (tennis + padel, with padel's golden
-      point), the pickleball scorer (side-out, with the score call) and the clocked scorer
-      (basketball, football, floorball — with the clock, period advance and manual clock
-      correction) — **10 of 12 sports**. Serve indicators, game-end banner, undo past a
-      game close, match restored after a reload. Still to build: golf and disc golf.
+      point), the pickleball scorer (side-out, with the score call), the clocked scorer
+      (basketball, football, floorball — clock, period advance, manual correction) and the
+      golf scorer (golf + disc golf, per hole, with each player's own to-par) —
+      **all 12 sports**. Serve indicators, game-end banner, undo past a game close, match
+      restored after a reload.
+- [ ] **Golf is capped at a two-player flight**, and not because the engine can't hold
+      four: the app's `Match` carries only `side1Name` / `side2Name`, and the rest of a
+      flight lives in its roster, which the web has no share of. A four-ball would export
+      four columns of strokes with two names attached. Lifting the cap needs the
+      `players` array in `MatchesArchive` that §4 settled against — worth revisiting only
+      if someone actually asks for it.
 - [ ] Setup flow: sport, side names, singles/doubles, team size, golf holes/pars.
 - [ ] Per-sport rules editors for all 12 sports (port `SportRulesSections.swift`, 434 LOC).
 - [x] **Local persistence.** The in-progress match persists to localStorage (synchronous,

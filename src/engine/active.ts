@@ -626,6 +626,23 @@ export function undoGolfStroke(m: ActiveMatch): ActiveMatch {
   };
 }
 
+/**
+ * Adds or removes a stroke, relative to whatever is on record right now.
+ *
+ * Not `recordGolfStroke(m, slot, hole, shown + 1)`: that computes the next value
+ * from a *rendered* number, so several taps landing in one React batch all read
+ * the same snapshot and the last one wins — five taps recording one stroke. The
+ * same stale-closure trap the rally scorer hit, and the reason every mutator here
+ * takes the match rather than a finished value.
+ */
+export function adjustGolfStroke(
+  m: ActiveMatch, playerIndex: number, hole: number, delta: number,
+): ActiveMatch {
+  if (m.runtimeState?.kind !== 'golf') return m;
+  const current = m.runtimeState.score.playerStrokes[playerIndex]?.[hole - 1] ?? 0;
+  return recordGolfStroke(m, playerIndex, hole, Math.max(0, current + delta));
+}
+
 export function golfSetHole(m: ActiveMatch, hole: number): ActiveMatch {
   if (m.runtimeState?.kind !== 'golf' || m.settings.kind !== 'golf') return m;
   const clamped = Math.min(Math.max(1, hole), m.settings.rules.holeCount);

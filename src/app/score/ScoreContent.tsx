@@ -18,11 +18,13 @@ import {
 import { padelDefault, tennisDefault } from '@/engine/tennis';
 import { pickleballDefault } from '@/engine/pickleball';
 import { basketballDefault } from '@/engine/basketball';
+import { discGolfDefault, golfDefault } from '@/engine/golf';
 import { floorballDefault, footballDefault } from '@/engine/football';
 import type { MatchSettings } from '@/engine/active';
 import type { Sport } from '@/engine/types';
 import { History } from '@/components/score/History';
 import { ClockedScorer } from '@/components/score/ClockedScorer';
+import { GolfScorer } from '@/components/score/GolfScorer';
 import { PickleballScorer } from '@/components/score/PickleballScorer';
 import { RallyScorer } from '@/components/score/RallyScorer';
 import { TennisScorer } from '@/components/score/TennisScorer';
@@ -52,6 +54,8 @@ const AVAILABLE: SportOption[] = [
   { sport: 'basketball', label: 'Basketball', settings: { kind: 'basketball', rules: basketballDefault }, sides: ['Home', 'Away'] },
   { sport: 'football', label: 'Football', settings: { kind: 'football', rules: footballDefault }, sides: ['Home', 'Away'] },
   { sport: 'floorball', label: 'Floorball', settings: { kind: 'football', rules: floorballDefault }, sides: ['Home', 'Away'] },
+  { sport: 'golf', label: 'Golf', settings: { kind: 'golf', rules: golfDefault }, sides: ['You', 'Playing partner'] },
+  { sport: 'discGolf', label: 'Disc Golf', settings: { kind: 'golf', rules: discGolfDefault }, sides: ['You', 'Playing partner'] },
 ];
 
 export function ScoreContent() {
@@ -135,6 +139,7 @@ function Scorer({ match, onChange, onEnd }: {
     case 'pickleball': return <PickleballScorer match={match} onChange={onChange} onEnd={onEnd} />;
     case 'basketball':
     case 'football':   return <ClockedScorer match={match} onChange={onChange} onEnd={onEnd} />;
+    case 'golf':       return <GolfScorer match={match} onChange={onChange} onEnd={onEnd} />;
     default:       return null;
   }
 }
@@ -143,15 +148,23 @@ function Setup({ onStart, savedCount }: { onStart: (m: ActiveMatch) => void; sav
   const [sport, setSport] = useState<Sport>('badminton');
   const [side1, setSide1] = useState('');
   const [side2, setSide2] = useState('');
+  const [solo, setSolo] = useState(true);
 
   const chosen = AVAILABLE.find((s) => s.sport === sport) ?? AVAILABLE[0];
+  const isGolf = chosen.settings.kind === 'golf';
 
   function start() {
     onStart(startMatch({
       sport: chosen.sport,
       settings: chosen.settings,
       side1Name: side1.trim() || undefined,
-      side2Name: side2.trim() || undefined,
+      side2Name: isGolf && solo ? undefined : side2.trim() || undefined,
+      // Golf is a flight, not two sides. Capped at two here, not because the
+      // engine can't hold four but because the app's match record carries only
+      // two names — the rest live in its roster, which the web has no share of.
+      // A four-ball would export with four columns of strokes and two names
+      // attached to them, and silently losing names is worse than not offering it.
+      playerCount: isGolf ? (solo ? 1 : 2) : undefined,
       now: Date.now(),
     }));
   }
@@ -161,7 +174,7 @@ function Setup({ onStart, savedCount }: { onStart: (m: ActiveMatch) => void; sav
       <div className="sc-setup">
         <h1 className="sp-title">Keep score</h1>
         <p className="sp-note">
-          Ten sports so far, and matches stay on this device — no account, nothing uploaded.
+          All twelve sports, and matches stay on this device — no account, nothing uploaded.
           The full tracker, with every sport and iCloud sync, is the{' '}
           <Link className="inline" href="/">Scorius app</Link>.
         </p>
@@ -181,15 +194,28 @@ function Setup({ onStart, savedCount }: { onStart: (m: ActiveMatch) => void; sav
           ))}
         </div>
 
+        {isGolf ? (
+          <div className="sc-sports" role="radiogroup" aria-label="Playing">
+            <button className={`sc-sport${solo ? ' on' : ''}`} role="radio" aria-checked={solo}
+                    onClick={() => setSolo(true)}>On my own</button>
+            <button className={`sc-sport${!solo ? ' on' : ''}`} role="radio" aria-checked={!solo}
+                    onClick={() => setSolo(false)}>With one other</button>
+          </div>
+        ) : null}
+
         <div className="sc-names">
           <label className="sp-label" htmlFor="side1">{chosen.sides[0]}</label>
           <input id="side1" className="sc-input" value={side1} maxLength={24}
                  placeholder={chosen.sides[0]}
                  onChange={(e) => setSide1(e.target.value)} />
-          <label className="sp-label" htmlFor="side2">{chosen.sides[1]}</label>
-          <input id="side2" className="sc-input" value={side2} maxLength={24}
-                 placeholder={chosen.sides[1]}
-                 onChange={(e) => setSide2(e.target.value)} />
+          {isGolf && solo ? null : (
+            <>
+              <label className="sp-label" htmlFor="side2">{chosen.sides[1]}</label>
+              <input id="side2" className="sc-input" value={side2} maxLength={24}
+                     placeholder={chosen.sides[1]}
+                     onChange={(e) => setSide2(e.target.value)} />
+            </>
+          )}
         </div>
 
         <button className="sc-primary" onClick={start}>Start match</button>

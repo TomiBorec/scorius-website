@@ -19,7 +19,7 @@ import { test } from 'node:test';
 import {
   MAX_UNDO_ENTRIES, basketballAdvancePeriod, finishRallyGame, hasAnyScore,
   recordBasketballPoints, recordFootballGoal, recordGolfStroke, recordPickleballRally,
-  recordRallyPoint, recordTennisPoint, startMatch, toggleMatchClock,
+  adjustGolfStroke, recordRallyPoint, recordTennisPoint, startMatch, toggleMatchClock,
   toggleRallyFirstServer, undoBasketballPoints, undoGolfStroke, undoPickleballRally,
   undoRallyPoint, undoTennisPoint, validatedGamePointLog,
   type ActiveMatch,
@@ -214,6 +214,26 @@ test('golf: a stroke outside the round is rejected rather than growing the card'
   assert.deepEqual(m, untouched);
   m = recordGolfStroke(m, 3, 1, 4);       // slot outside a 1-player flight
   assert.deepEqual(m, untouched);
+});
+
+test('golf strokes accumulate one tap at a time', () => {
+  let m = startMatch({
+    sport: 'golf', settings: { kind: 'golf', rules: golfDefault }, playerCount: 2, now: NOW,
+  });
+  // Five taps must be five strokes. Computing the next value from a rendered
+  // number instead of from state made all five land on 1 — the same stale-snapshot
+  // trap the tap handlers hit, caught here so a delta mutator stays the contract.
+  for (let i = 0; i < 5; i++) m = adjustGolfStroke(m, 0, 1, +1);
+  for (let i = 0; i < 3; i++) m = adjustGolfStroke(m, 1, 1, +1);
+  if (m.runtimeState?.kind !== 'golf') return assert.fail('expected golf state');
+  assert.equal(m.runtimeState.score.playerStrokes[0][0], 5);
+  assert.equal(m.runtimeState.score.playerStrokes[1][0], 3);
+
+  // And it can't go below zero, however many times you tap minus.
+  for (let i = 0; i < 9; i++) m = adjustGolfStroke(m, 1, 1, -1);
+  if (m.runtimeState?.kind !== 'golf') return assert.fail('expected golf state');
+  assert.equal(m.runtimeState.score.playerStrokes[1][0], null,
+    'zero strokes clears the hole rather than recording a 0');
 });
 
 test('undo stacks are capped', () => {

@@ -1535,3 +1535,50 @@ img, svg { display: block; }
 }
 .sc-link:hover { color: var(--fg); }
 .sc-clock-edit { display: flex; flex-direction: column; gap: 6px; }
+
+/* --- golf flight rows --- */
+
+.sc-flightlist { list-style: none; margin: 0; padding: 0; }
+.sc-flightrow {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 4px;
+}
+.sc-flightrow + .sc-flightrow { border-top: 1px solid var(--hairline); }
+.sc-flightrow-name { display: flex; align-items: baseline; gap: 7px; min-width: 0; }
+.sc-flightrow-name > span:first-child {
+  font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.sc-you { font-size: 0.75rem; color: var(--accent); font-weight: 600; }
+
+.sc-stepper { display: flex; align-items: center; gap: 10px; }
+.sc-step {
+  width: 46px; height: 46px;
+  border: 0; border-radius: 50%;
+  background: var(--accent); color: var(--accent-on);
+  font-size: 1.3rem; font-weight: 700; cursor: pointer;
+  touch-action: manipulation;
+}
+.sc-step:disabled { opacity: 0.4; cursor: default; }
+.sc-step-value {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 1.9rem; font-weight: 700; min-width: 1.6ch; text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.sc-flightrow-total { display: flex; flex-direction: column; align-items: flex-end; }
+.sc-flightrow-strokes {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.sc-flightrow-topar {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.85rem; font-weight: 700;
+}
+.sc-flightrow-topar.under { color: var(--sp-good); }
+.sc-flightrow-topar.over  { color: var(--sp-bad); }
+.sc-flightrow-topar.even  { color: var(--muted); }
+
+.sc-primary.sc-inline { width: auto; flex: 1; padding: 13px 18px; font-size: 1rem; }
