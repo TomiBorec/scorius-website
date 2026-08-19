@@ -183,36 +183,36 @@ during development.
       All six engines pass. Verified to actually catch divergence — disabling the tennis
       4-4 → deuce normalisation fails it at a named point in a named match.
       **Not yet wired into CI** (there is no CI on this repo yet); it runs on demand.
-- [ ] **Extend the fixture export to cover `ActiveMatchData`.** The engines are pinned to
+- [x] **Extend the fixture export to cover `ActiveMatchData`.** The engines are pinned to
       Swift; the state machine on top of them is not — `active.test.ts` asserts properties
       (undo completeness, mirror consistency, the point-log gate) rather than
       byte-agreement. The rally game-close path is the piece most worth pinning, since its
       serve handoff and log hand-over were written by reading Swift rather than by
       replaying it.
-- [~] **Scoring screens.** Live at `/score`: the rally scorer (badminton, volleyball,
+- [x] **Scoring screens.** Live at `/score`: the rally scorer (badminton, volleyball,
       table tennis, squash), the tennis scorer (tennis + padel, with padel's golden
       point), the pickleball scorer (side-out, with the score call), the clocked scorer
       (basketball, football, floorball — clock, period advance, manual correction) and the
       golf scorer (golf + disc golf, per hole, with each player's own to-par) —
       **all 12 sports**. Serve indicators, game-end banner, undo past a game close, match
       restored after a reload.
-- [ ] **Golf is capped at a two-player flight**, and not because the engine can't hold
+- [!] **Golf is capped at a two-player flight**, and not because the engine can't hold
       four: the app's `Match` carries only `side1Name` / `side2Name`, and the rest of a
       flight lives in its roster, which the web has no share of. A four-ball would export
       four columns of strokes with two names attached. Lifting the cap needs the
       `players` array in `MatchesArchive` that §4 settled against — worth revisiting only
       if someone actually asks for it.
-- [ ] Setup flow: sport, side names, singles/doubles, team size, golf holes/pars.
-- [ ] Per-sport rules editors for all 12 sports (port `SportRulesSections.swift`, 434 LOC).
+- [x] Setup flow: sport, side names, singles/doubles, team size, golf holes/pars.
+- [x] Per-sport rules editors for all 12 sports (port `SportRulesSections.swift`, 434 LOC).
 - [x] **Local persistence.** The in-progress match persists to localStorage (synchronous,
       so the disk is never behind the screen); finished matches go to IndexedDB and show
       in a history list with delete. Match *detail* is still to build.
 - [x] Call `navigator.storage.persist()`. Safari ITP evicts non-installed PWA storage
       after 7 days idle.
-- [ ] Wake Lock while scoring; reconstruct clocks from a monotonic stamp after backgrounding
+- [x] Wake Lock while scoring; reconstruct clocks from a monotonic stamp after backgrounding
       (timers throttle in background tabs).
-- [ ] PWA manifest, offline service worker, cross-browser QA.
-- [ ] Web-scored matches can publish a spectate session too — same Worker, same code.
+- [x] PWA manifest, offline service worker, cross-browser QA.
+- [x] Web-scored matches can publish a spectate session too — same Worker, same code.
 
 ## Phase D — iOS publish path (in 2.2) — ✅ CODE COMPLETE
 
