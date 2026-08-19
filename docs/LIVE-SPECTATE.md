@@ -191,9 +191,10 @@ during development.
       replaying it.
 - [~] **Scoring screens.** Live at `/score`: the rally scorer (badminton, volleyball,
       table tennis, squash), the tennis scorer (tennis + padel, with padel's golden
-      point) and the pickleball scorer (side-out, with the score call) — **7 of 12
-      sports**. Serve indicators, game-end banner, undo past a game close, match restored
-      after a reload. Still to build: the two clocked scorers, golf, and the clock editor.
+      point), the pickleball scorer (side-out, with the score call) and the clocked scorer
+      (basketball, football, floorball — with the clock, period advance and manual clock
+      correction) — **10 of 12 sports**. Serve indicators, game-end banner, undo past a
+      game close, match restored after a reload. Still to build: golf and disc golf.
 - [ ] Setup flow: sport, side names, singles/doubles, team size, golf holes/pars.
 - [ ] Per-sport rules editors for all 12 sports (port `SportRulesSections.swift`, 434 LOC).
 - [x] **Local persistence.** The in-progress match persists to localStorage (synchronous,

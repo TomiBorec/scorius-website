@@ -17,9 +17,12 @@ import {
 } from '@/engine/rally';
 import { padelDefault, tennisDefault } from '@/engine/tennis';
 import { pickleballDefault } from '@/engine/pickleball';
+import { basketballDefault } from '@/engine/basketball';
+import { floorballDefault, footballDefault } from '@/engine/football';
 import type { MatchSettings } from '@/engine/active';
 import type { Sport } from '@/engine/types';
 import { History } from '@/components/score/History';
+import { ClockedScorer } from '@/components/score/ClockedScorer';
 import { PickleballScorer } from '@/components/score/PickleballScorer';
 import { RallyScorer } from '@/components/score/RallyScorer';
 import { TennisScorer } from '@/components/score/TennisScorer';
@@ -46,6 +49,9 @@ const AVAILABLE: SportOption[] = [
   { sport: 'volleyball', label: 'Volleyball', settings: { kind: 'rally', rules: volleyballDefault }, sides: ['Home', 'Away'] },
   { sport: 'tableTennis', label: 'Table Tennis', settings: { kind: 'rally', rules: tableTennisDefault }, sides: ['Side 1', 'Side 2'] },
   { sport: 'squash', label: 'Squash', settings: { kind: 'rally', rules: squashDefault }, sides: ['Side 1', 'Side 2'] },
+  { sport: 'basketball', label: 'Basketball', settings: { kind: 'basketball', rules: basketballDefault }, sides: ['Home', 'Away'] },
+  { sport: 'football', label: 'Football', settings: { kind: 'football', rules: footballDefault }, sides: ['Home', 'Away'] },
+  { sport: 'floorball', label: 'Floorball', settings: { kind: 'football', rules: floorballDefault }, sides: ['Home', 'Away'] },
 ];
 
 export function ScoreContent() {
@@ -127,6 +133,8 @@ function Scorer({ match, onChange, onEnd }: {
     case 'rally':  return <RallyScorer match={match} onChange={onChange} onEnd={onEnd} />;
     case 'tennis': return <TennisScorer match={match} onChange={onChange} onEnd={onEnd} />;
     case 'pickleball': return <PickleballScorer match={match} onChange={onChange} onEnd={onEnd} />;
+    case 'basketball':
+    case 'football':   return <ClockedScorer match={match} onChange={onChange} onEnd={onEnd} />;
     default:       return null;
   }
 }
@@ -153,7 +161,7 @@ function Setup({ onStart, savedCount }: { onStart: (m: ActiveMatch) => void; sav
       <div className="sc-setup">
         <h1 className="sp-title">Keep score</h1>
         <p className="sp-note">
-          Seven sports so far, and matches stay on this device — no account, nothing uploaded.
+          Ten sports so far, and matches stay on this device — no account, nothing uploaded.
           The full tracker, with every sport and iCloud sync, is the{' '}
           <Link className="inline" href="/">Scorius app</Link>.
         </p>
