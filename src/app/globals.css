@@ -100,6 +100,7 @@
 [data-sport="football"]   { --accent:#2563eb; --accent-bright:#5b9bff; --accent-soft:rgba(91,155,255,0.12); }
 [data-sport="floorball"]  { --accent:#7a48b8; --accent-bright:#9a6ad8; --accent-soft:rgba(154,106,216,0.12); }
 [data-sport="golf"]       { --accent:#cf2e80; --accent-bright:#ee5dab; --accent-soft:rgba(238,93,171,0.13); }
+[data-sport="discGolf"]   { --accent:#0d8f7a; --accent-bright:#14c9ab; --accent-soft:rgba(20,201,171,0.13); }
 :root[data-theme="dark"][data-sport="badminton"],  :root[data-theme="dark"] [data-sport="badminton"]  { --accent:#ff5a4a; }
 :root[data-theme="dark"][data-sport="tennis"],      :root[data-theme="dark"] [data-sport="tennis"]     { --accent:#f09030; }
 :root[data-theme="dark"][data-sport="padel"],       :root[data-theme="dark"] [data-sport="padel"]      { --accent:#edb400; }
@@ -111,6 +112,7 @@
 :root[data-theme="dark"][data-sport="football"],    :root[data-theme="dark"] [data-sport="football"]   { --accent:#5b9bff; }
 :root[data-theme="dark"][data-sport="floorball"],   :root[data-theme="dark"] [data-sport="floorball"]  { --accent:#9a6ad8; }
 :root[data-theme="dark"][data-sport="golf"],        :root[data-theme="dark"] [data-sport="golf"]       { --accent:#ee5dab; }
+:root[data-theme="dark"][data-sport="discGolf"],    :root[data-theme="dark"] [data-sport="discGolf"]   { --accent:#14c9ab; }
 
 /* ---- Reset ---- */
 * { box-sizing: border-box; }
@@ -865,7 +867,7 @@ img, svg { display: block; }
 .stable .sname .sdot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
 .stable td:nth-child(n+2) { color: var(--muted); }
 .stable tr td:nth-child(1) { color: var(--fg); }
-.dot-bad { background:#ff5a4a; } .dot-ten { background:#f09030; } .dot-pad { background:#edb400; } .dot-pic { background:#edc200; } .dot-squ { background:#9ad60f; } .dot-tab { background:#3ad06a; } .dot-vol { background:#1fd0d0; } .dot-bas { background:#38b8f0; } .dot-foo { background:#5b9bff; } .dot-flo { background:#9a6ad8; } .dot-gol { background:#ee5dab; }
+.dot-bad { background:#ff5a4a; } .dot-ten { background:#f09030; } .dot-pad { background:#edb400; } .dot-pic { background:#edc200; } .dot-squ { background:#9ad60f; } .dot-tab { background:#3ad06a; } .dot-vol { background:#1fd0d0; } .dot-bas { background:#38b8f0; } .dot-foo { background:#5b9bff; } .dot-flo { background:#9a6ad8; } .dot-gol { background:#ee5dab; } .dot-dgo { background:#14c9ab; }
 
 /* ---- Legal / FAQ article ---- */
 .article { max-width: 760px; margin: 0 auto; padding: 24px 28px 90px; }

@@ -44,6 +44,7 @@ export const cs: Dict = {
     football: 'Fotbal',
     floorball: 'Florbal',
     golf: 'Golf',
+    discGolf: 'Disc golf',
   },
 
   hero: {
@@ -58,10 +59,10 @@ export const cs: Dict = {
     ),
     lead: (
       <>
-        Badminton, tenis, padel, squash, volejbal… <span className="muted">Jedenáct sportů. Jedna aplikace. Jedno ťuknutí.</span>
+        Badminton, tenis, padel, squash, volejbal… <span className="muted">Dvanáct sportů. Jedna aplikace. Jedno ťuknutí.</span>
       </>
     ),
-    sub: 'Scorius počítá skóre za tebe na Apple Watch v jedenácti sportech — s tepovou frekvencí, kaloriemi a pravidly pro každý sport. iPhone a iPad živě zrcadlí každý bod a všechno se synchronizuje přes iCloud.',
+    sub: 'Scorius počítá skóre za tebe na Apple Watch ve dvanácti sportech — s tepovou frekvencí, kaloriemi a pravidly pro každý sport. iPhone a iPad živě zrcadlí každý bod a všechno se synchronizuje přes iCloud.',
     download: 'Stáhnout z App Store',
     see: 'Podívej se na to v akci →',
     scoreOnWeb: 'Skóruj rovnou v prohlížeči →',
@@ -83,8 +84,8 @@ export const cs: Dict = {
     },
     cards: [
       {
-        title: 'Jedenáct sportů, jedna aplikace',
-        body: 'Badminton, tenis, padel, squash, stolní tenis, volejbal, basketbal, fotbal, florbal i golf — každý má vlastní pravidla, počítadlo i statistiky. Přepneš sport a aplikace se sama přeladí.',
+        title: 'Dvanáct sportů, jedna aplikace',
+        body: 'Badminton, tenis, padel, squash, stolní tenis, volejbal, basketbal, fotbal, florbal, golf i disc golf — každý má vlastní pravidla, počítadlo i statistiky. Přepneš sport a aplikace se sama přeladí.',
       },
       {
         title: 'Synchronizace přes iCloud',
@@ -111,7 +112,7 @@ export const cs: Dict = {
     steps: [
       {
         title: 'Vyber sport',
-        body: 'Zvol jeden z jedenácti sportů — od badmintonu po golf. Scorius načte správná pravidla — sety, gemy, čtvrtiny, jamky.',
+        body: 'Zvol jeden z dvanácti sportů — od badmintonu po disc golf. Scorius načte správná pravidla — sety, gemy, čtvrtiny, jamky.',
       },
       {
         title: 'Ťukáním počítej',
@@ -200,6 +201,7 @@ export const cs: Dict = {
       football: '5 na 5',
       floorball: '5 na 5',
       golf: 'Na rány',
+      discGolf: 'Na hody',
     },
     gamesLabels: {
       badminton: 'Sety',
@@ -213,6 +215,7 @@ export const cs: Dict = {
       football: 'Poločas',
       floorball: 'Třetina',
       golf: 'Na par',
+      discGolf: 'Na par',
     },
     periodShort: (p) => `Č${p}`,
     sub: {
@@ -250,7 +253,7 @@ export const cs: Dict = {
       },
       {
         q: 'Které sporty můžu sledovat?',
-        a: 'Badminton, tenis, padel, pickleball, squash, stolní tenis, volejbal, basketbal, fotbal, florbal a golf — každý s vlastními správnými pravidly počítání, která si můžeš pro každý sport nastavit.',
+        a: 'Badminton, tenis, padel, pickleball, squash, stolní tenis, volejbal, basketbal, fotbal, florbal, golf a disc golf — každý s vlastními správnými pravidly počítání, která si můžeš pro každý sport nastavit.',
       },
       {
         q: 'Funguje to offline?',
@@ -307,7 +310,7 @@ export const cs: Dict = {
           každý sport, který hraješ.
         </>
       ),
-      lead: 'Jedenáct sportů, tři zařízení, jedna konzistentní aplikace. Vyber sport níže — náhledy se mu přizpůsobí.',
+      lead: 'Dvanáct sportů, tři zařízení, jedna konzistentní aplikace. Vyber sport níže — náhledy se mu přizpůsobí.',
       watch: {
         kicker: 'Apple Watch',
         title: 'Skóruj ze zápěstí.',
@@ -319,7 +322,7 @@ export const cs: Dict = {
         ],
       },
       fiveSports: {
-        kicker: 'Jedenáct sportů',
+        kicker: 'Dvanáct sportů',
         title: 'Jedna aplikace, která rozumí každé hře.',
         body: 'Každý sport má vlastní engine pro počítání skóre — ne jen obecné počítadlo s vyměněnými popisky. Body z výměn, 15/30/40, hrací časy, góly i rány jsou správně namodelované, s nastavitelnými pravidly pro každý sport.',
       },
@@ -390,6 +393,12 @@ export const cs: Dict = {
             sport: 'Golf',
             dot: 'dot-gol',
             scoring: 'Rány po jamkách, flight 1–4 hráčů, ukazatel na par',
+            setup: 'Vyhledání hřiště (API) nebo ruční editor parů',
+          },
+          {
+            sport: 'Disc golf',
+            dot: 'dot-dgo',
+            scoring: 'Hody po jamkách, flight 1–4 hráčů, ukazatel na par',
             setup: 'Vyhledání hřiště (API) nebo ruční editor parů',
           },
         ],

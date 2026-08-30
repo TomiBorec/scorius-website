@@ -80,6 +80,7 @@ const SPORT_DATA: Record<Sport, SportCfg> = {
   football: { name: 'Football', mode: '5-a-side', a: 'Home', b: 'Away', gamesLabel: 'Half', countUp: true, halfMin: 45 },
   floorball: { name: 'Floorball', mode: '5 v 5', a: 'Home', b: 'Away', gamesLabel: 'Period', clock: true, startClock: 1200, incs: [3, 3, 3] },
   golf: { name: 'Golf', mode: 'Stroke play', a: 'Tom', b: 'Sam', gamesLabel: 'To par', golf: true, holes: 18 },
+  discGolf: { name: 'Disc Golf', mode: 'Stroke play', a: 'Tom', b: 'Sam', gamesLabel: 'To par', golf: true, holes: 18 },
 };
 
 type Hole = { par: number; strokes: number };

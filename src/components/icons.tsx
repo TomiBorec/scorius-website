@@ -84,6 +84,13 @@ export function SportIcon({ sport, className }: { sport: Sport; className?: stri
           <circle cx="8" cy="21" r="0.4" />
         </svg>
       );
+    case 'discGolf':
+      return (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <ellipse cx="9.5" cy="7" rx="6" ry="2.3" />
+          <path d="M18 15.5v-4M18 15.5c-1.4 1.4-1.4 3.6 0 5M18 15.5c1.4 1.4 1.4 3.6 0 5M15.3 19.3h5.4" />
+        </svg>
+      );
   }
 }
 

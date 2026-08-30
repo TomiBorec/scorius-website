@@ -48,6 +48,7 @@ export const en = {
     football: 'Football',
     floorball: 'Floorball',
     golf: 'Golf',
+    discGolf: 'Disc Golf',
   },
 
   hero: {
@@ -62,10 +63,10 @@ export const en = {
     ),
     lead: (
       <>
-        Badminton, tennis, padel, squash, volleyball… <span className="muted">Eleven sports. One app. One tap.</span>
+        Badminton, tennis, padel, squash, volleyball… <span className="muted">Twelve sports. One app. One tap.</span>
       </>
     ),
-    sub: 'Scorius keeps score for you on Apple Watch across eleven sports — with heart rate, calories and per-sport rules built in. iPhone and iPad mirror every point live, and everything syncs over iCloud.',
+    sub: 'Scorius keeps score for you on Apple Watch across twelve sports — with heart rate, calories and per-sport rules built in. iPhone and iPad mirror every point live, and everything syncs over iCloud.',
     download: 'Download on App Store',
     see: 'See it in action →',
     scoreOnWeb: 'Keep score in your browser →',
@@ -87,8 +88,8 @@ export const en = {
     },
     cards: [
       {
-        title: 'Eleven sports, one app',
-        body: 'Badminton, tennis, padel, squash, table tennis, volleyball, basketball, football, floorball and golf — each with its own rules engine, scorer and stats. Switch sport, the app re-tunes itself.',
+        title: 'Twelve sports, one app',
+        body: 'Badminton, tennis, padel, squash, table tennis, volleyball, basketball, football, floorball, golf and disc golf — each with its own rules engine, scorer and stats. Switch sport, the app re-tunes itself.',
       },
       {
         title: 'iCloud sync',
@@ -115,7 +116,7 @@ export const en = {
     steps: [
       {
         title: 'Pick a sport',
-        body: 'Choose from eleven sports — from badminton to golf. Scorius loads the right rules — games, sets, periods, holes.',
+        body: 'Choose from twelve sports — from badminton to disc golf. Scorius loads the right rules — games, sets, periods, holes.',
       },
       {
         title: 'Tap to score',
@@ -204,6 +205,7 @@ export const en = {
       football: '5-a-side',
       floorball: '5 v 5',
       golf: 'Stroke play',
+      discGolf: 'Stroke play',
     },
     gamesLabels: {
       badminton: 'Games',
@@ -217,6 +219,7 @@ export const en = {
       football: 'Half',
       floorball: 'Period',
       golf: 'To par',
+      discGolf: 'To par',
     },
     periodShort: (p: number) => `P${p}`,
     sub: {
@@ -254,7 +257,7 @@ export const en = {
       },
       {
         q: 'Which sports can I track?',
-        a: 'Badminton, tennis, padel, pickleball, squash, table tennis, volleyball, basketball, football, floorball and golf — each with its own proper scoring rules, which you can configure per sport.',
+        a: 'Badminton, tennis, padel, pickleball, squash, table tennis, volleyball, basketball, football, floorball, golf and disc golf — each with its own proper scoring rules, which you can configure per sport.',
       },
       {
         q: 'Does it work offline?',
@@ -311,7 +314,7 @@ export const en = {
           every sport you play.
         </>
       ),
-      lead: 'Eleven sports, three devices, one consistent app. Pick a sport below — the previews update to match.',
+      lead: 'Twelve sports, three devices, one consistent app. Pick a sport below — the previews update to match.',
       watch: {
         kicker: 'Apple Watch',
         title: 'Score from your wrist.',
@@ -323,7 +326,7 @@ export const en = {
         ],
       },
       fiveSports: {
-        kicker: 'Eleven sports',
+        kicker: 'Twelve sports',
         title: 'One app that speaks every game.',
         body: 'Each sport has its own scoring engine — not a generic counter with labels swapped. Rally points, 15/30/40, period clocks, goals or strokes are all modelled properly, with configurable rules per sport.',
       },
@@ -394,6 +397,12 @@ export const en = {
             sport: 'Golf',
             dot: 'dot-gol',
             scoring: 'Per-hole strokes, 1–4 player flight, to-par chip',
+            setup: 'Course search (API) or manual par editor',
+          },
+          {
+            sport: 'Disc Golf',
+            dot: 'dot-dgo',
+            scoring: 'Per-hole throws, 1–4 player flight, to-par chip',
             setup: 'Course search (API) or manual par editor',
           },
         ],

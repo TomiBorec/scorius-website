@@ -3,8 +3,8 @@
 /* ============================================================
    The web scorer.
 
-   Deliberately narrower than the app: four sports so far, no account, no
-   sync, matches on this device only. Everything it does share with the
+   Deliberately narrower than the app: no account, no sync, matches on
+   this device only. Everything it does share with the
    app is the engine — the same rules, pinned to the same fixtures — so a
    score kept here means what it would mean there.
    ============================================================ */

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://scorius.app'),
   title: 'Scorius — Score every game from your wrist',
   description:
-    'Scorius is a native iPhone, iPad and Apple Watch app that keeps score across eleven sports — badminton, tennis, padel, pickleball, squash, table tennis, volleyball, basketball, football, floorball and golf. Heart rate, calories and per-sport rules built in. No accounts, and your history never leaves your devices. (Formerly Badminton Log.)',
+    'Scorius is a native iPhone, iPad and Apple Watch app that keeps score across twelve sports — badminton, tennis, padel, pickleball, squash, table tennis, volleyball, basketball, football, floorball, golf and disc golf. Heart rate, calories and per-sport rules built in. No accounts, and your history never leaves your devices. (Formerly Badminton Log.)',
   applicationName: 'Scorius',
   authors: [{ name: 'Tomáš Kalmus' }],
   keywords: [
@@ -41,6 +41,7 @@ export const metadata: Metadata = {
     'football',
     'floorball',
     'golf',
+    'disc golf',
     'apple watch',
     'iphone',
     'ipad',
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Scorius — Score every game from your wrist',
     description:
-      'Badminton Log is now Scorius. Score on your wrist across eleven sports — badminton, tennis, padel, pickleball, squash, table tennis, volleyball, basketball, football, floorball and golf. Live BPM, calories and per-sport rules, synced over iCloud with no accounts.',
+      'Badminton Log is now Scorius. Score on your wrist across twelve sports — badminton, tennis, padel, pickleball, squash, table tennis, volleyball, basketball, football, floorball, golf and disc golf. Live BPM, calories and per-sport rules, synced over iCloud with no accounts.',
     type: 'website',
   },
   manifest: '/manifest.webmanifest',
@@ -83,7 +84,7 @@ const bootstrap = `(() => {
     var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     d.dataset.theme = (t === 'light' || t === 'dark') ? t : (prefersDark ? 'dark' : 'light');
     var s = localStorage.getItem('scorius-sport');
-    var sports = ['badminton','tennis','padel','pickleball','squash','tableTennis','volleyball','basketball','football','floorball','golf'];
+    var sports = ['badminton','tennis','padel','pickleball','squash','tableTennis','volleyball','basketball','football','floorball','golf','discGolf'];
     d.dataset.sport = sports.indexOf(s) !== -1 ? s : 'badminton';
     var l = localStorage.getItem('scorius-lang');
     var prefersCs = (navigator.language || '').toLowerCase().indexOf('cs') === 0;

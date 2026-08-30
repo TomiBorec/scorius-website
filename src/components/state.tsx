@@ -14,7 +14,8 @@ export type Sport =
   | 'basketball'
   | 'football'
   | 'floorball'
-  | 'golf';
+  | 'golf'
+  | 'discGolf';
 export type Lang = 'cs' | 'en';
 
 export const SPORTS: Sport[] = [
@@ -30,6 +31,7 @@ export const SPORTS: Sport[] = [
   'football',
   'floorball',
   'golf',
+  'discGolf',
 ];
 export const LANGS: Lang[] = ['cs', 'en'];
 
