@@ -117,6 +117,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem(LANG_STORAGE_KEY, l);
     } catch {}
+    /* Reflect the choice in the URL so the address bar is copyable: the page
+       somebody is reading in Czech should arrive in Czech. replaceState, not
+       push — switching language is not a navigation to go "back" from. */
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', l);
+      window.history.replaceState(null, '', url);
+    } catch {}
     emit();
   }, []);
 

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { SUPPORT_EMAIL } from '@/components/constants';
+import { OPERATOR_ID, OPERATOR_NAME, SUPPORT_EMAIL } from '@/components/constants';
 import type { Dict } from './index';
 
 /** Czech content. Shape is enforced against the English dictionary (Dict = typeof en). */
@@ -177,6 +177,8 @@ export const cs: Dict = {
     terms: 'Podmínky použití',
     imprint: 'Imprint',
     rights: '© 2026 Scorius. Pro všechny, kdo si počítají skóre.',
+    trademarks:
+      'Apple, logo Apple, Apple Watch, iPhone a iPad jsou ochranné známky Apple Inc. registrované v USA a dalších zemích. App Store je servisní známka Apple Inc.',
   },
 
   devices: {
@@ -496,7 +498,7 @@ export const cs: Dict = {
       kicker: 'Soukromí',
       title: 'Tvoje zápasy patří tobě.',
       lead: 'Scorius je postavený tak, aby vývojář nikdy neviděl tvoje data. Žádné účty, žádná analytika, žádná SDK třetích stran — tvoje zápasy zůstávají na tvých zařízeních a v tvém iCloudu.',
-      meta: 'Naposledy aktualizováno · srpen 2026 · Platí pro Scorius 2.2',
+      meta: 'Naposledy aktualizováno · září 2026 · Platí pro Scorius 2.2',
       tocTitle: 'Na této stránce',
       article: (
         <>
@@ -505,6 +507,9 @@ export const cs: Dict = {
             <ol>
               <li>
                 <a href="#summary">Ve zkratce</a>
+              </li>
+              <li>
+                <a href="#controller">Kdo je správce</a>
               </li>
               <li>
                 <a href="#stored">Co Scorius ukládá — a kde</a>
@@ -543,6 +548,27 @@ export const cs: Dict = {
             opustí tvoje zařízení směrem k serveru provozovanému vývojářem, je když <strong>ty</strong> spustíš sledování
             živě — a i tehdy jde jen o živé skóre toho jednoho zápasu, po dobu, kdy se hraje. Vývojář nevidí tvoji
             historii, tvoje statistiky ani nic dalšího.
+          </p>
+
+          <h2 id="controller">Kdo je správce</h2>
+          <p>
+            Scorius provozuje <strong>{OPERATOR_NAME}</strong>, fyzická osoba podnikající zapsaná v živnostenském
+            rejstříku, IČO {OPERATOR_ID}, se sídlem Petra Rezka 1114/8, Nusle, 140&nbsp;00 Praha 4, Česká republika.
+            Ve všech případech popsaných níže je správcem osobních údajů právě on a zastihneš ho na{' '}
+            <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
+              {SUPPORT_EMAIL}
+            </a>
+            . Úplné kontaktní údaje najdeš v{' '}
+            <Link className="inline" href="/imprint">
+              Imprintu
+            </Link>
+            .
+          </p>
+          <p>
+            Vzhledem k tomu, jak je Scorius postavený, se to ale skoro nikdy neuplatní: jediné zpracování na straně
+            provozovatele je <a className="inline" href="#spectate">sledování živě</a>, které spustíš ty sám, a právním
+            titulem je splnění smlouvy — tedy poskytnutí služby, o kterou jsi výslovně požádal (čl.&nbsp;6 odst.&nbsp;1
+            písm.&nbsp;b) GDPR). Nic jiného z tvého zařízení k provozovateli neputuje.
           </p>
 
           <h2 id="stored">Co Scorius ukládá — a kde</h2>
@@ -587,16 +613,20 @@ export const cs: Dict = {
               diváci ho mohou pouze číst.
             </li>
             <li>
-              <strong>Nikde se neukládá.</strong> Skóre se drží v paměti po dobu zápasu a několik hodin po poslední
-              aktualizaci se zahodí. Neexistují žádné záložní kopie ani žádné logy obsahu zápasu.
+              <strong>Drží se jen po dobu zápasu.</strong> Relay si pamatuje vždycky jen poslední stav zápasu, aby ho
+              mohl poslat divákovi, který se připojí uprostřed. Ten stav se maže automaticky{' '}
+              <strong>nejpozději 4 hodiny</strong> po poslední aktualizaci a <strong>30 minut</strong> po skončení
+              zápasu. Neexistuje žádná historie, žádné záložní kopie ani žádný log obsahu zápasu. Cloudflare jako
+              poskytovatel infrastruktury vede provozní záznamy o požadavcích (technická metadata, ne obsah zápasu).
             </li>
             <li>
               <strong>Tvoje historie se neposílá nikdy.</strong> Jen právě hraný zápas, a jen dokud je relace otevřená.
               Sdílení skončí s koncem zápasu.
             </li>
             <li>
-              <strong>Nic tě neidentifikuje.</strong> Žádný účet, žádný identifikátor zařízení, žádné logování IP nad
-              rámec standardní ochrany sítě Cloudflare.
+              <strong>Nic tě neidentifikuje — kromě jmen, která zadáš ty.</strong> Žádný účet, žádný identifikátor
+              zařízení, žádné logování IP nad rámec standardní ochrany sítě Cloudflare. Jediné osobní údaje, které se
+              na relay dostanou, jsou jména, kterými pojmenuješ strany.
             </li>
             <li>
               <strong>Jména jsou na tobě.</strong> Když stranu pojmenuješ skutečným jménem, uvidí ho kdokoli s kódem.
@@ -607,27 +637,52 @@ export const cs: Dict = {
             Stránky pro diváky jsou vyloučené z vyhledávačů. Celou funkci můžeš vypnout v Nastavení, což z aplikace
             odstraní možnost sdílení úplně.
           </p>
+          <p>
+            Když pojmenuješ stranu jménem někoho dalšího, sdílíš tím jeho údaj — dělej to jen s jeho vědomím. Pokud
+            narazíš na sdílený zápas s urážlivým nebo jinak nevhodným jménem, napiš na{' '}
+            <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
+              {SUPPORT_EMAIL}
+            </a>{' '}
+            a relace bude ukončena.
+          </p>
 
           <h2 id="network">Síť a třetí strany</h2>
           <p>
             Scorius dělá dva druhy volitelných odchozích požadavků a oba spouštíš ty sám. Když{' '}
-            <strong>hledáš golfové hřiště</strong>, aplikace se dotáže veřejné databáze hřišť na informace o hřišti
-            a parech; kromě textu tvého hledání se nepřipojují žádná osobní data. Když spustíš{' '}
+            <strong>hledáš golfové hřiště</strong>, aplikace se dotáže veřejné databáze hřišť{' '}
+            <a className="inline" href="https://golfcourseapi.com" target="_blank" rel="noopener noreferrer">
+              golfcourseapi.com
+            </a>{' '}
+            na informace o hřišti a parech; kromě textu tvého hledání se nepřipojují žádná osobní data. Když spustíš{' '}
             <strong>sledování živě</strong>, jde živé skóre na relay vývojáře, jak je popsáno výše. Pokud neuděláš ani
             jedno, Scorius nedělá žádné síťové požadavky nad rámec tvého vlastního iCloudu.
           </p>
           <p>Nejsou tu žádná reklamní SDK, žádné služby pro hlášení pádů ani žádná analytika používání.</p>
+          <p>
+            Kompletní seznam třetích stran, které se na provozu podílejí:{' '}
+            <strong>Apple</strong> (distribuce v App Store, iCloud, HealthKit — řídí se{' '}
+            <a className="inline" href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener noreferrer">
+              zásadami Applu
+            </a>
+            ), <strong>Cloudflare</strong> (hosting tohoto webu a relay pro sledování živě, zpracovatel) a{' '}
+            <strong>golfcourseapi.com</strong> (vyhledávání hřišť, jen když ho použiješ). Nikdo jiný.
+          </p>
 
           <h2 id="website">Webové stránky a lokální úložiště</h2>
           <p>
-            Tato webová stránka (scorius.app) je statický marketingový web. Nepoužívá cookies, neobsahuje
-            skripty třetích stran pro sledování a nesbírá žádné osobní údaje prostřednictvím formulářů. Stránky pro
-            diváky (<span className="mono">/w/</span> a <span className="mono">/watch</span>) zobrazují živé skóre a nic
-            neukládají; jsou vyloučené z vyhledávačů.
+            Tato webová stránka (scorius.app) <strong>nepoužívá cookies</strong>, neobsahuje skripty třetích stran pro
+            sledování, žádnou analytiku ani reklamní nástroje. Písma jsou hostovaná přímo na scorius.app, takže
+            samotným prohlížením webu neodejde jediný požadavek na cizí server. Web je hostovaný na Cloudflare Pages;
+            Cloudflare jako poskytovatel infrastruktury vede standardní provozní záznamy o požadavcích.
           </p>
           <p>
-            Webová stránka využívá <strong>localStorage</strong> ve tvém prohlížeči k zapamatování tří čistě
-            funkčních preferencí:
+            Web ale ukládá data <strong>ve tvém prohlížeči</strong>. Všechno níže je nutné k tomu, aby fungovalo to,
+            oč jsi výslovně požádal — přepnutý motiv, který přežije reload, nebo počítadlo, které nezapomene skóre,
+            když ti zhasne displej. Proto se na to neptáme lištou: jde o technicky nezbytné úložiště ve smyslu
+            § 89 odst. 3 zákona č. 127/2005 Sb.
+          </p>
+          <p>
+            <strong>Na každé stránce (localStorage):</strong>
           </p>
           <ul>
             <li>
@@ -641,9 +696,36 @@ export const cs: Dict = {
             </li>
           </ul>
           <p>
-            Tato data nikdy neopouštějí tvůj prohlížeč. Nejsou odesílána na žádný server &mdash; včetně
-            serveru vývojáře &mdash; a nejsou používána pro analytiku, reklamu, profilování ani žádný jiný
-            účel. Můžeš je kdykoli smazat v nastavení svého prohlížeče.
+            Zapisují se až ve chvíli, kdy něco přepneš. Dokud si jen čteš, zůstává úložiště prázdné.
+          </p>
+          <p>
+            <strong>Navíc v prohlížečovém počítadle (<span className="mono">/score</span>):</strong>
+          </p>
+          <ul>
+            <li>
+              <strong>scorius-active-match</strong> a <strong>scorius-schema</strong> (localStorage) &mdash; rozehraný
+              zápas a verze jeho formátu, aby jediný bod nepřišel vniveč při zamčení telefonu nebo obnovení stránky.
+            </li>
+            <li>
+              <strong>IndexedDB „scorius“</strong> &mdash; historie dohraných zápasů, včetně jmen, kterými pojmenuješ
+              strany. Ta jména si píšeš ty a zůstávají tady.
+            </li>
+            <li>
+              <strong>Service worker a jeho cache</strong> &mdash; kopie stránky, aby počítadlo fungovalo i bez signálu.
+            </li>
+            <li>
+              <strong>Trvalé úložiště</strong> &mdash; počítadlo požádá prohlížeč, aby tato data nemazal při
+              nedostatku místa. Některé prohlížeče se na to zeptají; odmítnutí nic nerozbije.
+            </li>
+          </ul>
+          <p>
+            Stránky pro diváky (<span className="mono">/w/</span> a <span className="mono">/watch</span>) zobrazují živé
+            skóre a neukládají nic; jsou vyloučené z vyhledávačů.
+          </p>
+          <p>
+            Nic z toho nikdy neopustí tvůj prohlížeč. Neodesílá se na žádný server &mdash; včetně serveru vývojáře
+            &mdash; a nepoužívá se k analytice, reklamě, profilování ani k ničemu jinému. Historii si můžeš z počítadla
+            vyexportovat a smazat, a všechno naráz vymažeš vymazáním dat webu v nastavení prohlížeče.
           </p>
 
           <h2 id="health">Zdravotní data</h2>
@@ -704,14 +786,22 @@ export const cs: Dict = {
             </li>
           </ul>
           <p>
-            Jelikož Scorius neukládá žádné osobní údaje na svých serverech (aplikace používá jen tvůj
-            soukromý iCloud a webová stránka využívá pouze lokální úložiště v tvém prohlížeči), uplatnění
-            těchto práv je přímočaré: napiš na{' '}
+            Jelikož Scorius mimo běžící relaci sledování živě neukládá na serverech provozovatele žádné osobní údaje
+            (aplikace používá jen tvůj soukromý iCloud a webová stránka pouze lokální úložiště v tvém prohlížeči),
+            uplatnění těchto práv je přímočaré: napiš na{' '}
             <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
               {SUPPORT_EMAIL}
             </a>{' '}
-            a tvoje žádost bude vyřízena do 30 dnů. Máš také právo podat stížnost u svého místního úřadu
-            pro ochranu osobních údajů.
+            a tvoje žádost bude vyřízena do jednoho měsíce. U dat v tvém vlastním iCloudu a v tvém prohlížeči navíc
+            nepotřebuješ nikoho žádat — máš je přímo pod rukama.
+          </p>
+          <p>
+            Máš také právo podat stížnost u dozorového úřadu. V České republice je jím{' '}
+            <strong>Úřad pro ochranu osobních údajů</strong>, Pplk. Sochora 27, 170&nbsp;00 Praha 7,{' '}
+            <a className="inline" href="https://uoou.gov.cz" target="_blank" rel="noopener noreferrer">
+              uoou.gov.cz
+            </a>
+            . Pokud žiješ v jiné zemi EHP, můžeš se obrátit i na dozorový úřad ve své zemi.
           </p>
 
           <h2 id="changes">Změny a kontakt</h2>
@@ -735,13 +825,16 @@ export const cs: Dict = {
       kicker: 'Právní',
       title: 'Podmínky použití.',
       lead: 'Srozumitelné podmínky pro používání Scoria. Stažením nebo používáním aplikace souhlasíš s tím, co je níže.',
-      meta: 'Naposledy aktualizováno · červenec 2026 · Platí pro Scorius 2.0',
+      meta: 'Naposledy aktualizováno · září 2026 · Platí pro Scorius 2.2',
       tocTitle: 'Na této stránce',
       article: (
         <>
           <div className="toc">
             <h4>Na této stránce</h4>
             <ol>
+              <li>
+                <a href="#provider">Kdo Scorius provozuje</a>
+              </li>
               <li>
                 <a href="#accept">Souhlas</a>
               </li>
@@ -755,10 +848,19 @@ export const cs: Dict = {
                 <a href="#third">Apple a služby třetích stran</a>
               </li>
               <li>
+                <a href="#spectate">Sledování živě a nahlášení obsahu</a>
+              </li>
+              <li>
                 <a href="#warranty">Bez záruky</a>
               </li>
               <li>
                 <a href="#liability">Omezení odpovědnosti</a>
+              </li>
+              <li>
+                <a href="#consumer">Tvoje práva spotřebitele</a>
+              </li>
+              <li>
+                <a href="#law">Rozhodné právo a řešení sporů</a>
               </li>
               <li>
                 <a href="#changes">Změny</a>
@@ -769,7 +871,22 @@ export const cs: Dict = {
             </ol>
           </div>
 
-          <h2 id="accept">1 · Souhlas</h2>
+          <h2 id="provider">1 · Kdo Scorius provozuje</h2>
+          <p>
+            Scorius provozuje <strong>{OPERATOR_NAME}</strong>, fyzická osoba podnikající zapsaná v živnostenském
+            rejstříku, IČO {OPERATOR_ID}, se sídlem Petra Rezka 1114/8, Nusle, 140&nbsp;00 Praha 4, Česká republika,
+            e-mail{' '}
+            <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
+              {SUPPORT_EMAIL}
+            </a>
+            . Dál v textu „provozovatel“. Kompletní údaje jsou v{' '}
+            <Link className="inline" href="/imprint">
+              Imprintu
+            </Link>
+            .
+          </p>
+
+          <h2 id="accept">2 · Souhlas</h2>
           <p>
             Stažením, instalací nebo používáním Scoria („aplikace“) souhlasíš s těmito podmínkami. Pokud nesouhlasíš,
             aplikaci prosím nepoužívej. Tyto podmínky doplňují{' '}
@@ -784,14 +901,14 @@ export const cs: Dict = {
             , které rovněž platí.
           </p>
 
-          <h2 id="license">2 · Licence k použití</h2>
+          <h2 id="license">3 · Licence k použití</h2>
           <p>
             Scorius je ti poskytnut na základě licence, nikoli prodán, pro osobní, nekomerční použití na zařízeních Apple,
             která vlastníš nebo ovládáš, v souladu s podmínkami App Store. Aplikaci nesmíš kopírovat, dále šířit, zpětně
             analyzovat ani přeprodávat, s výjimkou případů, kdy to zákon výslovně dovoluje.
           </p>
 
-          <h2 id="data">3 · Tvoje data a odpovědnost</h2>
+          <h2 id="data">4 · Tvoje data a odpovědnost</h2>
           <ul>
             <li>Odpovídáš za zápasy, jména hráčů, skóre a další obsah, který zadáš.</li>
             <li>
@@ -804,34 +921,75 @@ export const cs: Dict = {
             </li>
           </ul>
 
-          <h2 id="third">4 · Apple a služby třetích stran</h2>
+          <h2 id="third">5 · Apple a služby třetích stran</h2>
           <p>
             Aplikace využívá služby Applu — iCloud, HealthKit a ActivityKit — které se řídí vlastními podmínkami a zásadami
             ochrany soukromí Applu. Informace o golfových hřištích pocházejí z veřejné databáze třetí strany; Scorius nemá
             kontrolu nad přesností těchto dat a neodpovídá za ni.
           </p>
 
-          <h2 id="warranty">5 · Bez záruky</h2>
+          <h2 id="spectate">6 · Sledování živě a nahlášení obsahu</h2>
+          <p>
+            Sledování živě spouštíš ty a ty také rozhoduješ, jak pojmenuješ strany. Jména cizích lidí sdílej jen s
+            jejich vědomím. Provozovatel obsah sdílených zápasů nemoderuje ani neprochází — ale pokud mu na{' '}
+            <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
+              {SUPPORT_EMAIL}
+            </a>{' '}
+            nahlásíš zápas s urážlivým, protiprávním nebo jinak nevhodným jménem, relaci ukončí. Každá relace se stejně
+            sama maže nejpozději 4 hodiny po poslední aktualizaci.
+          </p>
+
+          <h2 id="warranty">7 · Bez záruky</h2>
           <p>
             Aplikace je poskytována <strong>„tak, jak je“</strong> a <strong>„podle dostupnosti“</strong>, bez jakýchkoli
             záruk, ať už výslovných nebo předpokládaných, včetně vhodnosti pro konkrétní účel. Vývojář nezaručuje, že
             aplikace poběží nepřerušovaně, bez chyb nebo že bude kompatibilní s každým zařízením či budoucí verzí systému.
+            Jsi-li spotřebitel, platí to jen v rozsahu, který zákon dovoluje — viz bod 9.
           </p>
 
-          <h2 id="liability">6 · Omezení odpovědnosti</h2>
+          <h2 id="liability">8 · Omezení odpovědnosti</h2>
           <p>
             V maximálním rozsahu povoleném zákonem vývojář neodpovídá za žádné nepřímé, náhodné ani následné škody ani za
-            jakoukoli ztrátu dat vzniklou z používání — nebo nemožnosti používat — aplikaci. Některé jurisdikce tato
-            vyloučení neumožňují, takže se na tebe nemusí vztahovat.
+            jakoukoli ztrátu dat vzniklou z používání — nebo nemožnosti používat — aplikaci. Toto omezení se neuplatní
+            tam, kde ho zákon nepřipouští: u spotřebitelů platí přednostně bod 9.
           </p>
 
-          <h2 id="changes">7 · Změny</h2>
+          <h2 id="consumer">9 · Tvoje práva spotřebitele</h2>
+          <p>
+            Jsi-li spotřebitel, <strong>body 7 a 8 tě nepřipravují o nic, co ti dává zákon</strong>. Práva z vadného
+            plnění, práva z vadného digitálního obsahu ani nároky, kterých se podle českého práva nelze předem vzdát,
+            zůstávají nedotčena; provozovatel zejména neomezuje svoji odpovědnost za újmu způsobenou úmyslně nebo z
+            hrubé nedbalosti a za újmu na přirozených právech člověka (§ 2898 obč. zák.). Ujednání, které by zákonná
+            práva spotřebitele zkracovalo, se nepoužije.
+          </p>
+          <p>
+            Aplikaci i s volitelným nákupem ikon prodává a účtuje <strong>Apple</strong> prostřednictvím App Store —
+            práva vůči prodávajícímu, včetně vrácení peněz, tedy uplatňuješ u Applu. Provozovatel odpovídá za samotný
+            obsah a fungování aplikace.
+          </p>
+
+          <h2 id="law">10 · Rozhodné právo a řešení sporů</h2>
+          <p>
+            Tyto podmínky se řídí právem České republiky. Jsi-li spotřebitel s bydlištěm v jiném státě EU, nepřipravuje
+            tě tato volba o ochranu, kterou ti dávají kogentní předpisy tvého státu.
+          </p>
+          <p>
+            Případný spor se dá nejrychleji vyřešit e-mailem — ozvi se a domluvíme se. Pokud bys chtěl jít cestou
+            mimosoudního řešení sporu, příslušná je{' '}
+            <strong>Česká obchodní inspekce</strong>,{' '}
+            <a className="inline" href="https://adr.coi.cz" target="_blank" rel="noopener noreferrer">
+              adr.coi.cz
+            </a>
+            . Tím není dotčeno tvoje právo obrátit se na soud.
+          </p>
+
+          <h2 id="changes">11 · Změny</h2>
           <p>
             Tyto podmínky mohou být čas od času aktualizovány. Aktuální verze vždy žije na této stránce i s datem. Pokud
             aplikaci po změně používáš dál, znamená to, že s aktualizovanými podmínkami souhlasíš.
           </p>
 
-          <h2 id="contact">8 · Kontakt</h2>
+          <h2 id="contact">12 · Kontakt</h2>
           <p>
             Máš dotazy k těmto podmínkám? Napiš na{' '}
             <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
@@ -850,16 +1008,18 @@ export const cs: Dict = {
     imprint: {
       kicker: 'Právní',
       title: 'Imprint / Kontaktní údaje',
-      lead: 'Kontaktní údaje provozovatele podle §3 zákona č. 480/2004 Sb., o službách informační společnosti.',
+      lead: 'Identifikační a kontaktní údaje provozovatele podle § 435 zákona č. 89/2012 Sb., občanského zákoníku.',
       nameLabel: 'Jméno',
       name: 'Tomáš Kalmus',
       addressLabel: 'Adresa',
-      address: 'Petra Rezka 1114/8, Praha 4, 14000, Česká republika',
+      address: 'Petra Rezka 1114/8, Nusle, 140 00 Praha 4, Česká republika',
+      registryLabel: 'Zápis v rejstříku',
+      registry: 'Zapsán v živnostenském rejstříku vedeném Úřadem městské části Praha 4',
       businessIdLabel: 'IČO',
       businessId: '22478680',
       emailLabel: 'Email',
       email: SUPPORT_EMAIL,
-      note: 'Tomáš Kalmus podniká jako fyzická osoba podle českého práva.',
+      note: 'Tomáš Kalmus podniká jako fyzická osoba podle českého práva. Není plátcem DPH. Dozor nad dodržováním předpisů na ochranu spotřebitele vykonává Česká obchodní inspekce, dozor nad ochranou osobních údajů Úřad pro ochranu osobních údajů.',
       noteTitle: 'Právní status',
     },
   },

@@ -344,10 +344,17 @@ img, svg { display: block; }
 .footer-col a:hover { color: var(--fg); }
 .footer-brand p { font-size: 0.875rem; color: var(--muted); max-width: 280px; margin: 14px 0 0; line-height: 1.6; }
 .footer-bottom {
-  max-width: var(--maxw); margin: 0 auto; padding: 22px 28px 48px;
+  max-width: var(--maxw); margin: 0 auto; padding: 22px 28px 14px;
   border-top: 1px solid var(--hairline-2);
   display: flex; justify-content: space-between; align-items: center; gap: 16px;
   font-size: 0.8125rem; color: var(--faint);
+}
+
+/* Apple's required trademark attribution: present on every page, but it is
+   boilerplate — smaller and quieter than the copyright line above it. */
+.footer-trademarks {
+  max-width: var(--maxw); margin: 0 auto; padding: 0 28px 44px;
+  font-size: 0.6875rem; line-height: 1.6; color: var(--faint); opacity: .75;
 }
 
 /* ---- Reveal on scroll ---- */

@@ -37,8 +37,11 @@ export function Footer() {
       </div>
       <div className="footer-bottom">
         <span>{t.footer.rights}</span>
-        <span className="mono">v2.0</span>
+        <span className="mono">v2.2</span>
       </div>
+      {/* Apple's marketing guidelines want the attribution wherever their marks
+          appear — and they appear on every page, so it lives in the footer. */}
+      <p className="footer-trademarks">{t.footer.trademarks}</p>
     </footer>
   );
 }

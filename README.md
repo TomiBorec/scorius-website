@@ -52,8 +52,10 @@ Outputs static HTML/CSS/JS into `out/`. The `out/` directory is what gets deploy
   `Content-Signal: ai-train=no, search=yes, ai-input=yes`, and the sitemap reference.
 - `src/app/sitemap.ts` — generates `/sitemap.xml` on every build with all canonical URLs.
 - `public/_headers` — Cloudflare response headers adding RFC 8288 `Link` relations
-  (`help` → /support, `privacy-policy` → /privacy, `terms-of-service` → /terms) and a
-  `Content-Signal: ai-train=no, search=yes, ai-input=yes` usage-preference header on every page.
+  (`help` → /support, `privacy-policy` → /privacy, `terms-of-service` → /terms), a
+  `Content-Signal: ai-train=no, search=yes, ai-input=yes` usage-preference header on every page,
+  the security set (HSTS, CSP, `X-Frame-Options`, `Referrer-Policy`) and `X-Robots-Tag: noindex`
+  on `/w/*`, `/watch` and `/score` — the pages that must never reach an index.
 - `functions/_middleware.ts` — Pages middleware implementing Markdown content negotiation:
   `Accept: text/markdown` requests get a Markdown rendering of the page
   (`Content-Type: text/markdown` + `x-markdown-tokens`), everyone else gets HTML.

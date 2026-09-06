@@ -86,7 +86,11 @@ const bootstrap = `(() => {
     var s = localStorage.getItem('scorius-sport');
     var sports = ['badminton','tennis','padel','pickleball','squash','tableTennis','volleyball','basketball','football','floorball','golf','discGolf'];
     d.dataset.sport = sports.indexOf(s) !== -1 ? s : 'badminton';
-    var l = localStorage.getItem('scorius-lang');
+    // ?lang= wins over the stored preference: it is how somebody sends "the
+    // Czech terms" to somebody else, and it must survive their stored English.
+    var q = new URLSearchParams(location.search).get('lang');
+    var l = (q === 'cs' || q === 'en') ? q : localStorage.getItem('scorius-lang');
+    if (q === 'cs' || q === 'en') localStorage.setItem('scorius-lang', q);
     var prefersCs = (navigator.language || '').toLowerCase().indexOf('cs') === 0;
     d.lang = (l === 'cs' || l === 'en') ? l : (prefersCs ? 'cs' : 'en');
   } catch (e) {

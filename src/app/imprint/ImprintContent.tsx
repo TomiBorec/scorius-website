@@ -24,6 +24,9 @@ export function ImprintContent() {
           <dt>{p.businessIdLabel}</dt>
           <dd>{p.businessId}</dd>
 
+          <dt>{p.registryLabel}</dt>
+          <dd>{p.registry}</dd>
+
           <dt>{p.emailLabel}</dt>
           <dd>
             <a className="inline" href={`mailto:${p.email}`}>

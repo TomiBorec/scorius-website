@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
+import { languageAlternates } from '../alternates';
 import { ImprintContent } from './ImprintContent';
 
 export const metadata: Metadata = {
   title: 'Imprint — Scorius',
   description:
-    'Operator and contact information for Scorius as required by §3 of Act No. 480/2004 Coll.',
+    'Operator identification and contact details for Scorius, as required by § 435 of the Czech Civil Code.',
+  alternates: languageAlternates('/imprint'),
 };
 
 export default function ImprintPage() {

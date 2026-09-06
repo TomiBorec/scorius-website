@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { SUPPORT_EMAIL } from '@/components/constants';
+import { OPERATOR_ID, OPERATOR_NAME, SUPPORT_EMAIL } from '@/components/constants';
 
 /**
  * English content dictionary. This module defines the canonical *shape* of the
@@ -181,6 +181,8 @@ export const en = {
     terms: 'Terms of use',
     imprint: 'Imprint',
     rights: '© 2026 Scorius. Made for people who keep score.',
+    trademarks:
+      'Apple, the Apple logo, Apple Watch, iPhone and iPad are trademarks of Apple Inc., registered in the U.S. and other countries. App Store is a service mark of Apple Inc.',
   },
 
   devices: {
@@ -500,7 +502,7 @@ export const en = {
       kicker: 'Privacy',
       title: 'Your matches are yours.',
       lead: 'Scorius is built so the developer never sees your data. No accounts, no analytics, no third-party SDKs — your matches stay on your devices and in your iCloud.',
-      meta: 'Last updated · August 2026 · Applies to Scorius 2.2',
+      meta: 'Last updated · September 2026 · Applies to Scorius 2.2',
       tocTitle: 'On this page',
       article: (
         <>
@@ -509,6 +511,9 @@ export const en = {
             <ol>
               <li>
                 <a href="#summary">The short version</a>
+              </li>
+              <li>
+                <a href="#controller">Who the controller is</a>
               </li>
               <li>
                 <a href="#stored">What Scorius stores — and where</a>
@@ -547,6 +552,27 @@ export const en = {
             for a server run by the developer is when <strong>you</strong> start a Live Spectate session — and even then
             it is only the live score of that one match, for as long as it is being played. The developer cannot see your
             history, your stats or anything else.
+          </p>
+
+          <h2 id="controller">Who the controller is</h2>
+          <p>
+            Scorius is operated by <strong>{OPERATOR_NAME}</strong>, a sole trader registered in the Czech trade
+            register, business ID (IČO) {OPERATOR_ID}, Petra Rezka 1114/8, Nusle, 140&nbsp;00 Prague 4, Czech Republic.
+            For everything described below he is the data controller, and you can reach him at{' '}
+            <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
+              {SUPPORT_EMAIL}
+            </a>
+            . Full contact details are on the{' '}
+            <Link className="inline" href="/imprint">
+              Imprint
+            </Link>{' '}
+            page.
+          </p>
+          <p>
+            Given how Scorius is built, that role almost never comes into play: the only processing that happens on the
+            operator&rsquo;s side is <a className="inline" href="#spectate">Live Spectate</a>, which you start yourself,
+            and the legal basis is performance of a contract — providing the service you explicitly asked for
+            (Art.&nbsp;6(1)(b) GDPR). Nothing else leaves your device for the operator.
           </p>
 
           <h2 id="stored">What Scorius stores — and where</h2>
@@ -590,16 +616,20 @@ export const en = {
               score; spectators can only read it.
             </li>
             <li>
-              <strong>It is never stored.</strong> The score is held in memory for the duration of the match and
-              discarded within a few hours of the last update. There are no backups, and no logs of match content.
+              <strong>It is kept only for the match.</strong> The relay remembers just the latest state of the match, so
+              a spectator joining midway sees the current score. That state is deleted automatically{' '}
+              <strong>at most 4 hours</strong> after the last update, and <strong>30 minutes</strong> after the match
+              finishes. There is no history, no backup and no log of match content. Cloudflare, as the infrastructure
+              provider, keeps standard operational request logs (technical metadata, not match content).
             </li>
             <li>
               <strong>Your history is never sent.</strong> Only the match currently being played, and only while the
               session is open. Sharing stops when the match ends.
             </li>
             <li>
-              <strong>Nothing identifies you.</strong> No account, no device identifier, no IP logging beyond
-              Cloudflare&rsquo;s standard network protection.
+              <strong>Nothing identifies you — except the names you type.</strong> No account, no device identifier, no
+              IP logging beyond Cloudflare&rsquo;s standard network protection. The only personal data that reaches the
+              relay are the names you give the sides.
             </li>
             <li>
               <strong>Names are up to you.</strong> If you name a side with a real name, that name is visible to anyone
@@ -610,27 +640,52 @@ export const en = {
             Spectator pages are excluded from search engines. You can turn the whole feature off in Settings, which
             removes the sharing option from the app entirely.
           </p>
+          <p>
+            Naming a side after somebody else shares their data — only do it with their knowledge. If you come across a
+            shared match carrying an abusive or otherwise inappropriate name, write to{' '}
+            <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
+              {SUPPORT_EMAIL}
+            </a>{' '}
+            and the session will be shut down.
+          </p>
 
           <h2 id="network">Network &amp; third parties</h2>
           <p>
             Scorius makes two kinds of optional outbound request, and you trigger both yourself. When you{' '}
-            <strong>search for a golf course</strong>, the app queries a public golf-course database to fetch course and
-            par information; no personal data is attached beyond your search text. When you start{' '}
+            <strong>search for a golf course</strong>, the app queries the public golf-course database{' '}
+            <a className="inline" href="https://golfcourseapi.com" target="_blank" rel="noopener noreferrer">
+              golfcourseapi.com
+            </a>{' '}
+            to fetch course and par information; no personal data is attached beyond your search text. When you start{' '}
             <strong>Live Spectate</strong>, the live score goes to the developer&rsquo;s relay as described above. If you
             do neither, Scorius makes no network calls at all beyond your own iCloud.
           </p>
           <p>There are no advertising SDKs, no crash-reporting services and no usage analytics of any kind.</p>
+          <p>
+            The complete list of third parties involved in running Scorius: <strong>Apple</strong> (App Store
+            distribution, iCloud, HealthKit — governed by{' '}
+            <a className="inline" href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener noreferrer">
+              Apple&rsquo;s privacy policy
+            </a>
+            ), <strong>Cloudflare</strong> (hosting for this site and the Live Spectate relay, acting as processor) and{' '}
+            <strong>golfcourseapi.com</strong> (course lookup, only when you use it). Nobody else.
+          </p>
 
           <h2 id="website">Website data &amp; local storage</h2>
           <p>
-            This website (scorius.app) is a static marketing site. It does not set cookies, does not embed
-            third-party tracking scripts, and does not collect any personal data through forms. The spectator pages
-            (<span className="mono">/w/</span> and <span className="mono">/watch</span>) display a live score and store
-            nothing; they are excluded from search engines.
+            This website (scorius.app) <strong>sets no cookies</strong> and embeds no third-party tracking scripts,
+            analytics or advertising tools. Fonts are served from scorius.app itself, so simply reading the site sends
+            not one request to anybody else&rsquo;s server. The site is hosted on Cloudflare Pages; Cloudflare, as the
+            infrastructure provider, keeps standard operational request logs.
           </p>
           <p>
-            The website uses your browser&rsquo;s <strong>localStorage</strong> to remember three strictly
-            functional preferences so they persist between visits:
+            The site does store data <strong>in your browser</strong>, though. Everything below is needed for what you
+            explicitly asked for — a theme that survives a reload, or a scoreboard that doesn&rsquo;t forget the score
+            when your screen locks. That is why there is no consent banner: this is strictly necessary storage under
+            § 89(3) of Czech Act No. 127/2005 Coll. (the ePrivacy rule on terminal-equipment storage).
+          </p>
+          <p>
+            <strong>On every page (localStorage):</strong>
           </p>
           <ul>
             <li>
@@ -643,10 +698,37 @@ export const en = {
               <strong>scorius-lang</strong> &mdash; your preferred language (English or Czech)
             </li>
           </ul>
+          <p>These are written only once you actually switch something. Read the site and the store stays empty.</p>
           <p>
-            This data never leaves your browser. It is not sent to any server &mdash; including the
-            developer&rsquo;s &mdash; and is not used for analytics, advertising, profiling or any other
-            purpose. You can clear it at any time through your browser settings.
+            <strong>Additionally in the browser scoreboard (<span className="mono">/score</span>):</strong>
+          </p>
+          <ul>
+            <li>
+              <strong>scorius-active-match</strong> and <strong>scorius-schema</strong> (localStorage) &mdash; the
+              in-progress match and its format version, so a single point survives a locked phone or a reload.
+            </li>
+            <li>
+              <strong>IndexedDB “scorius”</strong> &mdash; the history of finished matches, including the names you give
+              the sides. You type those names, and they stay here.
+            </li>
+            <li>
+              <strong>A service worker and its cache</strong> &mdash; a copy of the page, so the scoreboard works with
+              no signal.
+            </li>
+            <li>
+              <strong>Persistent storage</strong> &mdash; the scoreboard asks your browser not to evict this data when
+              space runs short. Some browsers will ask you; declining breaks nothing.
+            </li>
+          </ul>
+          <p>
+            The spectator pages (<span className="mono">/w/</span> and <span className="mono">/watch</span>) display a
+            live score and store nothing; they are excluded from search engines.
+          </p>
+          <p>
+            None of this ever leaves your browser. It is not sent to any server &mdash; including the
+            developer&rsquo;s &mdash; and is not used for analytics, advertising, profiling or any other purpose. You
+            can export and delete your history from the scoreboard, and clear all of it at once by clearing site data in
+            your browser settings.
           </p>
 
           <h2 id="health">Health data</h2>
@@ -703,13 +785,23 @@ export const en = {
             </li>
           </ul>
           <p>
-            Since Scorius stores no personal data on its servers (the app uses only your private iCloud, and the
-            website uses only local storage in your browser), exercising these rights is straightforward: email{' '}
+            Outside a running Live Spectate session, Scorius stores no personal data on the operator&rsquo;s servers
+            (the app uses only your private iCloud, and the website only local storage in your browser), so exercising
+            these rights is straightforward: email{' '}
             <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
               {SUPPORT_EMAIL}
             </a>{' '}
-            and your request will be handled within 30 days. You also have the right to lodge a complaint with
-            your local data protection authority.
+            and your request will be handled within one month. For the data in your own iCloud and your own browser you
+            need not ask anyone — it is already in your hands.
+          </p>
+          <p>
+            You also have the right to lodge a complaint with a supervisory authority. In the Czech Republic that is the{' '}
+            <strong>Office for Personal Data Protection</strong> (Úřad pro ochranu osobních údajů), Pplk. Sochora 27,
+            170&nbsp;00 Prague 7,{' '}
+            <a className="inline" href="https://uoou.gov.cz" target="_blank" rel="noopener noreferrer">
+              uoou.gov.cz
+            </a>
+            . If you live elsewhere in the EEA, you may also contact your own country&rsquo;s authority.
           </p>
 
           <h2 id="changes">Changes &amp; contact</h2>
@@ -733,13 +825,16 @@ export const en = {
       kicker: 'Legal',
       title: 'Terms of use.',
       lead: 'Plain-language terms for using Scorius. By downloading or using the app, you agree to what’s below.',
-      meta: 'Last updated · July 2026 · Applies to Scorius 2.0',
+      meta: 'Last updated · September 2026 · Applies to Scorius 2.2',
       tocTitle: 'On this page',
       article: (
         <>
           <div className="toc">
             <h4>On this page</h4>
             <ol>
+              <li>
+                <a href="#provider">Who operates Scorius</a>
+              </li>
               <li>
                 <a href="#accept">Acceptance</a>
               </li>
@@ -753,10 +848,19 @@ export const en = {
                 <a href="#third">Apple &amp; third-party services</a>
               </li>
               <li>
+                <a href="#spectate">Live Spectate &amp; reporting content</a>
+              </li>
+              <li>
                 <a href="#warranty">No warranty</a>
               </li>
               <li>
                 <a href="#liability">Limitation of liability</a>
+              </li>
+              <li>
+                <a href="#consumer">Your consumer rights</a>
+              </li>
+              <li>
+                <a href="#law">Governing law &amp; disputes</a>
               </li>
               <li>
                 <a href="#changes">Changes</a>
@@ -767,7 +871,22 @@ export const en = {
             </ol>
           </div>
 
-          <h2 id="accept">1 · Acceptance</h2>
+          <h2 id="provider">1 · Who operates Scorius</h2>
+          <p>
+            Scorius is operated by <strong>{OPERATOR_NAME}</strong>, a sole trader registered in the Czech trade
+            register, business ID (IČO) {OPERATOR_ID}, Petra Rezka 1114/8, Nusle, 140&nbsp;00 Prague 4, Czech Republic,
+            email{' '}
+            <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
+              {SUPPORT_EMAIL}
+            </a>
+            . Referred to below as “the operator”. Full details are on the{' '}
+            <Link className="inline" href="/imprint">
+              Imprint
+            </Link>{' '}
+            page.
+          </p>
+
+          <h2 id="accept">2 · Acceptance</h2>
           <p>
             By downloading, installing or using Scorius (the “app”), you agree to these terms. If you do not agree, please
             don’t use the app. These terms are in addition to{' '}
@@ -782,14 +901,14 @@ export const en = {
             , which also apply.
           </p>
 
-          <h2 id="license">2 · Licence to use</h2>
+          <h2 id="license">3 · Licence to use</h2>
           <p>
             Scorius is licensed, not sold, to you for personal, non-commercial use on Apple devices you own or control, in
             line with the App Store terms. You may not copy, redistribute, reverse-engineer or resell the app except where
             the law expressly permits it.
           </p>
 
-          <h2 id="data">3 · Your data &amp; responsibilities</h2>
+          <h2 id="data">4 · Your data &amp; responsibilities</h2>
           <ul>
             <li>You are responsible for the matches, player names, scores and other content you enter.</li>
             <li>
@@ -802,34 +921,76 @@ export const en = {
             </li>
           </ul>
 
-          <h2 id="third">4 · Apple &amp; third-party services</h2>
+          <h2 id="third">5 · Apple &amp; third-party services</h2>
           <p>
             The app relies on Apple services — iCloud, HealthKit and ActivityKit — which are governed by Apple’s own terms
             and privacy policy. Golf course information comes from a third-party public database; Scorius does not control
             and is not responsible for the accuracy of that data.
           </p>
 
-          <h2 id="warranty">5 · No warranty</h2>
+          <h2 id="spectate">6 · Live Spectate &amp; reporting content</h2>
+          <p>
+            You start Live Spectate, and you choose how the sides are named. Only share other people&rsquo;s names with
+            their knowledge. The operator does not moderate or review shared matches — but if you report a match
+            carrying an abusive, unlawful or otherwise inappropriate name to{' '}
+            <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
+              {SUPPORT_EMAIL}
+            </a>
+            , the session will be shut down. Every session expires on its own at most 4 hours after the last update.
+          </p>
+
+          <h2 id="warranty">7 · No warranty</h2>
           <p>
             The app is provided <strong>“as is”</strong> and <strong>“as available”</strong>, without warranties of any
             kind, whether express or implied, including fitness for a particular purpose. The developer does not warrant
-            that the app will be uninterrupted, error-free or compatible with every device or future OS version.
+            that the app will be uninterrupted, error-free or compatible with every device or future OS version. If you
+            are a consumer, this applies only as far as the law allows — see section 9.
           </p>
 
-          <h2 id="liability">6 · Limitation of liability</h2>
+          <h2 id="liability">8 · Limitation of liability</h2>
           <p>
             To the maximum extent permitted by law, the developer is not liable for any indirect, incidental or
-            consequential damages, or for any loss of data, arising from your use of — or inability to use — the app. Some
-            jurisdictions don’t allow these exclusions, so parts may not apply to you.
+            consequential damages, or for any loss of data, arising from your use of — or inability to use — the app.
+            This limitation does not apply where the law does not permit it: for consumers, section 9 prevails.
           </p>
 
-          <h2 id="changes">7 · Changes</h2>
+          <h2 id="consumer">9 · Your consumer rights</h2>
+          <p>
+            If you are a consumer, <strong>sections 7 and 8 take nothing away from what the law gives you</strong>.
+            Rights arising from defective performance, rights in defective digital content, and any claim that cannot be
+            waived in advance under Czech law remain untouched; in particular the operator does not limit liability for
+            harm caused intentionally or by gross negligence, or for harm to a person&rsquo;s natural rights
+            (§ 2898 of the Czech Civil Code). Any term that would cut back a consumer&rsquo;s statutory rights does not
+            apply.
+          </p>
+          <p>
+            The app, including the optional icon purchase, is sold and billed by <strong>Apple</strong> through the App
+            Store — so refunds and other seller-side claims go to Apple. The operator is responsible for the content and
+            functioning of the app itself.
+          </p>
+
+          <h2 id="law">10 · Governing law &amp; disputes</h2>
+          <p>
+            These terms are governed by the law of the Czech Republic. If you are a consumer resident elsewhere in the
+            EU, this choice does not deprive you of the protection of the mandatory rules of your own country.
+          </p>
+          <p>
+            The fastest route through any dispute is email — get in touch and we will sort it out. If you would rather
+            use out-of-court dispute resolution, the competent body is the{' '}
+            <strong>Czech Trade Inspection Authority</strong>,{' '}
+            <a className="inline" href="https://adr.coi.cz" target="_blank" rel="noopener noreferrer">
+              adr.coi.cz
+            </a>
+            . Your right to go to court is unaffected.
+          </p>
+
+          <h2 id="changes">11 · Changes</h2>
           <p>
             These terms may be updated from time to time. The current version always lives on this page with its date.
             Continuing to use the app after a change means you accept the updated terms.
           </p>
 
-          <h2 id="contact">8 · Contact</h2>
+          <h2 id="contact">12 · Contact</h2>
           <p>
             Questions about these terms? Email{' '}
             <a className="inline" href={`mailto:${SUPPORT_EMAIL}`}>
@@ -848,16 +1009,18 @@ export const en = {
     imprint: {
       kicker: 'Legal',
       title: 'Imprint',
-      lead: 'Operator and contact information as required by §3 of Act No. 480/2004 Coll., on information society services.',
+      lead: 'Operator identification and contact details as required by § 435 of Act No. 89/2012 Coll., the Czech Civil Code.',
       nameLabel: 'Name',
       name: 'Tomáš Kalmus',
       addressLabel: 'Address',
-      address: 'Petra Rezka 1114/8, Praha 4, 14000, Czech Republic',
+      address: 'Petra Rezka 1114/8, Nusle, 140 00 Prague 4, Czech Republic',
+      registryLabel: 'Registration',
+      registry: 'Registered in the Czech trade register kept by the Municipal District Office Prague 4',
       businessIdLabel: 'Business ID (IČO)',
       businessId: '22478680',
       emailLabel: 'Email',
       email: SUPPORT_EMAIL,
-      note: 'Tomáš Kalmus operates as a sole trader (fyzická osoba podnikající) under Czech law.',
+      note: 'Tomáš Kalmus operates as a sole trader (fyzická osoba podnikající) under Czech law and is not registered for VAT. Consumer protection is supervised by the Czech Trade Inspection Authority; data protection by the Office for Personal Data Protection.',
       noteTitle: 'Legal status',
     },
   },

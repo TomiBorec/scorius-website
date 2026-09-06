@@ -2,8 +2,16 @@
 # Crawl rules per RFC 9309. Content usage preferences per contentsignals.org
 # (draft-romm-aipref-contentsignals).
 
+# Live Spectate pages carry the names the scorer typed, so they stay out of
+# every index. Under RFC 9309 a crawler obeys exactly one group — the most
+# specific one matching its token — so the Disallows are repeated in every
+# group rather than parked in a second "User-agent: *" record that named
+# crawlers would never read.
 User-agent: *
 Allow: /
+Disallow: /w/
+Disallow: /watch
+Disallow: /score
 Content-Signal: ai-train=no, search=yes, ai-input=yes
 
 # --- AI crawlers: explicitly allowed ---
@@ -11,54 +19,81 @@ Content-Signal: ai-train=no, search=yes, ai-input=yes
 # OpenAI
 User-agent: GPTBot
 Allow: /
+Disallow: /w/
+Disallow: /watch
+Disallow: /score
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /w/
+Disallow: /watch
+Disallow: /score
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /w/
+Disallow: /watch
+Disallow: /score
 
 # Anthropic
 User-agent: ClaudeBot
 Allow: /
+Disallow: /w/
+Disallow: /watch
+Disallow: /score
 
 User-agent: Claude-Web
 Allow: /
+Disallow: /w/
+Disallow: /watch
+Disallow: /score
 
 # Google (AI training control token)
 User-agent: Google-Extended
 Allow: /
+Disallow: /w/
+Disallow: /watch
+Disallow: /score
 
 # Perplexity
 User-agent: PerplexityBot
 Allow: /
+Disallow: /w/
+Disallow: /watch
+Disallow: /score
 
 User-agent: Perplexity-User
 Allow: /
+Disallow: /w/
+Disallow: /watch
+Disallow: /score
 
 # Apple (AI training control token)
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /w/
+Disallow: /watch
+Disallow: /score
 
 # Meta
 User-agent: Meta-ExternalAgent
 Allow: /
+Disallow: /w/
+Disallow: /watch
+Disallow: /score
 
 # Common Crawl
 User-agent: CCBot
 Allow: /
+Disallow: /w/
+Disallow: /watch
+Disallow: /score
 
 # Amazon
 User-agent: Amazonbot
 Allow: /
-
-Sitemap: https://scorius.app/sitemap.xml
-
-# --- Live Spectate: never index a live score ---
-# Player names travel in the payload, so these pages must stay out of every
-# index. Belt and braces: the pages also send robots meta noindex and the relay
-# sets x-robots-tag on the stream.
-
-User-agent: *
 Disallow: /w/
 Disallow: /watch
+Disallow: /score
+
+Sitemap: https://scorius.app/sitemap.xml

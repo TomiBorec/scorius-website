@@ -3,3 +3,19 @@
   Link: </privacy>; rel="privacy-policy"
   Link: </terms>; rel="terms-of-service"
   Content-Signal: ai-train=no, search=yes, ai-input=yes
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+
+# Live Spectate carries the names the scorer typed. robots.txt already keeps
+# crawlers off these paths, but a disallowed URL can still be indexed by URL
+# alone — this header is the part a crawler cannot skip.
+/w/*
+  X-Robots-Tag: noindex, nofollow
+
+/watch
+  X-Robots-Tag: noindex, nofollow
+
+/score
+  X-Robots-Tag: noindex, nofollow
