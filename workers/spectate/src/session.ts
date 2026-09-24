@@ -4,6 +4,10 @@
 // Nothing here is persisted beyond the session: the storage writes exist so an
 // eviction between points doesn't lose the score, and the alarm deletes them.
 // There is no history, no log of frame contents, no backup.
+//
+// Since app build 383 it also keeps the Live Activity push tokens of in-app
+// spectators (apns.ts) and pushes every frame to them — deleted with the rest
+// of the session.
 
 import {
   KEEPALIVE_MS,
@@ -15,6 +19,14 @@ import {
   type Frame,
   type FrameEnvelope,
 } from './protocol';
+import {
+  ApnsClient,
+  MAX_PUSH_TARGETS,
+  buildPushBody,
+  parsePushTarget,
+  type PushEnv,
+  type PushTarget,
+} from './apns';
 
 const encoder = new TextEncoder();
 
@@ -28,8 +40,15 @@ export class SpectateSession implements DurableObject {
 
   private token: string | null = null;
   private lastEnvelope: FrameEnvelope | null = null;
+  /** In-app spectators' Live Activity push tokens, keyed by token. */
+  private pushTargets = new Map<string, PushTarget>();
+  private apns: ApnsClient;
 
-  constructor(private state: DurableObjectState) {
+  constructor(
+    private state: DurableObjectState,
+    env: PushEnv,
+  ) {
+    this.apns = new ApnsClient(env);
     // Rehydrate before serving anything — a DO can be evicted between points
     // when nobody is watching, and coming back without the token would lock
     // the scoring device out of its own session.
@@ -37,6 +56,8 @@ export class SpectateSession implements DurableObject {
       this.token = (await this.state.storage.get<string>('token')) ?? null;
       this.lastEnvelope =
         (await this.state.storage.get<FrameEnvelope>('lastEnvelope')) ?? null;
+      const targets = (await this.state.storage.get<PushTarget[]>('pushTargets')) ?? [];
+      this.pushTargets = new Map(targets.map((t) => [t.token, t]));
     });
   }
 
@@ -105,6 +126,8 @@ export class SpectateSession implements DurableObject {
     await this.state.storage.setAlarm(Date.now() + ttl);
 
     this.broadcast(sse('frame', envelope));
+    // Off the response path: the scorer's PUT must not wait on APNs.
+    this.state.waitUntil(this.pushFrame(state));
     return json({ viewers: this.subscribers.size });
   }
 
@@ -116,6 +139,12 @@ export class SpectateSession implements DurableObject {
     const writer = writable.getWriter();
     const sub: Subscriber = { writer };
     this.subscribers.add(sub);
+
+    // An in-app spectator registers its Live Activity for push on the same
+    // request (headers — see apns.ts). Re-sent on every reconnect, which is
+    // how a rotated token replaces the old one.
+    const target = parsePushTarget(request.headers);
+    if (target && this.apns.isConfigured) await this.addPushTarget(target);
 
     // Send the current frame immediately rather than waiting for the next
     // point. Without this, joining a 0-0 golf round or a paused clock means
@@ -158,6 +187,12 @@ export class SpectateSession implements DurableObject {
 
   private async expire(reason: 'ended' | 'expired'): Promise<void> {
     this.broadcast(sse('closed', { reason }));
+    // Close out every spectator's Live Activity on the last score: the
+    // session is going, and nothing will update those cards again.
+    if (this.lastEnvelope) {
+      await this.pushFrame({ ...this.lastEnvelope.state, isMatchComplete: true });
+    }
+    this.pushTargets.clear();
     for (const sub of [...this.subscribers]) {
       this.subscribers.delete(sub);
       void sub.writer.close().catch(() => {});
@@ -167,6 +202,40 @@ export class SpectateSession implements DurableObject {
     this.lastEnvelope = null;
     await this.state.storage.deleteAll();
     await this.state.storage.deleteAlarm();
+  }
+
+  // ── Live Activity push ───────────────────────────────────────────────────
+
+  private async addPushTarget(target: PushTarget): Promise<void> {
+    this.pushTargets.delete(target.token); // re-insert = most recent last
+    this.pushTargets.set(target.token, target);
+    while (this.pushTargets.size > MAX_PUSH_TARGETS) {
+      const oldest = this.pushTargets.keys().next().value;
+      if (oldest === undefined) break;
+      this.pushTargets.delete(oldest);
+    }
+    await this.savePushTargets();
+  }
+
+  /** Sends one frame to every registered spectator; forgets dead tokens. */
+  private async pushFrame(frame: Frame): Promise<void> {
+    if (this.pushTargets.size === 0 || !this.apns.isConfigured) return;
+    const now = Date.now();
+    const complete = frame.isMatchComplete === true;
+    const targets = [...this.pushTargets.values()];
+    const results = await Promise.all(
+      targets.map((t) => this.apns.send(t, buildPushBody(frame, t, now), complete)),
+    );
+    let changed = false;
+    results.forEach((result, i) => {
+      if (result === 'gone') changed = this.pushTargets.delete(targets[i].token) || changed;
+    });
+    if (changed) await this.savePushTargets();
+  }
+
+  private async savePushTargets(): Promise<void> {
+    if (this.token === null) return; // session gone — never resurrect storage
+    await this.state.storage.put('pushTargets', [...this.pushTargets.values()]);
   }
 
   private startKeepalive(): void {

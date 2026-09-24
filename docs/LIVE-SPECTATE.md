@@ -306,7 +306,7 @@ Same behaviour, same caveats.
 - [x] `docs/ROADMAP-2.2.md` — update the "next build" line.
 - [ ] Commit title `Build NNN — …`, explicit file list, no `git add -A`.
 
-## Phase D2 — In-app spectating (app 2.3) — phase 1 ✅ build 382, push 🔜 383
+## Phase D2 — In-app spectating (app 2.3) — phase 1 ✅ build 382, push ✅ code 383 (needs APNs secrets)
 
 With Scorius installed, `scorius.app/w/<CODE>` opens **the app** instead of this page
 (Universal Link). Without it, nothing changes — the same link serves `/w` as before.
@@ -319,10 +319,20 @@ With Scorius installed, `scorius.app/w/<CODE>` opens **the app** instead of this
 - [x] The app reads the **existing** `GET /api/spectate/:code/stream` — no Worker change
       in phase 1. It dispatches on the `data:` line, so keep every `data` payload on one
       line (`sse()` already does).
-- [ ] Phase 2 (app 383): ActivityKit push — the app registers its Live Activity push token
-      with the session, the DO sends an APNs `liveactivity` update per frame, so a
-      spectator's Lock Screen and Watch keep moving with the app suspended. Needs an APNs
-      auth key as Worker secrets.
+- [x] Phase 2 (app 383): ActivityKit push — `src/apns.ts`. The app sends its Live Activity
+      push token as **headers on the ordinary stream request** (`x-scorius-push-token`,
+      `x-scorius-push-env` sandbox|production, `x-scorius-fallback-1/2` percent-encoded
+      side names in the viewer's language); `index.ts` already forwards them, so no new
+      route. The DO keeps up to 100 tokens with the session (deleted with it), pushes each
+      published frame (`event: update`, priority 10), and on stop / TTL sends `event: end`
+      with the last score and a 15-minute dismissal. Dead tokens (410, BadDeviceToken)
+      are dropped. `periodEndsAt` is converted to **seconds since 2001** — ActivityKit
+      decodes `content-state` with a default `JSONDecoder`, not ISO-8601.
+- [ ] **Secrets (Tom):** `APNS_KEY` (the .p8 contents), `APNS_KEY_ID`, `APNS_TEAM_ID` =
+      `7Y994H8BA8`. Without all three, push is off and nothing else changes.
+- [ ] Verify on a device against the *deployed* Worker — `wrangler dev` on macOS can't
+      speak HTTP/2 to APNs (workerd #4841). Tests for the pure parts:
+      `node --import tsx --test workers/spectate/test/apns.test.ts`.
 
 Apple fetches the AASA through its own CDN and caches it for up to a day; after a deploy,
 verify with `curl -sI https://scorius.app/.well-known/apple-app-site-association`.
