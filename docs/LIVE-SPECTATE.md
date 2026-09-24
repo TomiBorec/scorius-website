@@ -306,6 +306,27 @@ Same behaviour, same caveats.
 - [x] `docs/ROADMAP-2.2.md` — update the "next build" line.
 - [ ] Commit title `Build NNN — …`, explicit file list, no `git add -A`.
 
+## Phase D2 — In-app spectating (app 2.3) — phase 1 ✅ build 382, push 🔜 383
+
+With Scorius installed, `scorius.app/w/<CODE>` opens **the app** instead of this page
+(Universal Link). Without it, nothing changes — the same link serves `/w` as before.
+
+- [x] `public/.well-known/apple-app-site-association` — app id `7Y994H8BA8.tk.BB3`,
+      components `/w/*` only (`/watch`, the typed-code page, stays on the web). The app
+      carries `applinks:scorius.app`.
+- [x] `public/_headers` serves it as `application/json` (no extension → it would be
+      octet-stream). Next's static export copies `.well-known/` into `out/` — checked.
+- [x] The app reads the **existing** `GET /api/spectate/:code/stream` — no Worker change
+      in phase 1. It dispatches on the `data:` line, so keep every `data` payload on one
+      line (`sse()` already does).
+- [ ] Phase 2 (app 383): ActivityKit push — the app registers its Live Activity push token
+      with the session, the DO sends an APNs `liveactivity` update per frame, so a
+      spectator's Lock Screen and Watch keep moving with the app suspended. Needs an APNs
+      auth key as Worker secrets.
+
+Apple fetches the AASA through its own CDN and caches it for up to a day; after a deploy,
+verify with `curl -sI https://scorius.app/.well-known/apple-app-site-association`.
+
 ## Phase E — Export / import
 
 Est. **2–3 days**. Web side only.

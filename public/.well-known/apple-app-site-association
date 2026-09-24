@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["7Y994H8BA8.tk.BB3"],
+        "components": [
+          { "/": "/w/*", "comment": "Live Spectate: open a shared match in the app when it is installed" }
+        ]
+      }
+    ]
+  }
+}
