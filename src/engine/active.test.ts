@@ -245,3 +245,17 @@ test('undo stacks are capped', () => {
   m = undoRallyPoint(m);
   assert.equal(m.playerScore, score - 1);
 });
+
+test('basketball: undoing a point keeps a pause made since it (app 408)', () => {
+  let m = startMatch({ sport: 'basketball', settings: { kind: 'basketball', rules: basketballDefault }, now: NOW });
+  m = toggleMatchClock(m, NOW);                       // clock runs
+  m = recordBasketballPoints(m, 'player', 2);
+  m = toggleMatchClock(m, NOW + 60_000);              // paused a minute later
+  if (m.runtimeState?.kind !== 'basketball') return assert.fail('expected basketball state');
+  const paused = m.runtimeState.score.timeRemaining;
+  m = undoBasketballPoints(m);
+  if (m.runtimeState?.kind !== 'basketball') return assert.fail('expected basketball state');
+  assert.equal(m.runtimeState.score.playerPoints, 0);
+  assert.equal(m.runtimeState.score.isClockRunning, false, 'the pause survives the undo');
+  assert.equal(m.runtimeState.score.timeRemaining, paused);
+});

@@ -74,7 +74,11 @@ export function makeToken(): string {
  * Returns null when the result isn't a well-formed code.
  */
 export function normaliseCode(input: string): string | null {
-  const tail = input.trim().split(/[/?#]/).filter(Boolean).pop() ?? '';
+  // Query and fragment first, then the last path segment: a forwarded
+  // `…/w/4KTM9P?utm_source=x` used to yield "utm_source=x". Twin of the
+  // app's `SpectateCode.normalise` — keep them in step.
+  const path = input.trim().split(/[?#]/)[0] ?? '';
+  const tail = path.split('/').filter(Boolean).pop() ?? '';
   const cleaned = tail.toUpperCase().replace(/[^A-Z0-9]/g, '');
   if (cleaned.length !== CODE_LENGTH) return null;
   for (const ch of cleaned) if (!CODE_ALPHABET.includes(ch)) return null;

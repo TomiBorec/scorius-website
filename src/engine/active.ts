@@ -455,8 +455,15 @@ export function recordBasketballPoints(m: ActiveMatch, side: Side, value: number
 }
 
 export function undoBasketballPoints(m: ActiveMatch): ActiveMatch {
-  const prev = m.basketballUndoStack.at(-1);
-  if (!prev) return m;
+  const snap = m.basketballUndoStack.at(-1);
+  if (!snap) return m;
+  // The clock isn't part of the point being undone: within the same period the
+  // live clock stands, or a pause since the point would be rewound (app 408).
+  const live = m.runtimeState?.kind === 'basketball' ? m.runtimeState.score : null;
+  const prev = live && live.currentPeriod === snap.currentPeriod
+    ? { ...snap, timeRemaining: live.timeRemaining, isClockRunning: live.isClockRunning,
+        clockStartedAt: live.clockStartedAt }
+    : snap;
   return {
     ...m,
     basketballUndoStack: m.basketballUndoStack.slice(0, -1),
@@ -515,8 +522,15 @@ export function recordFootballGoal(m: ActiveMatch, side: Side, o: RecordGoalOpti
 }
 
 export function undoFootballGoal(m: ActiveMatch): ActiveMatch {
-  const prev = m.footballUndoStack.at(-1);
-  if (!prev) return m;
+  const snap = m.footballUndoStack.at(-1);
+  if (!snap) return m;
+  // The clock isn't part of the point being undone: within the same period the
+  // live clock stands, or a pause since the point would be rewound (app 408).
+  const live = m.runtimeState?.kind === 'football' ? m.runtimeState.score : null;
+  const prev = live && live.currentPeriod === snap.currentPeriod
+    ? { ...snap, timeRemaining: live.timeRemaining, isClockRunning: live.isClockRunning,
+        clockStartedAt: live.clockStartedAt }
+    : snap;
   return {
     ...m,
     footballUndoStack: m.footballUndoStack.slice(0, -1),

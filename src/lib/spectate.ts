@@ -104,7 +104,11 @@ export const DEMO_CODE = 'DEMO';
  * needless friction.
  */
 export function normaliseCode(input: string): string | null {
-  const tail = input.trim().split(/[/?#]/).filter(Boolean).pop() ?? '';
+  // Query and fragment first, then the last path segment: a forwarded
+  // `…/w/4KTM9P?utm_source=x` used to yield "utm_source=x". Twin of the
+  // app's `SpectateCode.normalise` — keep them in step.
+  const path = input.trim().split(/[?#]/)[0] ?? '';
+  const tail = path.split('/').filter(Boolean).pop() ?? '';
   const cleaned = tail.toUpperCase().replace(/[^A-Z0-9]/g, '');
   if (cleaned === DEMO_CODE) return DEMO_CODE;
   return CODE_RE.test(cleaned) ? cleaned : null;

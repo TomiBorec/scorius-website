@@ -57,7 +57,11 @@ export function basketballPeriodDuration(rules: BasketballRules, period: number)
  */
 export function canAdvanceBasketballPeriod(rules: BasketballRules, s: BasketballScore): boolean {
   if (s.periodScores.length >= rules.periodCount) {
-    return rules.allowsOvertime && s.playerPoints === s.opponentPoints;
+    // An overtime exists only because the closed periods ended level, and it
+    // must be closable once a side leads in it (app build 408).
+    const closedPlayer = s.periodScores.reduce((a, g) => a + g.player, 0);
+    const closedOpponent = s.periodScores.reduce((a, g) => a + g.opponent, 0);
+    return rules.allowsOvertime && closedPlayer === closedOpponent;
   }
   return true;
 }

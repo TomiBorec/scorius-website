@@ -88,9 +88,19 @@ export const ownerHolesPlayed = (s: GolfScore) => holesPlayed(s, 0);
 
 export const totalPar = (rules: GolfRules) => sum(rules.pars);
 
-/** Cumulative par through the first n holes, clamped. */
-export function playedPar(rules: GolfRules, holes: number): number {
-  return sum(rules.pars.slice(0, Math.max(0, Math.min(holes, rules.pars.length))));
+/**
+ * Par of the holes slot `idx` actually logged a score on — the baseline for
+ * "to par". Keyed on *which* holes were played, not how many: a skipped
+ * (picked-up) hole adds neither strokes nor par. Mirrors Swift's
+ * `GolfRules.playedPar(of:player:)` (app build 408).
+ */
+export function playedPar(rules: GolfRules, s: GolfScore, idx = 0): number {
+  if (idx < 0 || idx >= s.playerStrokes.length) return 0;
+  let par = 0;
+  s.playerStrokes[idx].forEach((v, hole) => {
+    if (v !== null && hole < rules.pars.length) par += rules.pars[hole];
+  });
+  return par;
 }
 
 /**

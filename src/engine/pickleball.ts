@@ -95,9 +95,12 @@ export function pickleballRallyWon(
   const s: PickleballScore = { ...current, completedGames: [...current.completedGames] };
 
   if (rules.scoringMode === 'rally') {
-    // Every rally scores. The serve passes when the receiving side wins.
+    // Every rally scores. The serve passes when the receiving side wins —
+    // unless that rally closed the game: closing it already handed the next
+    // game's opening serve to the other team (app build 408).
+    const gamesBefore = s.playerGames + s.opponentGames;
     award(rules, side, s);
-    if (s.servingSide !== side) s.servingSide = side;
+    if (s.playerGames + s.opponentGames === gamesBefore && s.servingSide !== side) s.servingSide = side;
     return s;
   }
 

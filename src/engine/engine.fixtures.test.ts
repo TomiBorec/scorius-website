@@ -174,7 +174,7 @@ test('golf engine matches Swift hole by hole', () => {
       assert.equal(canRetreatHole(score), step.expect.canRetreatHole, `retreat ${where}`);
       assert.equal(ownerTotalStrokes(score), step.expect.ownerTotalStrokes, `total ${where}`);
       assert.equal(ownerHolesPlayed(score), step.expect.ownerHolesPlayed, `played ${where}`);
-      assert.equal(playedPar(rules, ownerHolesPlayed(score)), step.expect.playedPar, `playedPar ${where}`);
+      assert.equal(playedPar(rules, score), step.expect.playedPar, `playedPar ${where}`);
       assert.equal(stablefordTotal(rules, score, 0), step.expect.stablefordTotal, `stableford ${where}`);
       assert.equal(matchPlayStatusText(rules, score), step.expect.matchPlayStatusText, `matchPlay ${where}`);
       assert.equal(matchPlayDecided(rules, score), step.expect.matchPlayDecided, `decided ${where}`);

@@ -16,7 +16,7 @@
 import { useCallback, useState } from 'react';
 import { adjustGolfStroke, golfSetHole, undoGolfStroke, type ActiveMatch } from '@/engine/active';
 import {
-  canAdvanceHole, canRetreatHole, holesPlayed, isGolfMatchComplete, playedPar,
+  canAdvanceHole, canRetreatHole, isGolfMatchComplete, playedPar,
   strokes, toParText, totalStrokes,
 } from '@/engine/golf';
 
@@ -51,7 +51,7 @@ export function GolfScorer({ match, onChange, onEnd }: {
         {state.playerStrokes.map((row, slot) => {
           const onThisHole = strokes(state, slot, hole);
           const total = totalStrokes(state, slot);
-          const toPar = total - playedPar(rules, holesPlayed(state, slot));
+          const toPar = total - playedPar(rules, state, slot);
           return (
             <li key={slot} className="sc-flightrow">
               <div className="sc-flightrow-name">

@@ -104,7 +104,13 @@ export function canAdvanceFootballPeriod(rules: FootballRules, s: FootballScore)
   // Extra time only starts from a level score. Once it has started, allow playing
   // out the remaining ET periods even if the score has since gone one way — the
   // UI lets them end the match instead.
-  if (played === rules.periodCount) return s.playerGoals === s.opponentGoals;
+  // Judged on the closed periods: the first ET period can already have gone
+  // one way and must still be closable (app build 408).
+  if (played === rules.periodCount) {
+    const closedPlayer = s.periodScores.reduce((a, g) => a + g.player, 0);
+    const closedOpponent = s.periodScores.reduce((a, g) => a + g.opponent, 0);
+    return closedPlayer === closedOpponent;
+  }
   return true;   // mid-ET
 }
 

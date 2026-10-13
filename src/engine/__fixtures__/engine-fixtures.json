@@ -240,7 +240,7 @@
     },
     {
       "expect" : {
-        "canAdvancePeriod" : false,
+        "canAdvancePeriod" : true,
         "durationForNextPeriod" : 300,
         "isMatchComplete" : true
       },
@@ -291,7 +291,7 @@
     },
     {
       "expect" : {
-        "canAdvancePeriod" : false,
+        "canAdvancePeriod" : true,
         "durationForNextPeriod" : 300,
         "isMatchComplete" : true
       },
@@ -2225,7 +2225,7 @@
     },
     {
       "expect" : {
-        "canAdvancePeriod" : false,
+        "canAdvancePeriod" : true,
         "durationForNextPeriod" : 900,
         "isExtraTime" : true,
         "isMatchComplete" : true
@@ -13509,7 +13509,7 @@
             "matchPlayStatusText" : null,
             "ownerHolesPlayed" : 5,
             "ownerTotalStrokes" : 26,
-            "playedPar" : 20,
+            "playedPar" : 21,
             "stablefordTotal" : 6
           },
           "hole" : 7,
@@ -13537,7 +13537,7 @@
             "matchPlayStatusText" : null,
             "ownerHolesPlayed" : 6,
             "ownerTotalStrokes" : 31,
-            "playedPar" : 23,
+            "playedPar" : 25,
             "stablefordTotal" : 7
           },
           "hole" : 8,
@@ -13565,7 +13565,7 @@
             "matchPlayStatusText" : null,
             "ownerHolesPlayed" : 7,
             "ownerTotalStrokes" : 36,
-            "playedPar" : 28,
+            "playedPar" : 29,
             "stablefordTotal" : 8
           },
           "hole" : 9,
@@ -13700,7 +13700,7 @@
             "matchPlayStatusText" : null,
             "ownerHolesPlayed" : 3,
             "ownerTotalStrokes" : 13,
-            "playedPar" : 12,
+            "playedPar" : 11,
             "stablefordTotal" : 4
           },
           "hole" : 4,
@@ -13728,7 +13728,7 @@
             "matchPlayStatusText" : null,
             "ownerHolesPlayed" : 4,
             "ownerTotalStrokes" : 20,
-            "playedPar" : 16,
+            "playedPar" : 15,
             "stablefordTotal" : 4
           },
           "hole" : 5,
@@ -13756,7 +13756,7 @@
             "matchPlayStatusText" : null,
             "ownerHolesPlayed" : 5,
             "ownerTotalStrokes" : 24,
-            "playedPar" : 20,
+            "playedPar" : 18,
             "stablefordTotal" : 5
           },
           "hole" : 6,
@@ -13812,7 +13812,7 @@
             "matchPlayStatusText" : null,
             "ownerHolesPlayed" : 7,
             "ownerTotalStrokes" : 37,
-            "playedPar" : 28,
+            "playedPar" : 27,
             "stablefordTotal" : 5
           },
           "hole" : 8,
@@ -13840,7 +13840,7 @@
             "matchPlayStatusText" : null,
             "ownerHolesPlayed" : 8,
             "ownerTotalStrokes" : 41,
-            "playedPar" : 32,
+            "playedPar" : 31,
             "stablefordTotal" : 7
           },
           "hole" : 9,
@@ -14400,7 +14400,7 @@
             "matchPlayStatusText" : "AS",
             "ownerHolesPlayed" : 6,
             "ownerTotalStrokes" : 29,
-            "playedPar" : 23,
+            "playedPar" : 25,
             "stablefordTotal" : 9
           },
           "hole" : 7,
@@ -14439,7 +14439,7 @@
             "matchPlayStatusText" : "AS",
             "ownerHolesPlayed" : 7,
             "ownerTotalStrokes" : 33,
-            "playedPar" : 28,
+            "playedPar" : 29,
             "stablefordTotal" : 11
           },
           "hole" : 8,
@@ -14478,7 +14478,7 @@
             "matchPlayStatusText" : "1 UP",
             "ownerHolesPlayed" : 8,
             "ownerTotalStrokes" : 37,
-            "playedPar" : 32,
+            "playedPar" : 33,
             "stablefordTotal" : 13
           },
           "hole" : 9,
@@ -14618,7 +14618,7 @@
             "matchPlayStatusText" : "AS",
             "ownerHolesPlayed" : 2,
             "ownerTotalStrokes" : 12,
-            "playedPar" : 7,
+            "playedPar" : 9,
             "stablefordTotal" : 2
           },
           "hole" : 3,
@@ -14657,7 +14657,7 @@
             "matchPlayStatusText" : "AS",
             "ownerHolesPlayed" : 3,
             "ownerTotalStrokes" : 18,
-            "playedPar" : 12,
+            "playedPar" : 13,
             "stablefordTotal" : 2
           },
           "hole" : 4,
@@ -14696,7 +14696,7 @@
             "matchPlayStatusText" : "1 UP",
             "ownerHolesPlayed" : 4,
             "ownerTotalStrokes" : 22,
-            "playedPar" : 16,
+            "playedPar" : 17,
             "stablefordTotal" : 4
           },
           "hole" : 5,
@@ -14774,7 +14774,7 @@
             "matchPlayStatusText" : "AS",
             "ownerHolesPlayed" : 6,
             "ownerTotalStrokes" : 34,
-            "playedPar" : 23,
+            "playedPar" : 25,
             "stablefordTotal" : 5
           },
           "hole" : 7,
@@ -14813,7 +14813,7 @@
             "matchPlayStatusText" : "1 UP",
             "ownerHolesPlayed" : 7,
             "ownerTotalStrokes" : 38,
-            "playedPar" : 28,
+            "playedPar" : 29,
             "stablefordTotal" : 7
           },
           "hole" : 8,
@@ -14852,7 +14852,7 @@
             "matchPlayStatusText" : "AS",
             "ownerHolesPlayed" : 8,
             "ownerTotalStrokes" : 44,
-            "playedPar" : 32,
+            "playedPar" : 33,
             "stablefordTotal" : 7
           },
           "hole" : 9,
@@ -31993,7 +31993,7 @@
             "playerGames" : 1,
             "playerPoints" : 0,
             "serverNumber" : 1,
-            "servingSide" : "player"
+            "servingSide" : "opponent"
           }
         },
         {
@@ -32415,7 +32415,7 @@
             "playerGames" : 1,
             "playerPoints" : 0,
             "serverNumber" : 1,
-            "servingSide" : "opponent"
+            "servingSide" : "player"
           }
         },
         {
@@ -32887,7 +32887,7 @@
             "playerGames" : 2,
             "playerPoints" : 0,
             "serverNumber" : 1,
-            "servingSide" : "player"
+            "servingSide" : "opponent"
           }
         }
       ]
@@ -33264,7 +33264,7 @@
             "playerGames" : 1,
             "playerPoints" : 0,
             "serverNumber" : 1,
-            "servingSide" : "player"
+            "servingSide" : "opponent"
           }
         },
         {
@@ -33664,7 +33664,7 @@
             "playerGames" : 1,
             "playerPoints" : 0,
             "serverNumber" : 1,
-            "servingSide" : "opponent"
+            "servingSide" : "player"
           }
         },
         {
@@ -36053,7 +36053,7 @@
             "playerGames" : 1,
             "playerPoints" : 0,
             "serverNumber" : 2,
-            "servingSide" : "player"
+            "servingSide" : "opponent"
           }
         },
         {
@@ -36475,7 +36475,7 @@
             "playerGames" : 1,
             "playerPoints" : 0,
             "serverNumber" : 2,
-            "servingSide" : "opponent"
+            "servingSide" : "player"
           }
         },
         {
@@ -36947,7 +36947,7 @@
             "playerGames" : 2,
             "playerPoints" : 0,
             "serverNumber" : 2,
-            "servingSide" : "player"
+            "servingSide" : "opponent"
           }
         }
       ]
@@ -37324,7 +37324,7 @@
             "playerGames" : 1,
             "playerPoints" : 0,
             "serverNumber" : 2,
-            "servingSide" : "player"
+            "servingSide" : "opponent"
           }
         },
         {
@@ -37724,7 +37724,7 @@
             "playerGames" : 1,
             "playerPoints" : 0,
             "serverNumber" : 2,
-            "servingSide" : "opponent"
+            "servingSide" : "player"
           }
         },
         {
