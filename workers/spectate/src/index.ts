@@ -25,6 +25,30 @@ interface Env {
  *  against a pathological case, not an expected path. */
 const CODE_ATTEMPTS = 5;
 
+/**
+ * The session for a code, pinned to the EU.
+ *
+ * A frame carries the names the scorer typed, so where the object runs and
+ * stores them is not a detail. Without a jurisdiction the object is created
+ * near whoever touched the code first — which for a match shared with someone
+ * abroad is wherever they happen to be. `jurisdiction('eu')` makes compute and
+ * storage stay in the EU, and unlike `locationHint` it is a guarantee rather
+ * than a preference.
+ *
+ * Two things it does not cover, both fine here: the calling Worker still runs
+ * at the edge nearest the request (it holds a frame for the length of one
+ * fetch, and persists nothing), and Cloudflare logs the DurableObjectId
+ * outside the EU for billing — an identifier, never the score or the names.
+ *
+ * Note the ids differ from the unrestricted namespace: the same code resolves
+ * to a different object. Sessions live at most 4 hours, so a deploy costs the
+ * matches in flight at that moment and nothing after.
+ */
+function sessionStub(env: Env, code: string): DurableObjectStub {
+  const eu = env.SPECTATE.jurisdiction('eu');
+  return eu.get(eu.idFromName(code));
+}
+
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
@@ -51,7 +75,7 @@ export default {
 
     const code = normaliseCode(segments[0]);
     if (code === null) return withCors(json({ error: 'bad_code' }, 400));
-    const stub = env.SPECTATE.get(env.SPECTATE.idFromName(code));
+    const stub = sessionStub(env, code);
 
     // GET /:code/stream
     if (segments.length === 2 && segments[1] === 'stream') {
@@ -100,7 +124,7 @@ async function startSession(env: Env): Promise<Response> {
   for (let attempt = 0; attempt < CODE_ATTEMPTS; attempt++) {
     const code = makeCode();
     const token = makeToken();
-    const stub = env.SPECTATE.get(env.SPECTATE.idFromName(code));
+    const stub = sessionStub(env, code);
     const claimed = await stub.fetch(
       new Request('https://do/init', {
         method: 'POST',

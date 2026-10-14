@@ -80,6 +80,11 @@ clock therefore costs zero requests.
   succeeded with `new_sqlite_classes` on account `c1de6ff5…`; the fallback (Worker + KV +
   polling) is not needed. Worker `scorius-spectate`, route `scorius.app/api/spectate/*`,
   8 ms startup, 3.78 KiB gzipped.
+- **Data location: EU.** Every session object is created in the `eu` jurisdiction
+  (`sessionStub` in `workers/spectate/src/index.ts`): a frame carries the names the scorer
+  typed, so compute and storage stay in the EU — a guarantee, unlike `locationHint`. The
+  ids differ from the unrestricted namespace, so the deploy that switched it ended the
+  sessions in flight at that moment (they live ≤ 4 h); nothing after.
 - **Code:** 6 chars from `23456789ABCDEFGHJKMNPQRSTUVWXYZ` (31 symbols, no `0/O/1/I/L`)
   ≈ 887M combinations. A pasted URL, lowercase and stray dashes all normalise.
 - **TTL:** 4 h after the last frame; 30 min after the final `isMatchComplete` frame.
