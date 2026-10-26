@@ -502,7 +502,7 @@ export const en = {
       kicker: 'Privacy',
       title: 'Your matches are yours.',
       lead: 'Scorius is built so the developer never sees your data. No accounts, no analytics, no third-party SDKs — your matches stay on your devices and in your iCloud.',
-      meta: 'Last updated · September 2026 · Applies to Scorius 2.2',
+      meta: 'Last updated · 26 October 2026 · Applies to Scorius 2.3',
       tocTitle: 'On this page',
       article: (
         <>
@@ -548,10 +548,10 @@ export const en = {
           <h2 id="summary">The short version</h2>
           <p>
             Scorius has <strong>no accounts, no analytics, no telemetry and no third-party SDKs</strong>. Your match
-            history lives on your own devices and is never uploaded anywhere. The only time anything leaves your device
-            for a server run by the developer is when <strong>you</strong> start a Live Spectate session — and even then
-            it is only the live score of that one match, for as long as it is being played. The developer cannot see your
-            history, your stats or anything else.
+            history lives on your own devices and in your private iCloud. The only time anything leaves your device
+            for a server run by the developer is when <strong>you</strong> share or follow a Live Spectate session.
+            This uses the live score and the delivery information described below. The developer cannot access
+            your private match history or statistics.
           </p>
 
           <h2 id="controller">Who the controller is</h2>
@@ -608,7 +608,7 @@ export const en = {
             Live Spectate is <strong>off by default and starts only when you tap it</strong>. While a session is running,
             Scorius sends the live score of that single match — points, games, period, clock and the side names you chose
             — to a server operated by the developer on Cloudflare, so anyone you give the code or link to can follow
-            along in a browser.
+            along in a browser or inside Scorius.
           </p>
           <ul>
             <li>
@@ -627,9 +627,11 @@ export const en = {
               session is open. Sharing stops when the match ends.
             </li>
             <li>
-              <strong>Nothing identifies you — except the names you type.</strong> No account, no device identifier, no
-              IP logging beyond Cloudflare&rsquo;s standard network protection. The only personal data that reaches the
-              relay are the names you give the sides.
+              <strong>No account or advertising identifier is used.</strong> The relay receives the side names you enter.
+              In-app spectators using a Live Activity also send its push token and display preferences to the relay.
+              The token lets Apple Push Notification service deliver score updates to that activity; it is not used
+              for tracking and is deleted with the session, within the limits above. Cloudflare may process IP addresses
+              in its standard operational and network-protection logs.
             </li>
             <li>
               <strong>Names are up to you.</strong> If you name a side with a real name, that name is visible to anyone
@@ -656,9 +658,15 @@ export const en = {
             <a className="inline" href="https://golfcourseapi.com" target="_blank" rel="noopener noreferrer">
               golfcourseapi.com
             </a>{' '}
-            to fetch course and par information; no personal data is attached beyond your search text. When you start{' '}
+            to fetch course and par information. Disc golf course browsing uses{' '}
+            <a className="inline" href="https://discgolfapi.com" target="_blank" rel="noopener noreferrer">
+              discgolfapi.com
+            </a>{' '}
+            (API at io.discgolfapi.com), receiving your selected country, region and course. Neither lookup sends
+            your match history or player names; the provider receives your request and IP address. When you start{' '}
             <strong>Live Spectate</strong>, the live score goes to the developer&rsquo;s relay as described above. If you
-            do neither, Scorius makes no network calls at all beyond your own iCloud.
+            do neither, no requests are sent to those course providers or the relay. Apple services also handle iCloud
+            sync, App Store purchases, SharePlay and Live Activity push delivery when you use those features.
           </p>
           <p>There are no advertising SDKs, no crash-reporting services and no usage analytics of any kind.</p>
           <p>
@@ -668,7 +676,7 @@ export const en = {
               Apple&rsquo;s privacy policy
             </a>
             ), <strong>Cloudflare</strong> (hosting for this site and the Live Spectate relay, acting as processor) and{' '}
-            <strong>golfcourseapi.com</strong> (course lookup, only when you use it). Nobody else.
+            <strong>golfcourseapi.com</strong> and <strong>discgolfapi.com</strong> (course lookup, only when you use it).
           </p>
 
           <h2 id="website">Website data &amp; local storage</h2>
@@ -736,7 +744,15 @@ export const en = {
             If you start a match from Apple Watch, Scorius can run a workout to record <strong>heart rate</strong> and{' '}
             <strong>active calories</strong>. This data is written to Apple Health on your device and is governed by your
             Health permissions. You can revoke access at any time in{' '}
-            <em>Settings → Health → Data Access &amp; Devices</em>. Scorius never transmits Health data anywhere.
+            <em>Settings → Health → Data Access &amp; Devices</em>. Health-derived match statistics can sync between your own devices through iCloud and the paired Watch.
+            They are never sent to the developer, the Live Spectate relay or course providers.
+          </p>
+
+          <p>
+            <strong>Match Story:</strong> optional match summaries use Apple&rsquo;s on-device Foundation Models.
+            The match information used for the summary is processed on your device, not sent to an AI server.
+            Planned matches stay on your device; reminders are local notifications. Adding a match to Calendar
+            uses Apple&rsquo;s system editor and the calendar account you choose.
           </p>
 
           <h2 id="control">Your control</h2>
@@ -746,8 +762,10 @@ export const en = {
               app, and import it back.
             </li>
             <li>
-              <strong>Delete:</strong> deleting a match removes it from history and from iCloud sync. Removing the app and
-              clearing its iCloud data deletes everything.
+              <strong>Delete:</strong> deleted matches leave your active history and can be recovered from Recently Deleted
+              for 30 days, or permanently deleted there sooner. Deletions sync through your private iCloud.
+              Remove local app data and clear the app&rsquo;s iCloud data to remove those copies; workouts already
+              saved to Apple Health must be deleted separately in Health.
             </li>
             <li>
               <strong>Health:</strong> grant or revoke heart-rate and calorie access whenever you like.

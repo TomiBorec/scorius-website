@@ -498,7 +498,7 @@ export const cs: Dict = {
       kicker: 'Soukromí',
       title: 'Tvoje zápasy patří tobě.',
       lead: 'Scorius je postavený tak, aby vývojář nikdy neviděl tvoje data. Žádné účty, žádná analytika, žádná SDK třetích stran — tvoje zápasy zůstávají na tvých zařízeních a v tvém iCloudu.',
-      meta: 'Naposledy aktualizováno · září 2026 · Platí pro Scorius 2.2',
+      meta: 'Naposledy aktualizováno · 26. října 2026 · Platí pro Scorius 2.3',
       tocTitle: 'Na této stránce',
       article: (
         <>
@@ -544,10 +544,9 @@ export const cs: Dict = {
           <h2 id="summary">Ve zkratce</h2>
           <p>
             Scorius nemá <strong>žádné účty, žádnou analytiku, žádnou telemetrii ani žádná SDK třetích stran</strong>.
-            Tvoje historie zápasů žije na tvých vlastních zařízeních a nikdy se nikam nenahrává. Jediný okamžik, kdy něco
-            opustí tvoje zařízení směrem k serveru provozovanému vývojářem, je když <strong>ty</strong> spustíš sledování
-            živě — a i tehdy jde jen o živé skóre toho jednoho zápasu, po dobu, kdy se hraje. Vývojář nevidí tvoji
-            historii, tvoje statistiky ani nic dalšího.
+            Tvoje historie zápasů žije na tvých zařízeních a v tvém soukromém iCloudu. K serveru provozovanému vývojářem
+            se data dostanou jen tehdy, když <strong>ty</strong> sdílíš nebo sleduješ živý zápas. Jde o živé skóre
+            a údaje potřebné k doručování popsané níže. Vývojář nemá přístup k tvé soukromé historii ani statistikám.
           </p>
 
           <h2 id="controller">Kdo je správce</h2>
@@ -605,7 +604,7 @@ export const cs: Dict = {
             Sledování živě je <strong>ve výchozím stavu vypnuté a spustí se jen tvým ťuknutím</strong>. Dokud relace běží,
             posílá Scorius živé skóre toho jednoho zápasu — body, gamy, období, hodiny a jména, která jsi stranám dal —
             na server provozovaný vývojářem na Cloudflare, aby kdokoli, komu dáš kód nebo odkaz, mohl zápas sledovat
-            v prohlížeči.
+            v prohlížeči nebo přímo ve Scoriusu.
           </p>
           <ul>
             <li>
@@ -624,9 +623,11 @@ export const cs: Dict = {
               Sdílení skončí s koncem zápasu.
             </li>
             <li>
-              <strong>Nic tě neidentifikuje — kromě jmen, která zadáš ty.</strong> Žádný účet, žádný identifikátor
-              zařízení, žádné logování IP nad rámec standardní ochrany sítě Cloudflare. Jediné osobní údaje, které se
-              na relay dostanou, jsou jména, kterými pojmenuješ strany.
+              <strong>Nepoužíváme účet ani reklamní identifikátor.</strong> Relay přijímá zadaná jména stran.
+              Diváci používající Live Activity v aplikaci posílají také její push token a předvolby zobrazení.
+              Token umožňuje službě Apple Push Notification service doručovat aktualizace skóre do této aktivity;
+              neslouží ke sledování a maže se spolu s relací ve lhůtách uvedených výše. Cloudflare může zpracovávat
+              IP adresy ve standardních provozních záznamech a při ochraně sítě.
             </li>
             <li>
               <strong>Jména jsou na tobě.</strong> Když stranu pojmenuješ skutečným jménem, uvidí ho kdokoli s kódem.
@@ -653,9 +654,15 @@ export const cs: Dict = {
             <a className="inline" href="https://golfcourseapi.com" target="_blank" rel="noopener noreferrer">
               golfcourseapi.com
             </a>{' '}
-            na informace o hřišti a parech; kromě textu tvého hledání se nepřipojují žádná osobní data. Když spustíš{' '}
+            na informace o hřišti a parech. Procházení discgolfových hřišť používá{' '}
+            <a className="inline" href="https://discgolfapi.com" target="_blank" rel="noopener noreferrer">
+              discgolfapi.com
+            </a>{' '}
+            (API na io.discgolfapi.com), které přijímá zvolenou zemi, region a hřiště. Ani jedna databáze nedostává
+            historii zápasů nebo jména hráčů; poskytovatel přijímá požadavek a IP adresu. Když spustíš{' '}
             <strong>sledování živě</strong>, jde živé skóre na relay vývojáře, jak je popsáno výše. Pokud neuděláš ani
-            jedno, Scorius nedělá žádné síťové požadavky nad rámec tvého vlastního iCloudu.
+            jedno, těmto databázím ani relay se žádné požadavky neposílají. Služby Applu dále zajišťují synchronizaci
+            přes iCloud, nákupy v App Store, SharePlay a push aktualizace Live Activity, pokud tyto funkce používáš.
           </p>
           <p>Nejsou tu žádná reklamní SDK, žádné služby pro hlášení pádů ani žádná analytika používání.</p>
           <p>
@@ -665,7 +672,7 @@ export const cs: Dict = {
               zásadami Applu
             </a>
             ), <strong>Cloudflare</strong> (hosting tohoto webu a relay pro sledování živě, zpracovatel) a{' '}
-            <strong>golfcourseapi.com</strong> (vyhledávání hřišť, jen když ho použiješ). Nikdo jiný.
+            <strong>golfcourseapi.com</strong> a <strong>discgolfapi.com</strong> (vyhledávání hřišť, jen když ho použiješ).
           </p>
 
           <h2 id="website">Webové stránky a lokální úložiště</h2>
@@ -733,7 +740,15 @@ export const cs: Dict = {
             Když spustíš zápas z Apple Watch, Scorius může spustit trénink a zaznamenat <strong>tepovou frekvenci</strong> a{' '}
             <strong>aktivní kalorie</strong>. Tato data se zapisují do Apple Health ve tvém zařízení a řídí se tvými
             oprávněními pro Zdraví. Přístup můžeš kdykoli odvolat v <em>Nastavení → Zdraví → Přístup k datům a zařízení</em>.
-            Scorius zdravotní data nikam nepřenáší.
+            Statistiky zápasů odvozené ze zdravotních dat se mohou synchronizovat mezi tvými zařízeními přes iCloud
+            a spárované Watch. Vývojáři, relay pro sledování živě ani databázím hřišť se neposílají.
+          </p>
+
+          <p>
+            <strong>Příběh zápasu:</strong> volitelné shrnutí používá Foundation Models od Applu přímo v zařízení.
+            Údaje použité pro shrnutí se zpracovávají lokálně, neposílají se na AI server. Plánované zápasy zůstávají
+            v zařízení a připomenutí jsou místní oznámení. Přidání zápasu do Kalendáře používá systémový editor
+            Applu a účet kalendáře, který si vybereš.
           </p>
 
           <h2 id="control">Tvoje kontrola</h2>
@@ -743,8 +758,10 @@ export const cs: Dict = {
               zase ji naimportovat zpět.
             </li>
             <li>
-              <strong>Mazání:</strong> smazáním zápasu ho odebereš z historie i ze synchronizace přes iCloud. Odebráním
-              aplikace a vymazáním jejích dat z iCloudu smažeš úplně všechno.
+              <strong>Mazání:</strong> smazané zápasy zmizí z aktivní historie a 30 dní je můžeš obnovit z Nedávno smazaných,
+              nebo je tam trvale odstranit dříve. Mazání se synchronizuje přes tvůj soukromý iCloud.
+              Pro odstranění těchto kopií smaž lokální data aplikace i její data v iCloudu; tréninky již uložené
+              do Apple Health musíš odstranit zvlášť ve Zdraví.
             </li>
             <li>
               <strong>Zdraví:</strong> přístup k tepové frekvenci a kaloriím můžeš kdykoli udělit nebo odvolat.
