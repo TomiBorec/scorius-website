@@ -99,7 +99,7 @@ function English() {
           </li>
           <li>
             <strong>Tips.</strong> If you leave a tip, the purchase is handled entirely by Apple through the App Store.
-            The developer receives no payment details. Whether the icons are unlocked is kept in your iCloud.
+            The developer receives no payment details. The one-time Icon Tip unlocks the icons and can be restored through the App Store. Other tips unlock nothing. Existing icon unlocks remain in your iCloud; new icon purchases are verified by StoreKit and cached on your device.
           </li>
         </ul>
         <p>Nothing else is sent anywhere — no analytics, no crash reporting of our own, no advertising identifiers.</p>
@@ -231,7 +231,7 @@ function Czech() {
           </li>
           <li>
             <strong>Spropitné.</strong> Pokud přispěješ, nákup celý vyřizuje Apple přes App Store. Vývojář nedostane
-            žádné platební údaje. Informace o odemčených ikonách je uložená v tvém iCloudu.
+            žádné platební údaje. Jednorázový Příspěvek s ikonkami odemkne ikony a lze ho obnovit přes App Store. Ostatní příspěvky nic neodemykají. Dřívější odemčení ikon zůstává v tvém iCloudu; nové nákupy ikon ověřuje StoreKit a jejich stav si aplikace uchovává v zařízení.
           </li>
         </ul>
         <p>Nic dalšího se nikam neposílá — žádná analytika, žádné vlastní hlášení pádů, žádné reklamní identifikátory.</p>
